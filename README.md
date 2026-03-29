@@ -12,12 +12,12 @@ Routes Copilot CLI work to the lowest-cost viable model based on task type and c
 
 ## Key Features
 
-✅ **Optional automatic model switching** - The repo-local extension can switch models before each turn
-✅ **Tool-aware implementation routing** - Tool keywords can move implementation work from economy to builder candidates
-✅ **Cost-optimized** - Prefers cheaper models for lightweight work and escalates only when the classifier does
-✅ **Explicit review only** - No forced post-implementation review; review mode only starts on explicit review phrases
-✅ **Review diversity** - For explicit review, prefers a different model than the last implementation model when available
-✅ **Graceful fallback** - If preferred model unavailable, tries next candidate in tier  
+- ✅ **Optional automatic model switching** - The repo-local extension can switch models before each turn
+- ✅ **Tool-aware implementation routing** - Tool keywords can move implementation work from economy to builder candidates
+- ✅ **Cost-optimized** - Prefers cheaper models for lightweight work and escalates only when the classifier does
+- ✅ **Explicit review only** - No forced post-implementation review; review mode only starts on explicit review phrases
+- ✅ **Review diversity** - For explicit review, prefers a different model than the last implementation model when available
+- ✅ **Graceful fallback** - If preferred model unavailable, tries next candidate in tier  
 
 ## Installation
 
