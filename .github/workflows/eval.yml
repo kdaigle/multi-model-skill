@@ -195,87 +195,110 @@ jobs:
           path: eval/runs/fixed
 
       - name: Write step summary
-        run: |
-          node - <<'SUMMARY_EOF'
-          const fs   = require('fs');
-          const path = require('path');
-
-          const STEP_SUMMARY = process.env.GITHUB_STEP_SUMMARY;
-          const lines = [];
-          const push  = (s = '') => lines.push(s);
-
-          const runId  = process.env.GITHUB_RUN_ID  || 'unknown';
-          const ref    = process.env.GITHUB_SHA      || 'unknown';
-          const repo   = process.env.GITHUB_REPOSITORY || 'unknown';
-          const server = process.env.GITHUB_SERVER_URL || 'https://github.com';
-          const artifactBase = `${server}/${repo}/actions/runs/${runId}`;
-
-          push('# Eval Harness Results');
-          push();
-          push(`**Run:** [${runId}](${artifactBase})  `);
-          push(`**Commit:** \`${ref.slice(0,8)}\`  `);
-          push(`**Suite:** \`${process.env.EVAL_SUITE || 'all'}\``);
-          push();
-
-          function loadSummary(dir) {
-            const summaryPath = path.join(dir, 'suite-summary.json');
-            if (!fs.existsSync(summaryPath)) return null;
-            try { return JSON.parse(fs.readFileSync(summaryPath, 'utf8')); }
-            catch { return null; }
-          }
-
-          const router = loadSummary('eval/runs/router');
-          const fixed  = loadSummary('eval/runs/fixed');
-
-          if (!router && !fixed) {
-            push('> ⚠️  No suite-summary.json found in either run directory.');
-            push('> Check the individual job logs for errors.');
-          } else {
-            push('## Router vs Fixed-model Comparison');
-            push();
-            push('| Metric | Router | Fixed model |');
-            push('|--------|--------|-------------|');
-
-            const metrics = new Set([
-              ...Object.keys(router || {}),
-              ...Object.keys(fixed  || {}),
-            ]);
-            // Skip metadata fields
-            const skip = new Set(['runId', 'ref', 'mode', 'model', 'suite', 'timestamp']);
-
-            for (const key of metrics) {
-              if (skip.has(key)) continue;
-              const r = router?.[key] ?? '—';
-              const f = fixed?.[key]  ?? '—';
-              push(`| \`${key}\` | ${r} | ${f} |`);
-            }
-            push();
-
-            if (router?.model) push(`> **Router selected models:** ${router.model}`);
-            if (fixed?.model)  push(`> **Fixed model:** \`${fixed.model}\``);
-            push();
-          }
-
-          push('## Artifacts');
-          push();
-          push(`Raw run files (JSON + logs) are attached to this workflow run:`);
-          push(`- [eval-router-${runId}](${artifactBase}) — router-mode outputs`);
-          push(`- [eval-fixed-${runId}](${artifactBase}) — fixed-model baseline`);
-          push();
-          push('Artifacts are retained for **30 days**.');
-          push();
-          push('## Caveats');
-          push();
-          push('- Token counts in suite-summary.json are estimates from the model API; they do not account for CLI overhead or retries.');
-          push('- Cost comparisons are not included here. Map token counts to pricing manually using the model\'s current rate card.');
-          push('- Scheduled runs use default inputs (`suite: all`, `fixed_model: claude-haiku-4.5`).');
-          push('- The fixed-model run can be skipped on manual dispatch via the `skip_fixed` input.');
-
-          fs.writeFileSync(STEP_SUMMARY, lines.join('\n') + '\n');
-          console.log('Step summary written.');
-          SUMMARY_EOF
+        run: node eval/scripts/write-github-summary.mjs eval/runs/router eval/runs/fixed
         env:
-          # GITHUB_STEP_SUMMARY is set automatically by the runner; do not re-map it.
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          EVAL_SUITE: ${{ inputs.suite || 'all' }}
+
+      - name: Upload router-run artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-router-${{ github.run_id }}
+          path: eval/runs/router/
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job: fixed-run  – re-run the same suite pinned to a single model (baseline)
+  # ─────────────────────────────────────────────────────────────────────────────
+  fixed-run:
+    name: "Eval – fixed model (${{ inputs.fixed_model || 'claude-haiku-4.5' }})"
+    runs-on: ubuntu-latest
+    # Skip when the caller explicitly opts out (manual runs only; schedule always runs).
+    if: ${{ github.event_name == 'schedule' || inputs.skip_fixed != 'true' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
+
+      - name: Install project dependencies
+        if: hashFiles('package-lock.json') != ''
+        run: npm ci --ignore-scripts
+
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run eval – fixed model
+        # Note: fixed_model input is not currently wired through the CLI; the
+        # model is configured via eval/config/models.json. The input is kept for
+        # reference and potential future use.
+        run: |
+          mkdir -p eval/runs/fixed
+          node eval/scripts/run-suite.mjs \
+            --variant fixed \
+            --suite-dir eval/runs/fixed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EVAL_RUN_ID: ${{ github.run_id }}
+          EVAL_REF: ${{ github.sha }}
+
+      - name: Upload fixed-run artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-fixed-${{ github.run_id }}
+          path: eval/runs/fixed/
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job: summarize  – download both artifact sets, diff them, write step summary
+  # ─────────────────────────────────────────────────────────────────────────────
+  summarize:
+    name: "Publish eval summary"
+    runs-on: ubuntu-latest
+    needs: [router-run, fixed-run]
+    # Run even if one job failed so we surface partial results.
+    if: always()
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Download router artifacts
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: eval-router-${{ github.run_id }}
+          path: eval/runs/router
+
+      - name: Download fixed artifacts
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: eval-fixed-${{ github.run_id }}
+          path: eval/runs/fixed
+
+      - name: Write step summary
+        run: node eval/scripts/write-github-summary.mjs eval/runs/router eval/runs/fixed
+        env:
           GITHUB_RUN_ID: ${{ github.run_id }}
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_REPOSITORY: ${{ github.repository }}
