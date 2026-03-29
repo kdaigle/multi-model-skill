@@ -21,37 +21,56 @@ Routes Copilot CLI work to the lowest-cost viable model based on task type and c
 
 ## Installation
 
-GitHub Copilot CLI skills are installed by placing them in a supported skills directory. This repo does **not** rely on a documented `npx ... install-skill` flow.
+GitHub Copilot CLI automatically discovers skills placed in supported directories. The recommended installation method is using Git to clone and copy the skill files.
 
-### Project-scoped install
+### Option 1: Project-specific Installation
 
-Copy these files into the target repository:
+Install the skill for a single repository:
 
-```text
-.github/skills/model-router/SKILL.md
-.github/skills/model-router/references/routing-matrix.md
-.github/copilot-instructions.md
+```bash
+# Clone the repository temporarily
+git clone https://github.com/kdaigle/multi-model-skill.git /tmp/multi-model-skill
+
+# Copy the skill to your project
+mkdir -p .github/skills
+cp -r /tmp/multi-model-skill/.github/skills/model-router .github/skills/
+cp /tmp/multi-model-skill/.github/copilot-instructions.md .github/
+
+# Optional: Copy the extension for automatic model switching
+mkdir -p .github/extensions  
+cp -r /tmp/multi-model-skill/.github/extensions/model-router .github/extensions/
+
+# Clean up
+rm -rf /tmp/multi-model-skill
 ```
 
-This matches the official Copilot CLI skill layout under `.github/skills/`.
+### Option 2: Personal Installation (Recommended)
 
-### Personal install
+Install the skill globally for all your projects:
 
-For a personal skill shared across repositories, copy the `model-router` skill directory to:
+```bash
+# Clone the repository temporarily
+git clone https://github.com/kdaigle/multi-model-skill.git /tmp/multi-model-skill
 
-```text
-~/.copilot/skills/model-router/
+# Copy to your personal skills directory
+mkdir -p ~/.copilot/skills
+cp -r /tmp/multi-model-skill/.github/skills/model-router ~/.copilot/skills/
+
+# Clean up
+rm -rf /tmp/multi-model-skill
 ```
 
-If Copilot CLI is already running, reload skills with:
+### After Installation
 
-```text
+If Copilot CLI is already running, reload skills:
+
+```bash
 /skills reload
 ```
 
-Useful related commands:
+Verify installation:
 
-```text
+```bash
 /skills list
 /skills info model-router
 ```
