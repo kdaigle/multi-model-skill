@@ -70,8 +70,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: "npm"
-          cache-dependency-path: "**/package-lock.json"
 
       - name: Install project dependencies
         # Only runs when a lockfile is present; the harness may be dependency-free.
@@ -125,8 +123,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: "npm"
-          cache-dependency-path: "**/package-lock.json"
 
       - name: Install project dependencies
         if: hashFiles('package-lock.json') != ''
