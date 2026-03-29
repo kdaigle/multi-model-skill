@@ -172,6 +172,10 @@ User: "Review my PR for bugs and security issues"
 → Uses different model than last implementation if available
 ```
 
+## Evaluation
+
+The `eval/` directory contains a local-first harness for comparing router-enabled runs against a fixed-model baseline on the same task. See [`eval/README.md`](eval/README.md) for local usage, result interpretation, and cost metrics. CI setup is documented in [`eval/docs/ci-setup.md`](eval/docs/ci-setup.md).
+
 ## Files
 
 ```
