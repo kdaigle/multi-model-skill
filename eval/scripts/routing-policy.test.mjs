@@ -383,4 +383,27 @@ describe("buildAdditionalContext", () => {
     const ctx = buildAdditionalContext(decision, "claude-sonnet-4.6", null);
     assert.ok(ctx.includes("reasoning"));
   });
+
+  // Regression: fallback note must fire when review lands on the EXACT impl model
+  it("surfaces fallback note when review reuses exact implementation model", () => {
+    const decision = { kind: "review", complexity: 1, selectedModelId: "claude-sonnet-4.6", reasoningEffort: null };
+    const ctx = buildAdditionalContext(decision, "claude-sonnet-4.6", "claude-sonnet-4.6");
+    assert.ok(ctx.includes("fell back"), `expected fallback note; got: ${ctx}`);
+  });
+
+  // Regression: fallback note must ALSO fire when review lands on a same-family
+  // model (e.g. claude-sonnet-4.5 when impl was claude-sonnet-4.6) — the
+  // diversity goal was still not met even though the model id differs.
+  it("surfaces fallback note when review falls back to same-family model", () => {
+    const decision = { kind: "review", complexity: 1, selectedModelId: "claude-sonnet-4.5", reasoningEffort: null };
+    const ctx = buildAdditionalContext(decision, "claude-sonnet-4.5", "claude-sonnet-4.6");
+    assert.ok(ctx.includes("fell back"), `expected fallback note; got: ${ctx}`);
+  });
+
+  // Verify diversity IS silently achieved when review uses a different family
+  it("does not surface fallback note when review uses a distinct family", () => {
+    const decision = { kind: "review", complexity: 1, selectedModelId: "gpt-5.4", reasoningEffort: "high" };
+    const ctx = buildAdditionalContext(decision, "gpt-5.4", "claude-sonnet-4.6");
+    assert.ok(!ctx.includes("fell back"), `unexpected fallback note; got: ${ctx}`);
+  });
 });

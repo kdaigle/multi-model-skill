@@ -389,7 +389,13 @@ export function buildAdditionalContext(decision, currentModelId, lastImplModel =
 
   if (decision.kind === "review" && lastImplModel) {
     lines.push(`Prefer review diversity versus implementation model ${lastImplModel}.`);
-    if (decision.selectedModelId === lastImplModel) {
+    // Surface a fallback note whenever diversity could not be achieved: either
+    // the router landed on the exact same model or on one from the same family
+    // (e.g. claude-sonnet-4.5 when impl was claude-sonnet-4.6).
+    if (
+      decision.selectedModelId === lastImplModel ||
+      isSameModelFamily(decision.selectedModelId, lastImplModel)
+    ) {
       lines.push(
         "A distinct review model was not available, so the router fell back to the current best option.",
       );
