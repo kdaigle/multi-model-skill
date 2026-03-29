@@ -61,3 +61,24 @@ When you have recently used one model for implementation, prefer a different mod
 - approval readiness
 
 If only one eligible model is available, fall back gracefully and say so.
+
+## Confusion detection and recovery
+
+If the extension detects signs that the agent may be looping or stuck (e.g., repeated similar responses, self-contradictions, accumulated errors), it may automatically swap to an alternate model family at the same or better caliber. This helps avoid wasting tokens on a confused agent.
+
+**Important:** The extension errs on the side of patience, especially when the agent is in active thinking (reasoning display enabled). It will only swap after seeing multiple strong signals of confusion over several turns, not on the first error or unclear response.
+
+**Signals that may trigger a swap:**
+- Multiple similar consecutive responses (looping)
+- Two or more consecutive errors
+- Agent acknowledging confusion ("I'm not sure", "I'm confused", etc.)
+
+**Example:** If a Claude-based model is looping, the extension may switch to a GPT-based model at the same reasoning tier, giving the problem a different perspective.
+
+Check confusion metrics with:
+
+```
+/model_router_status
+```
+
+This shows turn count, error count, recent message tracking, and whether looping was detected.

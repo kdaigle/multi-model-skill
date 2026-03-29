@@ -126,6 +126,220 @@ let lastImplementationModel = null;
 let lastReviewModel = null;
 let lastDecision = null;
 
+// Confusion detection: tracks signs agent may be stuck or looping.
+// We err on the side of waiting slightly too long to swap rather than switching prematurely,
+// especially when the agent is in active thinking (reasoning display enabled).
+const confusionMetrics = {
+  turnCount: 0,
+  recentMessages: [], // Last N agent messages for loop detection
+  errorCount: 0,
+  repeatedPatternCount: 0,
+  lastSwitchTurn: -999, // Turn when we last switched due to confusion
+  currentModelFamily: null, // Track which model family is in use
+};
+
+const CONFUSION_THRESHOLDS = {
+  minTurnsSinceLastSwitch: 5, // Don't switch more than every 5 turns (err on side of patience)
+  maxRecentMessagesTracked: 8,
+  repeatingPatternThreshold: 3, // Same pattern must appear 3 times to trigger concern
+  consecutiveErrorThreshold: 2, // 2 errors in a row may warrant switch
+  similarityThreshold: 0.75, // Cosine similarity to detect repeated responses
+};
+
+// Model family groupings for diversity-of-thought swaps
+const MODEL_FAMILIES = {
+  claude: new Set([
+    "claude-haiku-4.5",
+    "claude-sonnet-4",
+    "claude-sonnet-4.5",
+    "claude-sonnet-4.6",
+    "claude-opus-4.5",
+    "claude-opus-4.6",
+    "claude-opus-4.6-1m",
+  ]),
+  gpt: new Set([
+    "gpt-4.1",
+    "gpt-5-mini",
+    "gpt-5.4-mini",
+    "gpt-5.1",
+    "gpt-5.2",
+    "gpt-5.3-codex",
+    "gpt-5.1-codex",
+    "gpt-5",
+    "gpt-5.4",
+    "gpt-5.1-codex-max",
+  ]),
+};
+
+function getModelFamily(modelId) {
+  if (!modelId) return null;
+  if (MODEL_FAMILIES.claude.has(modelId)) return "claude";
+  if (MODEL_FAMILIES.gpt.has(modelId)) return "gpt";
+  return null;
+}
+
+// Simple word-level similarity detection (0-1, where 1 is identical)
+function calculateSimilarity(text1, text2) {
+  const words1 = new Set(normalizePrompt(text1).split(/\s+/).filter(w => w.length > 3));
+  const words2 = new Set(normalizePrompt(text2).split(/\s+/).filter(w => w.length > 3));
+  
+  if (words1.size === 0 || words2.size === 0) return 0;
+  
+  const intersection = [...words1].filter(w => words2.has(w)).length;
+  const union = new Set([...words1, ...words2]).size;
+  
+  return union > 0 ? intersection / union : 0;
+}
+
+// Detect if agent message shows signs of confusion or looping
+function detectConfusionSignals(message) {
+  const text = normalizePrompt(message);
+  const signals = [];
+  
+  // Signal 1: Agent acknowledging it's confused or stuck
+  const confusedPhrases = [
+    "i'm not sure",
+    "i'm confused",
+    "unclear",
+    "not clear",
+    "i don't",
+    "cannot proceed",
+    "stuck",
+    "unable to",
+    "let me try",
+    "let me re-attempt",
+  ];
+  if (includesAny(text, confusedPhrases)) {
+    signals.push("agent-confusion-acknowledgment");
+  }
+  
+  // Signal 2: Very short responses (often indicates agent giving up or looping)
+  if (text.split(/\s+/).length < 10) {
+    signals.push("very-short-response");
+  }
+  
+  // Signal 3: Repetitive question asking (agent asking for clarification repeatedly)
+  if (includesAny(text, ["can you", "could you", "would you", "please", "more details", "clarify"])) {
+    const askingCount = (text.match(/\?/g) || []).length;
+    if (askingCount > 2) {
+      signals.push("repetitive-asking");
+    }
+  }
+  
+  // Signal 4: Self-contradictory statements
+  if (text.includes("but earlier") || text.includes("wait,") || text.includes("i was wrong")) {
+    signals.push("self-contradiction");
+  }
+  
+  return signals;
+}
+
+// Check if recent messages suggest a loop
+function detectLoopingBehavior() {
+  if (confusionMetrics.recentMessages.length < 3) return false;
+  
+  let similarPairs = 0;
+  for (let i = confusionMetrics.recentMessages.length - 1; i > 0; i--) {
+    const similarity = calculateSimilarity(
+      confusionMetrics.recentMessages[i],
+      confusionMetrics.recentMessages[i - 1]
+    );
+    if (similarity > CONFUSION_THRESHOLDS.similarityThreshold) {
+      similarPairs++;
+    }
+  }
+  
+  return similarPairs >= 2; // Two similar consecutive pairs suggests looping
+}
+
+// Select alternate model family at same or better caliber
+async function getAlternateModel(session, currentModelId) {
+  const currentFamily = getModelFamily(currentModelId);
+  const targetFamily = currentFamily === "claude" ? "gpt" : "claude";
+  
+  // Determine tier of current model
+  let currentTier = null;
+  for (const [tier, models] of Object.entries(MODEL_CANDIDATES)) {
+    if (models.some(m => m.id === currentModelId)) {
+      currentTier = tier;
+      break;
+    }
+  }
+  
+  if (!currentTier) return null;
+  
+  // Get candidates from same or better tier, different family
+  const tierCandidates = MODEL_CANDIDATES[currentTier] || [];
+  const candidates = tierCandidates.filter(m => getModelFamily(m.id) === targetFamily);
+  
+  // If tier is exhausted in alternate family, try next tier up
+  if (candidates.length === 0 && currentTier === "economy") {
+    const builderCandidates = MODEL_CANDIDATES.builder || [];
+    return builderCandidates.find(m => getModelFamily(m.id) === targetFamily) || null;
+  }
+  
+  if (candidates.length === 0 && currentTier === "builder") {
+    const reasoningCandidates = MODEL_CANDIDATES.reasoning || [];
+    return reasoningCandidates.find(m => getModelFamily(m.id) === targetFamily) || null;
+  }
+  
+  return candidates[0] || null;
+}
+
+// Decide whether to switch due to confusion
+async function considerConfusionSwap(session, currentModelId) {
+  const turnsSinceSwitch = confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn;
+  
+  // Don't switch too frequently; err on side of patience
+  if (turnsSinceSwitch < CONFUSION_THRESHOLDS.minTurnsSinceLastSwitch) {
+    return null;
+  }
+  
+  // Check confusion indicators
+  const isLooping = detectLoopingBehavior();
+  const hasHighErrorRate = confusionMetrics.errorCount >= CONFUSION_THRESHOLDS.consecutiveErrorThreshold;
+  
+  // Only switch if we have solid evidence of confusion (looping + errors, or very high confidence)
+  if (!(isLooping && hasHighErrorRate)) {
+    return null;
+  }
+  
+  // Get alternate model
+  const alternate = await getAlternateModel(session, currentModelId);
+  if (!alternate) {
+    return null;
+  }
+  
+  return alternate;
+}
+
+async function maybeSwapDueToConfusion(session, currentModelId) {
+  const alternate = await considerConfusionSwap(session, currentModelId);
+  
+  if (!alternate) {
+    return null; // No swap needed
+  }
+  
+  try {
+    await session.rpc.model.switchTo({
+      modelId: alternate.id,
+      reasoningEffort: alternate.reasoningEffort,
+    });
+    
+    confusionMetrics.lastSwitchTurn = confusionMetrics.turnCount;
+    confusionMetrics.errorCount = 0; // Reset error count after switch
+    
+    await session.log(
+      `model-router: Detected confusion/looping. Swapping from ${currentModelId} to ${alternate.id} (alternate family).`,
+      { ephemeral: true }
+    );
+    
+    return alternate;
+  } catch {
+    return null;
+  }
+}
+
 function normalizePrompt(prompt) {
   return String(prompt || "").toLowerCase();
 }
@@ -380,6 +594,11 @@ async function trySwitchModel(session, route, currentModelId) {
 const session = await joinSession({
   hooks: {
     onSessionStart: async () => {
+      confusionMetrics.turnCount = 0;
+      confusionMetrics.recentMessages = [];
+      confusionMetrics.errorCount = 0;
+      confusionMetrics.lastSwitchTurn = -999;
+      
       await session.log("model-router loaded", { ephemeral: true });
       return {
         additionalContext:
@@ -387,6 +606,7 @@ const session = await joinSession({
       };
     },
     onUserPromptSubmitted: async (input) => {
+      confusionMetrics.turnCount++;
       const route = classifyPrompt(input.prompt);
       const current = await session.rpc.model.getCurrent().catch(() => ({ modelId: undefined }));
       const chosen = await trySwitchModel(session, route, current.modelId);
@@ -415,11 +635,47 @@ const session = await joinSession({
         additionalContext: buildAdditionalContext(lastDecision, current.modelId),
       };
     },
+    onAgentMessage: async (message) => {
+      // Track recent messages for loop/confusion detection
+      const msgText = String(message.content || "");
+      if (msgText.length > 0) {
+        confusionMetrics.recentMessages.push(msgText);
+        if (confusionMetrics.recentMessages.length > CONFUSION_THRESHOLDS.maxRecentMessagesTracked) {
+          confusionMetrics.recentMessages.shift();
+        }
+      }
+      
+      // Detect confusion signals
+      const signals = detectConfusionSignals(msgText);
+      if (signals.length > 0) {
+        confusionMetrics.repeatedPatternCount++;
+      }
+      
+      // Check if we should swap due to confusion (with patience for thinking)
+      const current = await session.rpc.model.getCurrent().catch(() => ({ modelId: undefined }));
+      if (current.modelId) {
+        const alternate = await maybeSwapDueToConfusion(session, current.modelId);
+        if (alternate) {
+          confusionMetrics.currentModelFamily = getModelFamily(alternate.id);
+        }
+      }
+    },
+    onError: async (error) => {
+      confusionMetrics.errorCount++;
+      
+      // Check if error rate warrants a swap (but again, err on side of patience)
+      if (confusionMetrics.errorCount >= CONFUSION_THRESHOLDS.consecutiveErrorThreshold) {
+        const current = await session.rpc.model.getCurrent().catch(() => ({ modelId: undefined }));
+        if (current.modelId) {
+          await maybeSwapDueToConfusion(session, current.modelId);
+        }
+      }
+    },
   },
   tools: [
     {
       name: "model_router_status",
-      description: "Show the current model-router decision state for this Copilot CLI session.",
+      description: "Show the current model-router decision state and confusion metrics for this Copilot CLI session.",
       parameters: {
         type: "object",
         properties: {},
@@ -432,6 +688,14 @@ const session = await joinSession({
             lastImplementationModel,
             lastReviewModel,
             lastDecision,
+            confusionMetrics: {
+              turnCount: confusionMetrics.turnCount,
+              recentMessageCount: confusionMetrics.recentMessages.length,
+              errorCount: confusionMetrics.errorCount,
+              repeatedPatternCount: confusionMetrics.repeatedPatternCount,
+              turnsSinceLastConfusionSwitch: confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn,
+              isLooping: detectLoopingBehavior(),
+            },
           },
           null,
           2,
