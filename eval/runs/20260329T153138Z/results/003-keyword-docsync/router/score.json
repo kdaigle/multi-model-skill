@@ -1,0 +1,121 @@
+{
+  "judgeModel": "gpt-5.4",
+  "judgeExitCode": 0,
+  "judgeSignal": null,
+  "judgeTimedOut": false,
+  "judgeTimeoutMs": 300000,
+  "judgeErrorCode": null,
+  "judgeErrorMessage": null,
+  "parsedJudgeResponse": {
+    "verdict": "partial",
+    "correctnessScore": 2,
+    "completenessScore": 2,
+    "minimalityScore": 3,
+    "confidence": "high",
+    "issues": [
+      "Required runtime file `.github/extensions/model-router/extension.mjs` was not changed",
+      "Work appears limited to documentation sync, despite the task calling for runtime keyword refinement too",
+      "Added `.github/skills/model-router/SKILL.md`, which was not part of the required doc surfaces",
+      "Validation explicitly failed because a required changed file was missing"
+    ],
+    "strengths": [
+      "README and routing matrix were updated in a targeted way",
+      "Edits clearly clarify tool-heavy vs orchestration terminology in docs",
+      "Existing routing-policy tests passed after the changes",
+      "Diff size stayed relatively small and focused"
+    ],
+    "summary": "This run made sensible, focused documentation updates to `README.md` and `.github/skills/model-router/references/routing-matrix.md`, and the wording changes do improve the distinction between tool-heavy implementation and orchestration. However, the task required runtime/documentation sync and validation explicitly required a change to `.github/extensions/model-router/extension.mjs`, which did not happen. Because the evidence only shows doc edits plus an extra SKILL doc change, with no runtime refinement in the required file, the task is only partially complete rather than fully correct."
+  },
+  "cost": {
+    "mode": "observed_tokens_weighted",
+    "effectiveWeight": 3.5,
+    "routePenalty": 1,
+    "effortMultiplier": 1.15,
+    "observedUsage": [
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 216,
+        "totalTokens": 216
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 144,
+        "totalTokens": 144
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 403,
+        "totalTokens": 403
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 3659,
+        "totalTokens": 3659
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 2086,
+        "totalTokens": 2086
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 2357,
+        "totalTokens": 2357
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 539,
+        "totalTokens": 539
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 274,
+        "totalTokens": 274
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 240,
+        "totalTokens": 240
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 122,
+        "totalTokens": 122
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 449,
+        "totalTokens": 449
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 524,
+        "totalTokens": 524
+      }
+    ],
+    "value": 44.834
+  },
+  "validationValid": false,
+  "taskId": "003-keyword-docsync",
+  "variantId": "router",
+  "startModel": "claude-sonnet-4.6",
+  "status": "completed"
+}

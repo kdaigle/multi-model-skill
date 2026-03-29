@@ -1,0 +1,16 @@
+ D .github/copilot-instructions.md
+ D .github/extensions/model-router/extension.mjs
+ D .github/extensions/model-router/extension.mjs.new
+ D .github/extensions/model-router/policy.mjs
+ D .github/plugin.json
+ D .github/skills/model-router/SKILL.md
+ D .github/skills/model-router/references/routing-matrix.md
+ M eval/runs/20260329T054218Z/results/001-status-enhancement/fixed/routing-trace.json
+ M eval/runs/20260329T054218Z/results/001-status-enhancement/router/artifact-summary.json
+ M eval/runs/20260329T054218Z/results/001-status-enhancement/router/routing-trace.json
+ M eval/runs/20260329T054218Z/results/002-classification-tests/fixed/routing-trace.json
+ M eval/runs/20260329T054218Z/results/002-classification-tests/router/routing-trace.json
+?? .github/copilot-instructions.md.eval-disabled
+?? .github/extensions/model-router.eval-disabled/
+?? .github/plugin.json.eval-disabled
+?? .github/skills/model-router.eval-disabled/

@@ -1,0 +1,54 @@
+diff --git a/.github/extensions/model-router/extension.mjs b/.github/extensions/model-router/extension.mjs
+index 39eafe1..8bb2d2e 100644
+--- a/.github/extensions/model-router/extension.mjs
++++ b/.github/extensions/model-router/extension.mjs
+@@ -318,13 +318,17 @@ const session = await joinSession({
+         const isLooping = detectLoopingBehavior();
+         return JSON.stringify(
+           {
+-            // Quick-glance summary for local debugging
+-            debug: {
++            // Quick-glance snapshot for local debugging: active model vs last impl model, confusion alert.
++            snapshot: {
+               activeModel: current.modelId || null,
+-              lastImplModel: lastImplementationModel,
+-              looping: isLooping,
+-              errorCount: confusionMetrics.errorCount,
+-              repeatedPatternCount: confusionMetrics.repeatedPatternCount,
++              lastImplementationModel,
++              confusion: {
++                alert: isLooping || confusionMetrics.errorCount >= CONFUSION_THRESHOLDS.consecutiveErrorThreshold,
++                isLooping,
++                errorCount: confusionMetrics.errorCount,
++                repeatedPatternCount: confusionMetrics.repeatedPatternCount,
++                turnsSinceLastSwitch: confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn,
++              },
+             },
+             currentModel: current.modelId || null,
+             lastImplementationModel,
+diff --git a/.github/skills/model-router/SKILL.md b/.github/skills/model-router/SKILL.md
+index 32e3821..fada9da 100644
+--- a/.github/skills/model-router/SKILL.md
++++ b/.github/skills/model-router/SKILL.md
+@@ -81,12 +81,14 @@ Check confusion metrics with:
+ /model_router_status
+ ```
+ 
+-The output includes a top-level `debug` section for quick local debugging:
++The output includes a top-level `snapshot` section for quick local debugging:
+ 
+-- `activeModel` — the model currently active in the session
+-- `lastImplModel` — the last model the router selected for an implementation task
+-- `looping` — `true` if loop detection has fired
+-- `errorCount` — consecutive errors since the last confusion switch
+-- `repeatedPatternCount` — how many repeated-response patterns have been detected
++- `snapshot.activeModel` — the model currently active in the session
++- `snapshot.lastImplementationModel` — the last model the router selected for an implementation task
++- `snapshot.confusion.alert` — `true` when looping is detected **or** the error count has reached the swap threshold; the single flag to check first
++- `snapshot.confusion.isLooping` — `true` if repeated-response loop detection has fired
++- `snapshot.confusion.errorCount` — consecutive errors since the last confusion switch
++- `snapshot.confusion.repeatedPatternCount` — how many repeated-response patterns have been detected
++- `snapshot.confusion.turnsSinceLastSwitch` — turns elapsed since the last confusion-triggered model swap
+ 
+-The full `confusionMetrics` block (turn count, message tracking, turns since last switch, etc.) follows for deeper inspection.
++The full `confusionMetrics` block (turn count, message tracking, etc.) follows for deeper inspection.

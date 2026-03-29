@@ -1,0 +1,3 @@
+.github/extensions/model-router.eval-disabled/extension.mjs
+.github/extensions/model-router/extension.mjs
+.github/skills/model-router.eval-disabled/SKILL.md

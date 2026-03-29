@@ -1,0 +1,120 @@
+{
+  "judgeModel": "gpt-5.4",
+  "judgeExitCode": null,
+  "judgeSignal": null,
+  "judgeTimedOut": false,
+  "judgeTimeoutMs": 300000,
+  "judgeErrorCode": "E2BIG",
+  "judgeErrorMessage": "spawnSync copilot E2BIG",
+  "parsedJudgeResponse": null,
+  "cost": {
+    "mode": "observed_tokens_weighted",
+    "effectiveWeight": 3.5,
+    "routePenalty": 1,
+    "effortMultiplier": 1.15,
+    "observedUsage": [
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 190,
+        "totalTokens": 190
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 118,
+        "totalTokens": 118
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 345,
+        "totalTokens": 345
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 133,
+        "totalTokens": 133
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 139,
+        "totalTokens": 139
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 179,
+        "totalTokens": 179
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 329,
+        "totalTokens": 329
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 135,
+        "totalTokens": 135
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 117,
+        "totalTokens": 117
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 135,
+        "totalTokens": 135
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 14239,
+        "totalTokens": 14239
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 3158,
+        "totalTokens": 3158
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 128,
+        "totalTokens": 128
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 152,
+        "totalTokens": 152
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 440,
+        "totalTokens": 440
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 425,
+        "totalTokens": 425
+      }
+    ],
+    "value": 81.957
+  },
+  "validationValid": false,
+  "taskId": "002-classification-tests",
+  "variantId": "router",
+  "startModel": "claude-sonnet-4.6",
+  "status": "failed"
+}

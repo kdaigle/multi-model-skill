@@ -1,0 +1,348 @@
+{
+  "judgeModel": "gpt-5.4",
+  "judgeExitCode": null,
+  "judgeSignal": null,
+  "judgeTimedOut": false,
+  "judgeTimeoutMs": 300000,
+  "judgeErrorCode": "E2BIG",
+  "judgeErrorMessage": "spawnSync copilot E2BIG",
+  "parsedJudgeResponse": null,
+  "cost": {
+    "mode": "observed_tokens_weighted",
+    "effectiveWeight": 3.5,
+    "routePenalty": 1,
+    "effortMultiplier": 1.15,
+    "observedUsage": [
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 238,
+        "totalTokens": 238
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 134,
+        "totalTokens": 134
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 412,
+        "totalTokens": 412
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 385,
+        "totalTokens": 385
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 135,
+        "totalTokens": 135
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 167,
+        "totalTokens": 167
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 613,
+        "totalTokens": 613
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 199,
+        "totalTokens": 199
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 924,
+        "totalTokens": 924
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 674,
+        "totalTokens": 674
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1013,
+        "totalTokens": 1013
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1292,
+        "totalTokens": 1292
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 2203,
+        "totalTokens": 2203
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 505,
+        "totalTokens": 505
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1034,
+        "totalTokens": 1034
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 98,
+        "totalTokens": 98
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 8223,
+        "totalTokens": 8223
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 600,
+        "totalTokens": 600
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 661,
+        "totalTokens": 661
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 749,
+        "totalTokens": 749
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 442,
+        "totalTokens": 442
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 986,
+        "totalTokens": 986
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 110,
+        "totalTokens": 110
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 101,
+        "totalTokens": 101
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 461,
+        "totalTokens": 461
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1599,
+        "totalTokens": 1599
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 501,
+        "totalTokens": 501
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 178,
+        "totalTokens": 178
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 335,
+        "totalTokens": 335
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 439,
+        "totalTokens": 439
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 273,
+        "totalTokens": 273
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 804,
+        "totalTokens": 804
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 617,
+        "totalTokens": 617
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 176,
+        "totalTokens": 176
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 100,
+        "totalTokens": 100
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 601,
+        "totalTokens": 601
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 3692,
+        "totalTokens": 3692
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 165,
+        "totalTokens": 165
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 615,
+        "totalTokens": 615
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 2545,
+        "totalTokens": 2545
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 467,
+        "totalTokens": 467
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 195,
+        "totalTokens": 195
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 724,
+        "totalTokens": 724
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 207,
+        "totalTokens": 207
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 366,
+        "totalTokens": 366
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 383,
+        "totalTokens": 383
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 152,
+        "totalTokens": 152
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 282,
+        "totalTokens": 282
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 156,
+        "totalTokens": 156
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 883,
+        "totalTokens": 883
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 227,
+        "totalTokens": 227
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 542,
+        "totalTokens": 542
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 157,
+        "totalTokens": 157
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 592,
+        "totalTokens": 592
+      }
+    ],
+    "value": 162.336
+  },
+  "validationValid": true,
+  "taskId": "005-chained-tool-trace",
+  "variantId": "fixed",
+  "startModel": "claude-sonnet-4.6",
+  "status": "failed"
+}

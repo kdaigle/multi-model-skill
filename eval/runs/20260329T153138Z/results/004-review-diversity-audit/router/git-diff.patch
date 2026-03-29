@@ -1,0 +1,125 @@
+diff --git a/.github/extensions/model-router/policy.mjs b/.github/extensions/model-router/policy.mjs
+index d1fd2e9..554425c 100644
+--- a/.github/extensions/model-router/policy.mjs
++++ b/.github/extensions/model-router/policy.mjs
+@@ -352,8 +352,17 @@ export function isSameModelFamily(first, second) {
+ }
+ 
+ /**
+- * Re-order candidates for review diversity: models from a different family
+- * than lastImplModel float to the front.
++ * Re-order candidates for review diversity: models from a different provider
++ * family (claude vs gpt) than lastImplModel float to the front.
++ *
++ * Uses getModelFamily (provider-level: "claude" | "gpt") rather than
++ * isSameModelFamily (sub-family: haiku/sonnet/opus) so that claude-opus and
++ * claude-haiku are deprioritised alongside claude-sonnet when the last
++ * implementation used a claude model — not promoted to the same front-of-list
++ * slot as gpt alternatives.
++ *
++ * Scoring: 0 = different provider family (front) · 1 = same provider family
++ * (middle) · 2 = exact model id match (back, and filtered out by trySwitchModel).
+  *
+  * Accepts lastImplModel as an explicit parameter (rather than reading module
+  * state) so the function stays pure and testable.
+@@ -362,13 +371,13 @@ export function orderCandidates(candidates, route, lastImplModel = null) {
+   if (route.kind !== "review" || !lastImplModel) {
+     return candidates;
+   }
+-  return [...candidates].sort((left, right) => {
+-    const leftSame =
+-      left.id === lastImplModel ? 2 : isSameModelFamily(left.id, lastImplModel) ? 1 : 0;
+-    const rightSame =
+-      right.id === lastImplModel ? 2 : isSameModelFamily(right.id, lastImplModel) ? 1 : 0;
+-    return leftSame - rightSame; // lower "sameness" score → earlier in list
+-  });
++  const implFamily = getModelFamily(lastImplModel);
++  const score = (id) => {
++    if (id === lastImplModel) return 2;
++    if (implFamily && getModelFamily(id) === implFamily) return 1;
++    return 0;
++  };
++  return [...candidates].sort((left, right) => score(left.id) - score(right.id));
+ }
+ 
+ /**
+@@ -389,7 +398,7 @@ export function buildAdditionalContext(decision, currentModelId, lastImplModel =
+ 
+   if (decision.kind === "review" && lastImplModel) {
+     lines.push(`Prefer review diversity versus implementation model ${lastImplModel}.`);
+-    if (decision.selectedModelId === lastImplModel) {
++    if (decision.selectedModelId === lastImplModel || decision.selectedModelId === null) {
+       lines.push(
+         "A distinct review model was not available, so the router fell back to the current best option.",
+       );
+diff --git a/eval/routing-policy.test.mjs b/eval/routing-policy.test.mjs
+index fdb892a..5be8bce 100644
+--- a/eval/routing-policy.test.mjs
++++ b/eval/routing-policy.test.mjs
+@@ -348,6 +348,39 @@ describe("orderCandidates", () => {
+     const result = orderCandidates(candidates, { kind: "review" }, "claude-sonnet-4.6");
+     assert.equal(result[0].id, "gpt-5.1");
+   });
++
++  it("deprioritises all claude models (not just same sub-family) when impl was claude-sonnet", () => {
++    // Regression: isSameModelFamily classified claude-opus/haiku as "different"
++    // from claude-sonnet, giving them the same score-0 priority slot as gpt.
++    // After the fix, getModelFamily is used so all claude models score 1 and
++    // only gpt models score 0.
++    const candidates = [
++      { id: "claude-opus-4.5", reasoningEffort: null },   // claude, different sub-family
++      { id: "gpt-5.1", reasoningEffort: null },            // gpt
++      { id: "claude-haiku-4.5", reasoningEffort: null },   // claude, different sub-family
++      { id: "claude-sonnet-4.6", reasoningEffort: "high" },// exact match
++    ];
++    const result = orderCandidates(candidates, { kind: "review" }, "claude-sonnet-4.6");
++    const pos = (id) => result.findIndex((c) => c.id === id);
++    assert.ok(pos("gpt-5.1") < pos("claude-opus-4.5"), "gpt-5.1 must come before claude-opus");
++    assert.ok(pos("gpt-5.1") < pos("claude-haiku-4.5"), "gpt-5.1 must come before claude-haiku");
++    assert.ok(pos("claude-opus-4.5") < pos("claude-sonnet-4.6"), "claude-opus before exact match");
++    assert.ok(pos("claude-haiku-4.5") < pos("claude-sonnet-4.6"), "claude-haiku before exact match");
++  });
++
++  it("deprioritises all gpt models (not just same sub-family) when impl was gpt-5.1", () => {
++    const candidates = [
++      { id: "gpt-5.4", reasoningEffort: null },     // gpt, different sub-family
++      { id: "claude-sonnet-4.6", reasoningEffort: null }, // claude
++      { id: "gpt-4.1", reasoningEffort: null },     // gpt, different sub-family
++      { id: "gpt-5.1", reasoningEffort: null },     // exact match
++    ];
++    const result = orderCandidates(candidates, { kind: "review" }, "gpt-5.1");
++    const pos = (id) => result.findIndex((c) => c.id === id);
++    assert.ok(pos("claude-sonnet-4.6") < pos("gpt-5.4"), "claude must come before other gpt");
++    assert.ok(pos("claude-sonnet-4.6") < pos("gpt-4.1"), "claude must come before other gpt");
++    assert.ok(pos("gpt-5.4") < pos("gpt-5.1"), "other gpt before exact match");
++  });
+ });
+ 
+ // ---------------------------------------------------------------------------
+@@ -383,4 +416,26 @@ describe("buildAdditionalContext", () => {
+     const ctx = buildAdditionalContext(decision, "claude-sonnet-4.6", null);
+     assert.ok(ctx.includes("reasoning"));
+   });
++
++  it("includes fallback note when selectedModelId matches lastImplModel", () => {
++    const decision = { kind: "review", complexity: 1, selectedModelId: "claude-sonnet-4.6", reasoningEffort: null };
++    const ctx = buildAdditionalContext(decision, "claude-sonnet-4.6", "claude-sonnet-4.6");
++    assert.ok(ctx.includes("fell back"));
++  });
++
++  it("includes fallback note when selectedModelId is null and lastImplModel is set", () => {
++    // Regression: when getCurrent() fails AND all switchTo calls fail, selectedModelId
++    // is null. The fallback explanation must still be surfaced so the agent is aware.
++    const decision = { kind: "review", complexity: 1, selectedModelId: null, reasoningEffort: null };
++    const ctx = buildAdditionalContext(decision, null, "claude-sonnet-4.6");
++    assert.ok(ctx.includes("Prefer review diversity"));
++    assert.ok(ctx.includes("fell back"));
++  });
++
++  it("does not include fallback note for review when selectedModelId differs from lastImplModel", () => {
++    const decision = { kind: "review", complexity: 1, selectedModelId: "gpt-5.1", reasoningEffort: null };
++    const ctx = buildAdditionalContext(decision, "gpt-5.1", "claude-sonnet-4.6");
++    assert.ok(ctx.includes("Prefer review diversity"));
++    assert.ok(!ctx.includes("fell back"));
++  });
+ });

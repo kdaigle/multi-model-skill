@@ -1,0 +1,53 @@
+{
+  "valid": false,
+  "checks": [
+    {
+      "name": "copilot command did not time out",
+      "pass": true,
+      "details": {
+        "timedOut": false,
+        "timeoutMs": 600000,
+        "signal": null,
+        "exitCode": 0
+      }
+    },
+    {
+      "name": "copilot exit code",
+      "pass": true,
+      "details": {
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false
+      }
+    },
+    {
+      "name": "diff exists",
+      "pass": true,
+      "details": "gitDiffBytes=12504"
+    },
+    {
+      "name": "required changed file .github/extensions/model-router/extension.mjs",
+      "pass": false,
+      "details": [
+        "eval/classification-regression.test.mjs"
+      ]
+    },
+    {
+      "name": "required changed path prefix tests/",
+      "pass": false,
+      "details": [
+        "eval/classification-regression.test.mjs"
+      ]
+    }
+  ],
+  "commandResults": [],
+  "changedFiles": [
+    "eval/classification-regression.test.mjs"
+  ],
+  "worktreePath": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/002-classification-tests/router",
+  "timedOut": false,
+  "runTimedOut": false,
+  "timedOutCommands": [],
+  "validationTimeoutMs": 120000,
+  "failureMode": null
+}

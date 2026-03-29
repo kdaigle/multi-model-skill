@@ -1,0 +1,18 @@
+{
+  "taskId": "005-chained-tool-trace",
+  "variantId": "router",
+  "worktreePath": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/005-chained-tool-trace/router",
+  "worktreeRelativePath": "eval/runs/20260329T153138Z/worktrees/005-chained-tool-trace/router",
+  "runDir": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/results/005-chained-tool-trace/router",
+  "baseRef": "HEAD",
+  "baseSha": "e84477b2f5791c419c120e6a54507e097b81a40f",
+  "disabledPaths": [],
+  "initialPrune": {
+    "stdout": "",
+    "stderr": ""
+  },
+  "gitWorktreeAdd": {
+    "stdout": "HEAD is now at e84477b router: surface fallback note for same-family review model",
+    "stderr": "Preparing worktree (detached HEAD e84477b)"
+  }
+}

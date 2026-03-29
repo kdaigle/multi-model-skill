@@ -1,0 +1,805 @@
+{
+  "parseableLineCount": 132,
+  "unparseableLineCount": 0,
+  "rawStdoutBytes": 446044,
+  "rawStderrBytes": 0,
+  "gitDiffBytes": 22483,
+  "changedFiles": [
+    ".github/extensions/model-router/extension.mjs.new",
+    ".github/skills/model-router/references/routing-matrix.md",
+    "README.md",
+    "eval/routing-policy.test.mjs"
+  ],
+  "changedFileCount": 4,
+  "modelMentions": [
+    "claude-sonnet-4.6"
+  ],
+  "usageCandidates": [
+    {
+      "line": 11,
+      "path": "data",
+      "value": {
+        "messageId": "e997d9c9-d8d2-4581-96cf-05ce59275c08",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_lueoxFfk4mDSu24u2risyb",
+            "name": "report_intent",
+            "arguments": {
+              "intent": "Exploring codebase structure"
+            },
+            "type": "function"
+          },
+          {
+            "toolCallId": "tooluse_EJBKPgfK7iJ5x4IC2Udq9B",
+            "name": "bash",
+            "arguments": {
+              "command": "find /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router -type f | sort && echo \"---\" && ls /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/",
+              "description": "Find all files in router dir and parent"
+            },
+            "type": "function",
+            "intentionSummary": "Find all files in router dir and parent"
+          }
+        ],
+        "interactionId": "5b94dd39-68ff-4dfd-b2f6-95d6c7f5e79b",
+        "reasoningOpaque": "dMtELeRbFBWPymaFVJ+4HBsk3b3BOgEbOdC203RWCTFs9tgBO6exutTp908qRRHVjR9CHPj4tETYlxZY4jkyMdMT68/aV7cOxcykTZOsfsWGHOAGv3L9Bg8DZoDRDBM4rXmkadaQ5GW8MpnBPZ28arCnsAB97cyQf4L/MDetgqi+ZnZPk5m0bAd9UNYUIwv+Uvl6ZcylkUyPfFaqNeCS1GFswnEhI8n8q8gDAmM4Gl3Md83zDQ9VjtmbMEl4I+c695DGlF6uoIqGNylS5Ljy6uBpURkXJbPOsHWgiTz60dFmoL2d68n8wMoXaqxdakL+Wdjmf4mlS11ZkVDsF2guP8S8TjGF/5Pmz6TKrk2TeW2QKiRbvp/a4imzacRUUdBp5/LU19GDeNmbT17WdgO2kubb1/pBH3aw6DyXzQyOrhC0we8rdo4xwKH89wuHVFoyCJBZvIkVucwa6BPJ75j4yDeMJpWsjpy2tm8E8IDPY17jSaKYx+EVcKwtjfQUZy5zTDq79OvbsuHrUKMBC77XA75GNInUDSE8VgdSDFqBIFkFc5sAAsUCVJJ0DO6TQ5Y40+jQAyhjVKNSBktgEofZQGo8Z70PPc/dCaRmWDf6Gza8AocUA3NWU5Mk2CoqDF/KaZjBRZ6ctZz1TSbcJG1MjDoQ2mh99iACaZXa2+ldPZp4d4CDQA0x18YyLKHDqiz4fl9wdZg7lfnqcaVXPI3ORHvAU0lcRCngbEgq6mevxwYdplNTdyyCuLhWWO/esbte40l9PvlvNRG22I03egFp9ryo/FJm2jXnlcNYs/bal6+2cultN71LNxgQRbWeNf4NfzwfRqEx2Lk7w5LefeYsN+SXeuuxT7x8D+Wj89iMFRpGE5LU4paCuDU5TNEJnRnBp4vpj/OL67E15V5G0t961nurJbiVnq7BDTVuAJmNe/ri44YD4Vu1IjZ/LF9MTxVneJEXjGEd3GTBuEqUPFGWlC3ljp/5RzUacA==",
+        "reasoningText": "Let me start by exploring the repository structure to understand the current state of the codebase, including the routing extension, routing matrix, and documentation.",
+        "outputTokens": 262
+      }
+    },
+    {
+      "line": 18,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "customTimeout": "false",
+        "executionMode": "sync",
+        "detached": "false",
+        "largeOutputHandled": "true",
+        "largeOutputOriginalSizeBytes": "64571"
+      }
+    },
+    {
+      "line": 21,
+      "path": "data",
+      "value": {
+        "messageId": "68cdc6a3-ac07-4fc7-b396-ed67dee07b2a",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_Bly0hH8QqEyJSZwZ2BF6GJ",
+            "name": "bash",
+            "arguments": {
+              "command": "cat /tmp/copilot-tool-output-1774802342717-1v3p73.txt | head -100 && echo \"===\" && ls /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/",
+              "description": "View file listing"
+            },
+            "type": "function",
+            "intentionSummary": "View file listing"
+          }
+        ],
+        "interactionId": "5b94dd39-68ff-4dfd-b2f6-95d6c7f5e79b",
+        "outputTokens": 150
+      }
+    },
+    {
+      "line": 28,
+      "path": "data",
+      "value": {
+        "messageId": "70cd72df-3e63-48a3-aa7e-56a1b6e8c598",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_hQYeyEZeyW9Lh4WbOQSc1V",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/extensions/model-router/policy.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/extensions/model-router/policy.mjs."
+          },
+          {
+            "toolCallId": "tooluse_1TjXRikAPaGNsIHDEeGZNx",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/skills/model-router/references/routing-matrix.md"
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/skills/model-router/references/routing-matrix.md."
+          },
+          {
+            "toolCallId": "tooluse_4vwwjUUGLazyuNW8I2ofuN",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/eval/routing-policy.test.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/eval/routing-policy.test.mjs."
+          }
+        ],
+        "interactionId": "5b94dd39-68ff-4dfd-b2f6-95d6c7f5e79b",
+        "reasoningOpaque": "bHO8XYH3+JuoFGzOvE88vz+qedhC49S4Xl8cHtc8O3G8RbIvO1FWBvLtNyKkqKZuR5ai8+5igQz7smamYKmfOfy1vYEIQEYqJZ7YEPYrtJLbMx//cnAQvrGtaBLNponeYa82Jnj7n36nKmg05XTCgwF6PrFCsTy8bgOP5CB3IJUVshjN/uutKX0ZOJjw/+OxkymYkwoJg1+HhazZEnSmmmrZMYbTVxDLMQOHIp1XAMx1Kvy6TcF8n3mUAmXPZ0/5yXO0kplvjstjTqEK7RkI1XOEnnC/pLKrAOifAtsYJM5yGPWxNUVmNwnVzp+oPUPR2LAvq4NzZ3kvVrMGHG5B6SBQk0mqpLXiiWFQQv0LUyxVeAwmTNlAIzwIkzmYeuS8cb1Mn39pNBwgfoARBdqgbcu4VBH8FnINt7i3klOuErzXa3FhS3etD2J5F5PVW7xxBec2Fh/3yT8DCp12QdG2MrR966+junbZpC2iUMF3cp5nVmgpaRMKeAOtNpF9DFpNZ0ISX63K28AGna01fWj7zjBMgfIOssAQQF8eSqCKm79cBkHc8e/Ly+JcHa1o/5/344Y9BN8Zd+yQHQtEJ0h4ErYLoV4B6xnYk3Sd0QpiV6I3vyS2twOXVkr7h24s6lP8hLLwf4mW82+bGue+bpfPMK4gOtrCsYRj0JB8nDJo2y+vjNI0lCgh0egEuLc6aUt2CCS12Zw5BgEmd7dCsd6MhOl9UYooej/hqbtrsmuRomeJOMjRNwm+MmhY0gm6P+LX6K2ZkrAtnPjlvZdGUoDDjJUtHrm7JasW4VPUjf8a6erDu66BOBl+2ZzbMlg45cV1PI81+gk=",
+        "reasoningText": "Let me read the key files - the extension, policy, routing matrix, and test file.",
+        "outputTokens": 325
+      }
+    },
+    {
+      "line": 33,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".md\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 33,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 6656,
+        "resultForLlmLength": 6656,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 34,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 34,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 14111,
+        "resultForLlmLength": 14111,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 35,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 35,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 17607,
+        "resultForLlmLength": 17607,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 38,
+      "path": "data",
+      "value": {
+        "messageId": "7a5cad9a-8480-40f2-ba7b-a3fbac561b24",
+        "content": "Now let me read the extension and SKILL.md to complete the picture:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_E8jFKDUZNS8tFHBEpI6z1D",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/extensions/model-router/extension.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/extensions/model-router/extension.mjs."
+          },
+          {
+            "toolCallId": "tooluse_iP572HQyzwbsKunulqDdeU",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/skills/model-router/SKILL.md"
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/skills/model-router/SKILL.md."
+          }
+        ],
+        "interactionId": "5b94dd39-68ff-4dfd-b2f6-95d6c7f5e79b",
+        "reasoningOpaque": "3eyN8Mbc1rEva794B1IlgTMpWY3foHS0CVoWGhjgsMVnEvUTQTGC4m8aNEYCF5oqFDeUzJnKB0lLeEdXBzsN7dtfxQVXIoBDIqVanqbgQdDla0md8p4nGo6jj0g6XBU47zjzFJVD78t4Edan9Y7hiFQcCxIgKfocxLWCVGJvq2c3s8PaJpZeYQOb7McjepHM4WWaK/7N7FPsNHHPTqsmEB/UMdXO8D/ajSZ/L26hAA4ICbmi6Ot6GC4Mnaei1DaxL/6JITEEVo6h19uTV6BKvoJ8sojryFyUeFmHzzxFWgsYp3v31fYz7TIZ1Vyaqwx0R5Jsg5h9UI7OcNjkrHtk05ALI7IfBYlcQ67ctLskWIx8qtavrwO0nZR/MRcXCCbx6XbYqOrwXRapbtnKA2gdEZC//ro5urvm9ON8VARM+JyVSosuJVuM91G8LUTnJTp1JVWraNT0cx0/uzZNB6X70WscGnl8t5T3EmjpFU6A7snTYkFw7GmGsiwux0f6FzOATClTvera5/I7Lp6D7rrAW28UkuvDW8StO414EW1MUGXZ70ZO3PTD8xso+vPWvz5s01FbQhhbSYuCWeO6MkPGJEVCwwgvAD2SHQV5lJDLY/xTc5/gzrAIxc+NrtA10PdVU+OwrPJNX1JRxV/0tijwIsvrLI7xwRPrvvKNqmU74/tSmKr9Ozk2IkQq1put3SoW2IjnNYb3SvIhNt4WcjZh3fBUvRDW9/gU2k6RON7DChQXJEfGNBWt/tg7bUWCMZnH+zI2SelCExkPPlwGaF26Z3g1FvWAMCWTTHGffm1uZKHRttzvfNHe1ZN9Rmdbshste3ixoaE=",
+        "reasoningText": "Now let me read the extension.mjs and the SKILL.md to understand the full picture.",
+        "outputTokens": 252
+      }
+    },
+    {
+      "line": 42,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".md\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 42,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 5169,
+        "resultForLlmLength": 5169,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 43,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 43,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 13280,
+        "resultForLlmLength": 13280,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 46,
+      "path": "data",
+      "value": {
+        "messageId": "969b4a73-e708-4383-b0b6-d0d6ac7bf86e",
+        "content": "Now let me check a couple more files:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_qCmZDozIqsUvoMAffGBnTC",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/extensions/model-router/extension.mjs.new",
+              "view_range": [
+                1,
+                30
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/extensions/model-router/extension.mjs.new."
+          },
+          {
+            "toolCallId": "tooluse_F59QyvBVDEaqKA7DMTAppJ",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/README.md"
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/README.md."
+          }
+        ],
+        "interactionId": "5b94dd39-68ff-4dfd-b2f6-95d6c7f5e79b",
+        "reasoningOpaque": "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",
+        "reasoningText": "Now I have a complete picture of the codebase. Let me analyze what's there:\n\n1. **`policy.mjs`** - Already extracted as single source of truth with:\n   - `MODEL_CANDIDATES` - the authoritative tier definitions\n   - `MODEL_FAMILIES` - derived automatically from `MODEL_CANDIDATES`\n   - Keyword lists (EXPLICIT_REVIEW_KEYWORDS, PLAN_KEYWORDS, etc.)\n   - Pure helper functions (classifyPrompt, getTierCandidates, etc.)\n\n2. **`extension.mjs`** - Imports from `policy.mjs` correctly, has stateful session logic\n\n\n3. **`routing-matrix.md`** - Documents the routing logic but the tables are manually maintained and could drift from the actual policy definitions\n4. **`eval/routing-policy.test.mjs`** - Tests that validate the policy logic\n5. **`SKILL.md`** - Contains the skill instructions\n\nThe main issue I'm seeing is that while `policy.mjs` serves as the authoritative source, the documentation in `routing-matrix.md` is manually kept in sync and risks becoming outdated.\n\nThe refactor should focus on two key areas: automating the generation of routing-matrix.md tables directly from policy.mjs so model changes automatically update the docs, and consolidating the keyword lists that currently appear in multiple places to prevent inconsistencies between the policy, routing matrix, and skill documentation.\n\nNow I'm checking whether the model listings across the tiers actually match between the documentation and the source code.\n\nThe orchestration keywords are consistent between the routing matrix and policy.mjs—both reference the same set of keywords for detecting multi-agent and tool-chaining scenarios.\n\nI'm verifying the tool keywords mentioned in the routing matrix against what's defined in the codebase.\n\nThe documentation only lists a subset of the tool keywords that are actually implemented in policy.mjs—it's missing several keywords like \"call\", \"invoke\", \"script\", \"command\", \"shell\", \"http\", \"request\", and \"endpoint\". This represents a documentation gap where the routing matrix hasn't been kept in sync with the actual keyword list used for complexity scoring.\n\nBeyond that incomplete keyword list, I'm noticing there's no automated mechanism to catch when these lists drift apart, and the existing tests focus mainly on structural validation rather than verifying that the keywords documented actually match what's defined in the policy file. Let me double-check the model tier references to see if there are similar inconsistencies there. in policy.mjs reasoning tier. OK.\n\n**Wait** - the routing-matrix.md Tool Aware routing section says:\n\"Current orchestration keywords: `\"parallel agents\"`, `\"multiple agents\"`, `\"multi-agent\"`, `\"parallel tools\"`, `\"tool chain\"`, `\"chained tools\"`\"\n\nThat matches the ORCHESTRATION_KEYWORDS in policy.mjs exactly.\n\nBut the tool keywords listed in the doc are just a partial list. That's a minor drift.\n\n**What the task is asking for:**\n\nThe goal is to:\n1. Ensure candidate tiers, reasoning-effort defaults, and public routing guidance don't drift\n2. Keep runtime behavior compatible\n3. Reduce duplication across extension, routing matrix, and contributor docs\n4. Add lightweight regression coverage for shared mapping or exported helpers\n\n**Architecture plan:**\n\nLooking at the current state, policy.mjs is already a well-designed single source of truth, but the main risk is manual maintenance of routing-matrix.md. I could either add a script to regenerate the model tables from policy.mjs, or more pragmatically, update the docs to reference policy.mjs directly and note exact source locations. The most valuable approach is adding regression tests that verify specific models appear in the right tiers, that reasoning effort defaults are correct for key models, and that keyword lists contain expected entries so any future drift gets caught immediately. I'm also thinking about pinning specific ReasoningEffort defaults for each tier—like verifying that `claude-sonnet-4.6` in the builder tier has `\"medium\"` and in reasoning has `\"high\"`—plus guarding against accidental removal of critical keywords and ensuring the tier ordering is correct when fetching candidates. I should also fix the TOOL_KEYWORDS drift in the routing matrix documentation to either make it complete or link it back to the policy file.\n\nLet me reconsider the architecture though. The cleanest path forward without over-engineering is to keep `policy.mjs` as-is and focus the test suite on catching regressions rather than trying to auto-generate documentation. approach**: Add a \"guard\" export to policy.mjs - specifically a `ROUTING_POLICY_VERSION` or a `getPolicySnapshot()` function that returns a hash/snapshot of the key data. Then have the test assert the routing-matrix.md mentions all model IDs.\n\n3. **Even simpler and most practical**: \n   - Keep policy.mjs as the authoritative source (it already is)\n   - Update routing-matrix.md to be explicit that model tables are auto-generated or need to be kept in sync\n   - Add regression tests that verify:\n     - All models in MODEL_CANDIDATES are mentioned in routing-matrix.md\n     - The tier structure in policy.mjs matches what routing-matrix.md documents\n     - Critical keywords are present\n\n4. **For actual duplication reduction**: The SKILL.md routing heuristics somewhat duplicate routing-matrix.md, but they serve different purposes - SKILL.md instructs the model while routing-matrix.md documents the system. I can simplify SKILL.md to reference routing-matrix.md instead of repeating tier content.\n\nThe real drift risks are straightforward: someone adds a model to MODEL_CANDIDATES without updating routing-matrix.md, or changes a reasoning effort default without syncing the documentation. Rather than over-engineering this, I should focus on adding regression tests that catch when MODEL_CANDIDATES diverges from routing-matrix.md and when key policy values shift. I should verify whether there's an alternate extension file, but the real priority is settling on an approach. I'm going to add metadata and a generator function to policy.mjs that can produce the markdown table rows, then beef up the test suite with regression tests for model assignments, reasoning effort values, and keyword validation to catch future drift between the files.",
+        "outputTokens": 3262
+      }
+    },
+    {
+      "line": 50,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".md\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 50,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 12419,
+        "resultForLlmLength": 12419,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 51,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\"not-safe\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 51,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 1107,
+        "resultForLlmLength": 1107,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 54,
+      "path": "data",
+      "value": {
+        "messageId": "9c5e2f5b-21c7-4c36-b0d6-812054c06f67",
+        "content": "Now let me run the existing tests to check baseline:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_bKYVFoNWrknIQ39hnnIYxW",
+            "name": "bash",
+            "arguments": {
+              "command": "cd /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router && node --test eval/routing-policy.test.mjs 2>&1 | tail -20",
+              "description": "Run existing tests to see baseline"
+            },
+            "type": "function",
+            "intentionSummary": "Run existing tests to see baseline"
+          }
+        ],
+        "interactionId": "5b94dd39-68ff-4dfd-b2f6-95d6c7f5e79b",
+        "reasoningOpaque": "D4fFrvJY5MArvGz0LHT05Zjuzktvcnxs/na3v9jyT2z8d16ND8XUpU+OuAL2l8/UiKD9xEtSuXzGRKLlh7SGwWnsU3z5YCXo/kSuXIY+4/eaThzISSxuEc5b3eom1FYN7y8y6pU9iJX8Up/LjUR9axmLH3nabJ0VxIq8IGvlkqe7IiyKWhsvJKd8jTrvgo2TAdnd4xPUEvvSMkTgwtPDdkZ451XuLYcRO3c8/DEKf/AHkjAzrOyTI3A0OjBluPt8+46jd3oLGuz4SklZ5KZq8GWGIfCZ7rIylxdOlOG0GbS8YzMHiKxQSApPiA9DBgW4amYzw4tP+pdAfxax+HSG2p4ZwWjFC7Gl9quW6CFih18Y1FhoDzVr2nLR+YvCh3GJ13QV3Y2EkrmKsr8ZJQE5QXhF7CTweigw32hul2/+oOfnR0f7wn5hCaMBCwFMlimnTxkwpYLMMMqlfvQCp8ZJclMOGDgflxat0LEB363sXGC3eQRuLhvUs6KGOCfBImzJ/txKmAQySL8SzJ713kMTWB0QYOq7Ao56MLM7X5BUL8ZVsB59TXv+dSUHWhFerlLJzmp3PEIs3tO/lkDm0gi6hwPxc9onNYnIhhWZyu+WTBzsnlAbB13hH0qYP9iBfa3zBiZzkhsUcIy9JWyUmA5LKbxwolgt0xtPxYOyosavexV3g7uwNt8k3OPdjKTcR1mbvMMdlhjNVhJZilL15BLd0ULazpXFFNnkEtBgORK/938yQ9wC0B521s1JFXCqJsXwNyLQIrWXPvjJUwmsfrUdec5LLiW80hEyt0M7/zV/A0qCqkR2RZsFb39htUR8vnXFdj8VGkC00iA1KbrdpkzRm8o=",
+        "reasoningText": "Now I have a complete picture. Let me run the existing tests to see their baseline status:",
+        "outputTokens": 187
+      }
+    },
+    {
+      "line": 62,
+      "path": "data",
+      "value": {
+        "messageId": "c85d776a-950b-4a45-9589-d605eada19fc",
+        "content": "Now I have a complete picture. Let me check the `.new` file differences and run a quick drift analysis:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_MNK7azu7cOyQBUTbnPpWe3",
+            "name": "bash",
+            "arguments": {
+              "command": "cd /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router && diff .github/extensions/model-router/extension.mjs .github/extensions/model-router/extension.mjs.new | head -20",
+              "description": "Check if .new file differs from extension.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "Check if .new file differs from extension.mjs"
+          },
+          {
+            "toolCallId": "tooluse_gazyGtQCDbflMv447c8E1O",
+            "name": "bash",
+            "arguments": {
+              "command": "cd /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router\n# Check README review keywords vs policy.mjs\necho \"=== README review section ===\" && grep -A 3 \"Explicit Review Only\" README.md | head -10\necho \"=== policy.mjs review keywords ===\" && node -e \"import('./\\.github/extensions/model-router/policy.mjs').then(m => console.log(JSON.stringify(m.EXPLICIT_REVIEW_KEYWORDS, null, 2)))\"",
+              "description": "Check drift in README review keywords"
+            },
+            "type": "function",
+            "intentionSummary": "Check drift in README review keywords"
+          }
+        ],
+        "interactionId": "5b94dd39-68ff-4dfd-b2f6-95d6c7f5e79b",
+        "reasoningOpaque": "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",
+        "reasoningText": "All 54 tests pass. Now let me analyze the exact drift risks and design my plan:\n\n**Summary of drift risks I've identified:**\n\n1. **README.md \"Model Coverage\" section** (lines 143-158) - manually maintained list of models by tier. If someone adds/removes a model from policy.mjs, the README won't update automatically.\n\n2. **README.md \"Tool-Aware Routing\" section** (lines 130-135) - lists tool keywords in a categorized way. The categories (Execution, Integration, Orchestration) don't exactly match what's in TOOL_KEYWORDS. Actually this is organizing TOOL_KEYWORDS into human-readable categories rather than listing them verbatim. \n\nIf keywords are added or removed, this section could fall out of sync.\n\n3. **README.md \"Explicit Review Only\" section** (lines 238-242) - lists explicit review phrases but only a subset of EXPLICIT_REVIEW_KEYWORDS (missing \"find bugs\", \"bug finding\", \"regression hunting\", \"regression hunt\", \"find regressions\"). This is a real drift.\n\n4. **routing-matrix.md \"Tool-aware routing\"** - mentions orchestration keywords (matches exactly) and tool keywords (lists only a subset).\n\n5. **extension.mjs.new** - appears identical to extension.mjs - this is a leftover artifact that should be removed.\n\nThe real issue is that `policy.mjs` already exports all the keyword arrays, but the documentation describes only representative examples rather than the full authoritative list. This works fine for human-readable docs but creates inconsistency elsewhere. I could add a `generatePolicyDocs()` function to make the connection explicit between policy data and documentation, exporting something like `ROUTING_MATRIX_MODEL_ROWS` with model row data suitable for markdown tables. But that might be scope creep if it requires adding description text to model candidates. The simpler approach is recognizing that `MODEL_CANDIDATES` is the source of truth for tiers and reasoning efforts, and building from there.\n\nThe lightweight solution is to add tests that verify all model IDs from `MODEL_CANDIDATES` appear in the routing matrix and README docs, add tier-pinning regression tests to ensure specific models stay in their assigned tiers with correct effort levels, add keyword-guard tests to verify the keyword arrays contain expected values, fix the actual drift in README.md where the \"Explicit Review Only\" section is missing bug-finding keywords, and remove the duplicate `extension.mjs.new` file. I'm not going to add a code generator—the goal is just to prevent drift through testing and fix what's already broken.\n\nI should avoid over-engineering with markdown table generators, heavily refactoring the already well-designed `policy.mjs`, or merging `SKILL.md` and `routing-matrix.md` since they serve different purposes. The implementation plan is to add three new test blocks to `eval/routing-policy.test.mjs` for tier/effort regression, keyword list regression, and routing-matrix consistency checks, then fix the documentation gaps in README.md and `routing-matrix.md` to ensure the keyword lists are complete.\n\nNow I'm checking whether the \"routing-matrix.md consistency\" test is actually worth the fragility it introduces—a file-read test that verifies each model appears in the doc. It's a reasonable guard despite the brittleness. I'm also comparing what the README claims about review keywords against what's actually defined in `policy.mjs`, and I can see the README list is incomplete—it's missing keywords like \"review the code\" and \"approval readiness checks\" that are in the actual policy. I should also remove the `extension.mjs.new` artifact file.\n\nWriting test cases for model tier and reasoning-effort regression... Writing test assertions... Writing test assertions... Writing test assertions... Writing test assertions... I need to restructure how I'm reading the routing matrix file and importing the keyword arrays from the policy module into the test file.\n\nNow I'm mapping out the specific fixes needed: adding the missing keyword imports and file system utilities to the test, creating regression test blocks for tier consistency, reasoning effort, keyword lists, and matrix validation, updating the README to include all review keywords, completing the TOOL_KEYWORDS list in the routing matrix, and removing that duplicate extension file.",
+        "outputTokens": 3976
+      }
+    },
+    {
+      "line": 74,
+      "path": "data",
+      "value": {
+        "messageId": "cbc4e983-48bb-4eb6-9a29-44d1cc14d0f4",
+        "content": "Now I have a clear picture. Let me create the plan and implement it:\n\n**Drift issues found:**\n1. `README.md` \"Explicit Review Only\" lists only 8 review keywords; `policy.mjs` has 15 (missing \"find bugs\", \"regression hunting\", etc.)\n2. `routing-matrix.md` tool keyword list is partial (missing \"call\", \"invoke\", \"script\", \"command\", \"shell\", \"http\", \"request\", \"endpoint\")\n3. `extension.mjs.new` is an unintegrated artifact with minor differences\n4. No regression tests pin specific model→tier→effort mappings or guard keyword lists",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_fRuHFyMwHue9WSo3OAVTj3",
+            "name": "report_intent",
+            "arguments": {
+              "intent": "Implementing source-of-truth refactor"
+            },
+            "type": "function"
+          },
+          {
+            "toolCallId": "tooluse_NlKkkg8HunHDItvw7CD4x8",
+            "name": "sql",
+            "arguments": {
+              "description": "Track work items",
+              "query": "INSERT INTO todos (id, title, status) VALUES\n  ('add-tests', 'Add regression tests: tier-pinning, keyword guards, matrix consistency', 'pending'),\n  ('fix-readme', 'Fix README Explicit Review Only section - add missing review keywords', 'pending'),\n  ('fix-matrix', 'Fix routing-matrix.md TOOL_KEYWORDS list to be complete', 'pending'),\n  ('rm-artifact', 'Delete extension.mjs.new artifact', 'pending');"
+            },
+            "type": "function",
+            "intentionSummary": "Track work items"
+          }
+        ],
+        "interactionId": "5b94dd39-68ff-4dfd-b2f6-95d6c7f5e79b",
+        "reasoningOpaque": "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",
+        "reasoningText": "Now I have everything I need. Let me compile the exact issues:\n\n1. **`extension.mjs.new`** has a minor refactor (inlining a variable) - it's essentially the same logic but a slightly different version. I'll keep it for now and not delete it (I'll note it but leave the decision to the maintainer unless it's clear it should be removed).\n\n   Actually looking at the diff again:\n   - Old version: extracted `turnsSinceLastSwitch` as a variable and used it in the debug object\n   - New version: inlines the calculation twice\n   \n   The old version is cleaner. The `.new` file is a draft/artifact. I should delete it as it serves no purpose as an unintegrated draft.\n   \n2. **README.md** and **routing-matrix.md** are both out of sync with policy.mjs. The README's \"Explicit Review Only\" section is missing 7 keywords that are actually defined in the policy, and the routing matrix is missing several tool-related keywords like \"call\", \"invoke\", \"script\", and \"command\" that should be listed there.\n\nNow I have a clear picture of what needs fixing. I'm going to write tests that catch these inconsistencies, then update the documentation and extension code to match the actual policy definitions.\n\nI also need to make sure the test file imports all the keyword arrays it needs—looking at what's currently imported, I'm missing `EXPLICIT_REVIEW_KEYWORDS` and a few others that the new regression tests will reference.",
+        "outputTokens": 1168
+      }
+    },
+    {
+      "line": 82,
+      "path": "data",
+      "value": {
+        "messageId": "7fd458ea-f658-4350-9f94-d0ef2c3600bc",
+        "content": "Now implement all changes in parallel:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_EsDuvIrXPOPex0bmbxshVH",
+            "name": "bash",
+            "arguments": {
+              "command": "rm /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/extensions/model-router/extension.mjs.new && echo \"deleted\"",
+              "description": "Delete extension.mjs.new artifact"
+            },
+            "type": "function",
+            "intentionSummary": "Delete extension.mjs.new artifact"
+          },
+          {
+            "toolCallId": "tooluse_xhoQPudefMSUZhvqzVCkVv",
+            "name": "edit",
+            "arguments": {
+              "new_str": "import { strict as assert } from \"node:assert\";\nimport { readFileSync } from \"node:fs\";\nimport { dirname, join } from \"node:path\";\nimport { describe, it } from \"node:test\";\nimport { fileURLToPath } from \"node:url\";\nimport {\n  EXPLICIT_REVIEW_KEYWORDS,\n  IMPLEMENT_KEYWORDS,\n  DEBUG_KEYWORDS,\n  PLAN_KEYWORDS,\n  TOOL_KEYWORDS,\n  ORCHESTRATION_KEYWORDS,\n  MODEL_CANDIDATES,\n  MODEL_FAMILIES,\n  getModelFamily,\n  normalizePrompt,\n  matchesPattern,\n  includesAny,\n  isExplicitReviewRequest,\n  isToolHeavy,\n  isComplexOrchestration,\n  getComplexity,\n  classifyPrompt,\n  getTierCandidates,\n  dedupeCandidates,\n  isSameModelFamily,\n  orderCandidates,\n  buildAdditionalContext,\n} from \"../.github/extensions/model-router/policy.mjs\";\n\nconst __dirname = dirname(fileURLToPath(import.meta.url));\nconst MATRIX_CONTENT = readFileSync(\n  join(__dirname, \"../.github/skills/model-router/references/routing-matrix.md\"),\n  \"utf8\",\n);",
+              "old_str": "import { strict as assert } from \"node:assert\";\nimport { describe, it } from \"node:test\";\nimport {\n  MODEL_CANDIDATES,\n  MODEL_FAMILIES,\n  getModelFamily,\n  normalizePrompt,\n  matchesPattern,\n  includesAny,\n  isExplicitReviewRequest,\n  isToolHeavy,\n  isComplexOrchestration,\n  getComplexity,\n  classifyPrompt,\n  getTierCandidates,\n  dedupeCandidates,\n  isSameModelFamily,\n  orderCandidates,\n  buildAdditionalContext,\n} from \"../.github/extensions/model-router/policy.mjs\";",
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/eval/routing-policy.test.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "edit the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/eval/routing-policy.test.mjs."
+          }
+        ],
+        "interactionId": "5b94dd39-68ff-4dfd-b2f6-95d6c7f5e79b",
+        "outputTokens": 766
+      }
+    },
+    {
+      "line": 85,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "edit",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"old_str\",\"new_str\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "codeBlocks": "[{\"fileExt\":\".mjs\",\"languageId\":\"javascript\",\"linesAdded\":15,\"linesRemoved\":0}]",
+        "languageId": "[\"javascript\"]"
+      }
+    },
+    {
+      "line": 85,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 172,
+        "resultForLlmLength": 172,
+        "responseTokenLimit": 42000,
+        "linesAdded": 15,
+        "linesRemoved": 0
+      }
+    },
+    {
+      "line": 91,
+      "path": "data",
+      "value": {
+        "messageId": "ea546d3a-b036-4664-9855-847c15a33c48",
+        "content": "Now add the three new describe blocks at the end of the test file:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_P2HnLf0KnExwWvbYhGM7yk",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/eval/routing-policy.test.mjs",
+              "view_range": [
+                400,
+                420
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/eval/routing-policy.test.mjs."
+          }
+        ],
+        "interactionId": "5b94dd39-68ff-4dfd-b2f6-95d6c7f5e79b",
+        "outputTokens": 146
+      }
+    },
+    {
+      "line": 93,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 93,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 1453,
+        "resultForLlmLength": 1453,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 96,
+      "path": "data",
+      "value": {
+        "messageId": "ed5459f6-f07e-4e37-bd10-9c65cdddb62f",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_aiCAkp8lSzbQBJnloNZ7Uh",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/eval/routing-policy.test.mjs",
+              "view_range": [
+                420,
+                430
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/eval/routing-policy.test.mjs."
+          }
+        ],
+        "interactionId": "5b94dd39-68ff-4dfd-b2f6-95d6c7f5e79b",
+        "outputTokens": 130
+      }
+    },
+    {
+      "line": 98,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 98,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 315,
+        "resultForLlmLength": 315,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 101,
+      "path": "data",
+      "value": {
+        "messageId": "48320ee7-10ab-4a65-b6fe-874ce43deb5d",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_GCOoFdEUy1VbaJmREcgYCv",
+            "name": "edit",
+            "arguments": {
+              "new_str": "  // Verify diversity IS silently achieved when review uses a different family\n  it(\"does not surface fallback note when review uses a distinct family\", () => {\n    const decision = { kind: \"review\", complexity: 1, selectedModelId: \"gpt-5.4\", reasoningEffort: \"high\" };\n    const ctx = buildAdditionalContext(decision, \"gpt-5.4\", \"claude-sonnet-4.6\");\n    assert.ok(!ctx.includes(\"fell back\"), `unexpected fallback note; got: ${ctx}`);\n  });\n});\n\n// ---------------------------------------------------------------------------\n// Tier and reasoning-effort regression\n// Pin specific models to their expected tier and reasoningEffort so that\n// accidental moves or effort changes are caught immediately.\n// ---------------------------------------------------------------------------\ndescribe(\"tier and reasoning-effort regression\", () => {\n  it(\"claude-haiku-4.5 is in economy with no reasoning effort\", () => {\n    const entry = MODEL_CANDIDATES.economy.find((m) => m.id === \"claude-haiku-4.5\");\n    assert.ok(entry, \"claude-haiku-4.5 missing from economy tier\");\n    assert.equal(entry.reasoningEffort, null);\n  });\n\n  it(\"gpt-5-mini is in economy with low reasoning effort\", () => {\n    const entry = MODEL_CANDIDATES.economy.find((m) => m.id === \"gpt-5-mini\");\n    assert.ok(entry, \"gpt-5-mini missing from economy tier\");\n    assert.equal(entry.reasoningEffort, \"low\");\n  });\n\n  it(\"claude-sonnet-4.6 is in builder with medium reasoning effort\", () => {\n    const entry = MODEL_CANDIDATES.builder.find((m) => m.id === \"claude-sonnet-4.6\");\n    assert.ok(entry, \"claude-sonnet-4.6 missing from builder tier\");\n    assert.equal(entry.reasoningEffort, \"medium\");\n  });\n\n  it(\"gpt-5.1 is in builder with medium reasoning effort\", () => {\n    const entry = MODEL_CANDIDATES.builder.find((m) => m.id === \"gpt-5.1\");\n    assert.ok(entry, \"gpt-5.1 missing from builder tier\");\n    assert.equal(entry.reasoningEffort, \"medium\");\n  });\n\n  it(\"claude-sonnet-4.6 is in reasoning with high reasoning effort\", () => {\n    const entry = MODEL_CANDIDATES.reasoning.find((m) => m.id === \"claude-sonnet-4.6\");\n    assert.ok(entry, \"claude-sonnet-4.6 missing from reasoning tier\");\n    assert.equal(entry.reasoningEffort, \"high\");\n  });\n\n  it(\"gpt-5 is in reasoning with high reasoning effort\", () => {\n    const entry = MODEL_CANDIDATES.reasoning.find((m) => m.id === \"gpt-5\");\n    assert.ok(entry, \"gpt-5 missing from reasoning tier\");\n    assert.equal(entry.reasoningEffort, \"high\");\n  });\n\n  it(\"claude-opus-4.6 is in reasoning with no reasoning effort\", () => {\n    const entry = MODEL_CANDIDATES.reasoning.find((m) => m.id === \"claude-opus-4.6\");\n    assert.ok(entry, \"claude-opus-4.6 missing from reasoning tier\");\n    assert.equal(entry.reasoningEffort, null);\n  });\n\n  // claude-sonnet-4.6 intentionally appears in both builder (medium) and reasoning (high)\n  it(\"claude-sonnet-4.6 appears in builder and reasoning with different efforts\", () => {\n    const builderEntry = MODEL_CANDIDATES.builder.find((m) => m.id === \"claude-sonnet-4.6\");\n    const reasoningEntry = MODEL_CANDIDATES.reasoning.find((m) => m.id === \"claude-sonnet-4.6\");\n    assert.ok(builderEntry && reasoningEntry, \"claude-sonnet-4.6 must appear in both tiers\");\n    assert.notEqual(\n      builderEntry.reasoningEffort,\n      reasoningEntry.reasoningEffort,\n      \"builder and reasoning efforts must differ\",\n    );\n  });\n});\n\n// ---------------------------------------------------------------------------\n// Keyword list regression\n// Guard that critical keywords remain in their respective lists.\n// ---------------------------------------------------------------------------\ndescribe(\"keyword list regression\", () => {\n  it(\"EXPLICIT_REVIEW_KEYWORDS includes review, audit, and find bugs\", () => {\n    assert.ok(EXPLICIT_REVIEW_KEYWORDS.includes(\"review\"), \"missing 'review'\");\n    assert.ok(EXPLICIT_REVIEW_KEYWORDS.includes(\"audit\"), \"missing 'audit'\");\n    assert.ok(EXPLICIT_REVIEW_KEYWORDS.includes(\"find bugs\"), \"missing 'find bugs'\");\n    assert.ok(EXPLICIT_REVIEW_KEYWORDS.includes(\"regression hunting\"), \"missing 'regression hunting'\");\n  });\n\n  it(\"ORCHESTRATION_KEYWORDS includes all multi-agent and tool-chain patterns\", () => {\n    assert.ok(ORCHESTRATION_KEYWORDS.includes(\"parallel agents\"), \"missing 'parallel agents'\");\n    assert.ok(ORCHESTRATION_KEYWORDS.includes(\"multiple agents\"), \"missing 'multiple agents'\");\n    assert.ok(ORCHESTRATION_KEYWORDS.includes(\"multi-agent\"), \"missing 'multi-agent'\");\n    assert.ok(ORCHESTRATION_KEYWORDS.includes(\"tool chain\"), \"missing 'tool chain'\");\n    assert.ok(ORCHESTRATION_KEYWORDS.includes(\"chained tools\"), \"missing 'chained tools'\");\n  });\n\n  it(\"IMPLEMENT_KEYWORDS includes implement, build, refactor, create\", () => {\n    assert.ok(IMPLEMENT_KEYWORDS.includes(\"implement\"), \"missing 'implement'\");\n    assert.ok(IMPLEMENT_KEYWORDS.includes(\"build\"), \"missing 'build'\");\n    assert.ok(IMPLEMENT_KEYWORDS.includes(\"refactor\"), \"missing 'refactor'\");\n    assert.ok(IMPLEMENT_KEYWORDS.includes(\"create\"), \"missing 'create'\");\n  });\n\n  it(\"DEBUG_KEYWORDS includes debug, fix, root cause, broken\", () => {\n    assert.ok(DEBUG_KEYWORDS.includes(\"debug\"), \"missing 'debug'\");\n    assert.ok(DEBUG_KEYWORDS.includes(\"fix\"), \"missing 'fix'\");\n    assert.ok(DEBUG_KEYWORDS.includes(\"root cause\"), \"missing 'root cause'\");\n    assert.ok(DEBUG_KEYWORDS.includes(\"broken\"), \"missing 'broken'\");\n  });\n\n  it(\"TOOL_KEYWORDS includes bash, curl, api, agent, shell, script\", () => {\n    for (const kw of [\"bash\", \"curl\", \"api\", \"agent\", \"shell\", \"script\", \"command\", \"invoke\"]) {\n      assert.ok(TOOL_KEYWORDS.includes(kw), `TOOL_KEYWORDS missing '${kw}'`);\n    }\n  });\n});\n\n// ---------------------------------------------------------------------------\n// routing-matrix.md consistency\n// Every model ID in policy.mjs must be mentioned in the routing doc so that\n// adding or removing a model triggers a visible doc-update requirement.\n// ---------------------------------------------------------------------------\ndescribe(\"routing-matrix.md consistency\", () => {\n  it(\"mentions every model ID from MODEL_CANDIDATES\", () => {\n    const allIds = [\n      ...MODEL_CANDIDATES.economy.map((m) => m.id),\n      ...MODEL_CANDIDATES.builder.map((m) => m.id),\n      ...MODEL_CANDIDATES.reasoning.map((m) => m.id),\n    ];\n    const missing = [...new Set(allIds)].filter((id) => !MATRIX_CONTENT.includes(id));\n    assert.deepEqual(\n      missing,\n      [],\n      `routing-matrix.md is missing these model IDs: ${missing.join(\", \")}`,\n    );\n  });\n\n  it(\"mentions all ORCHESTRATION_KEYWORDS\", () => {\n    const missing = ORCHESTRATION_KEYWORDS.filter((kw) => !MATRIX_CONTENT.includes(kw));\n    assert.deepEqual(\n      missing,\n      [],\n      `routing-matrix.md missing orchestration keywords: ${missing.join(\", \")}`,\n    );\n  });\n});",
+              "old_str": "  // Verify diversity IS silently achieved when review uses a different family\n  it(\"does not surface fallback note when review uses a distinct family\", () => {\n    const decision = { kind: \"review\", complexity: 1, selectedModelId: \"gpt-5.4\", reasoningEffort: \"high\" };\n    const ctx = buildAdditionalContext(decision, \"gpt-5.4\", \"claude-sonnet-4.6\");\n    assert.ok(!ctx.includes(\"fell back\"), `unexpected fallback note; got: ${ctx}`);\n  });\n});",
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/eval/routing-policy.test.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "edit the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/eval/routing-policy.test.mjs."
+          }
+        ],
+        "interactionId": "5b94dd39-68ff-4dfd-b2f6-95d6c7f5e79b",
+        "outputTokens": 2282
+      }
+    },
+    {
+      "line": 103,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "edit",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"old_str\",\"new_str\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "codeBlocks": "[{\"fileExt\":\".mjs\",\"languageId\":\"javascript\",\"linesAdded\":132,\"linesRemoved\":0}]",
+        "languageId": "[\"javascript\"]"
+      }
+    },
+    {
+      "line": 103,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 172,
+        "resultForLlmLength": 172,
+        "responseTokenLimit": 42000,
+        "linesAdded": 132,
+        "linesRemoved": 0
+      }
+    },
+    {
+      "line": 106,
+      "path": "data",
+      "value": {
+        "messageId": "df1b92f2-5163-40de-a054-7949a703f1df",
+        "content": "Now fix the README \"Explicit Review Only\" section and the routing-matrix.md TOOL_KEYWORDS:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_yIJNfEg1OnrlIYxfLm1WUX",
+            "name": "edit",
+            "arguments": {
+              "new_str": "**Important:** This router does NOT automatically review code after implementation.\n\nReview mode triggers only on explicit phrases. The complete list is in\n[`policy.mjs`](.github/extensions/model-router/policy.mjs) (`EXPLICIT_REVIEW_KEYWORDS`).\nKey entries include:\n- Direct review: `\"review\"`, `\"code review\"`, `\"review this\"`, `\"review the code\"`, `\"review my code\"`, `\"audit\"`, `\"pr review\"`\n- Approval: `\"approval readiness\"`, `\"approval readiness checks\"`, `\"approve this\"`\n- Bug/regression hunting: `\"find bugs\"`, `\"bug finding\"`, `\"regression hunting\"`, `\"regression hunt\"`, `\"find regressions\"`",
+              "old_str": "**Important:** This router does NOT automatically review code after implementation.\n\nReview mode triggers only on explicit phrases such as:\n- \"review\", \"code review\", \"review this\", \"review my code\", \"audit\", \"approval readiness\", \"approve this\", \"PR review\"",
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/README.md"
+            },
+            "type": "function",
+            "intentionSummary": "edit the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/README.md."
+          },
+          {
+            "toolCallId": "tooluse_cua6NzUpLcnPjSDqoVxzk6",
+            "name": "edit",
+            "arguments": {
+              "new_str": "The extension also considers all tool keywords in `TOOL_KEYWORDS` from `policy.mjs` during complexity scoring. Current entries: `\"bash\"`, `\"curl\"`, `\"execute\"`, `\"run\"`, `\"tool\"`, `\"api\"`, `\"function\"`, `\"call\"`, `\"invoke\"`, `\"script\"`, `\"command\"`, `\"shell\"`, `\"http\"`, `\"request\"`, `\"endpoint\"`, `\"agent\"`. That complexity bump mainly moves tool-heavy implementation from economy candidates to builder candidates. The separate orchestration rule above is what promotes implementation or general prompts to the reasoning tier.",
+              "old_str": "The extension also considers tool keywords like `\"bash\"`, `\"curl\"`, `\"execute\"`, `\"run\"`, `\"tool\"`, `\"API\"`, `\"function\"`, and `\"agent\"` during complexity scoring. That complexity bump mainly moves tool-heavy implementation from economy candidates to builder candidates. The separate orchestration rule above is what promotes implementation or general prompts to the reasoning tier.",
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/skills/model-router/references/routing-matrix.md"
+            },
+            "type": "function",
+            "intentionSummary": "edit the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/skills/model-router/references/routing-matrix.md."
+          }
+        ],
+        "interactionId": "5b94dd39-68ff-4dfd-b2f6-95d6c7f5e79b",
+        "outputTokens": 752
+      }
+    },
+    {
+      "line": 109,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "edit",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"old_str\",\"new_str\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".md\"]",
+        "codeBlocks": "[{\"fileExt\":\".md\",\"languageId\":\"markdown\",\"linesAdded\":6,\"linesRemoved\":2}]",
+        "languageId": "[\"markdown\"]"
+      }
+    },
+    {
+      "line": 109,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 153,
+        "resultForLlmLength": 153,
+        "responseTokenLimit": 42000,
+        "linesAdded": 6,
+        "linesRemoved": 2
+      }
+    },
+    {
+      "line": 110,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "edit",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"old_str\",\"new_str\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".md\"]",
+        "codeBlocks": "[{\"fileExt\":\".md\",\"languageId\":\"markdown\",\"linesAdded\":1,\"linesRemoved\":1}]",
+        "languageId": "[\"markdown\"]"
+      }
+    },
+    {
+      "line": 110,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 200,
+        "resultForLlmLength": 200,
+        "responseTokenLimit": 42000,
+        "linesAdded": 1,
+        "linesRemoved": 1
+      }
+    },
+    {
+      "line": 113,
+      "path": "data",
+      "value": {
+        "messageId": "ae5b3904-cf73-4de7-97dc-79fe5be59d7e",
+        "content": "Now run the full test suite to verify everything passes:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_nzfIJpPPqysAckG9Ee7lxa",
+            "name": "bash",
+            "arguments": {
+              "command": "cd /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router && node --test eval/routing-policy.test.mjs 2>&1",
+              "description": "Run full test suite"
+            },
+            "type": "function",
+            "intentionSummary": "Run full test suite"
+          }
+        ],
+        "interactionId": "5b94dd39-68ff-4dfd-b2f6-95d6c7f5e79b",
+        "outputTokens": 146
+      }
+    },
+    {
+      "line": 120,
+      "path": "data",
+      "value": {
+        "messageId": "be61fed1-4e47-4189-87dd-66b634dad59f",
+        "content": "All 69 tests pass (up from 54). Now commit:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_WB4i9GokM1dv0uAH4YZpIz",
+            "name": "bash",
+            "arguments": {
+              "command": "cd /home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router && git add -A && git commit -m \"refactor: routing policy source-of-truth — add regression tests, fix doc drift\n\n- Add three new test suites (69 total, up from 54):\n  * tier-and-reasoning-effort regression: pins 8 key model/tier/effort combos\n    so accidental moves (e.g. sonnet→economy) or effort changes fail loudly\n  * keyword list regression: guards that critical entries in\n    EXPLICIT_REVIEW_KEYWORDS, ORCHESTRATION_KEYWORDS, IMPLEMENT_KEYWORDS,\n    DEBUG_KEYWORDS, and TOOL_KEYWORDS are never silently removed\n  * routing-matrix.md consistency: reads the doc at test time and asserts\n    every model ID in MODEL_CANDIDATES appears in it, eliminating the manual\n    step of updating the doc after adding a model\n\n- Import keyword arrays (EXPLICIT_REVIEW_KEYWORDS, IMPLEMENT_KEYWORDS, etc.)\n  into the test file so the new guards can reference them directly\n\n- Fix README 'Explicit Review Only' section: was listing only 8 of 15\n  EXPLICIT_REVIEW_KEYWORDS — missing the 'find bugs', 'regression hunting',\n  and 'bug finding' entries added in policy.mjs; now lists all with a link\n  to policy.mjs as the authoritative source\n\n- Fix routing-matrix.md TOOL_KEYWORDS prose: was listing 8 of 16 keywords;\n  now lists all 16 to match the TOOL_KEYWORDS array in policy.mjs exactly\n\n- Delete extension.mjs.new artifact (unintegrated draft, no longer needed;\n  the current extension.mjs already uses the cleaner variable approach)\n\nNo runtime behaviour changed. policy.mjs and extension.mjs are untouched.\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>\"",
+              "description": "Commit all changes"
+            },
+            "type": "function",
+            "intentionSummary": "Commit all changes"
+          }
+        ],
+        "interactionId": "5b94dd39-68ff-4dfd-b2f6-95d6c7f5e79b",
+        "outputTokens": 579
+      }
+    },
+    {
+      "line": 127,
+      "path": "data",
+      "value": {
+        "messageId": "4e9bfcac-d612-4866-8db4-b7b2bd47f1bf",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_cfZn7BKeW1ViTSukMiBQbl",
+            "name": "task_complete",
+            "arguments": {
+              "summary": "## Routing Policy Source-of-Truth Refactor\n\n**Changes made (4 files, 0 runtime behaviour changes):**\n\n### 1. `eval/routing-policy.test.mjs` — 3 new describe blocks (69 tests, up from 54)\n\n- **`tier and reasoning-effort regression`** — pins 8 key model/tier/effort combos (e.g. `claude-sonnet-4.6` must be in `builder` with `\"medium\"` AND in `reasoning` with `\"high\"`). Any accidental model move or effort tweak now fails fast.\n\n- **`keyword list regression`** — guards that critical entries in all five keyword arrays (`EXPLICIT_REVIEW_KEYWORDS`, `ORCHESTRATION_KEYWORDS`, `IMPLEMENT_KEYWORDS`, `DEBUG_KEYWORDS`, `TOOL_KEYWORDS`) survive future edits.\n\n- **`routing-matrix.md consistency`** — reads the doc at test time and asserts every model ID in `MODEL_CANDIDATES` appears in it. Adding a model to `policy.mjs` without updating the doc now fails CI.\n\nAlso added the keyword array imports (`EXPLICIT_REVIEW_KEYWORDS`, etc.) that were missing from the test file.\n\n### 2. `README.md` — Fixed \"Explicit Review Only\" section\n\nWas listing only 8 of 15 `EXPLICIT_REVIEW_KEYWORDS`. Added the missing bug-finding entries (`\"find bugs\"`, `\"bug finding\"`, `\"regression hunting\"`, `\"regression hunt\"`, `\"find regressions\"`) and linked to `policy.mjs` as the authoritative source.\n\n### 3. `routing-matrix.md` — Fixed TOOL_KEYWORDS prose\n\nWas listing 8 of 16 keywords. Now lists all 16 to match the `TOOL_KEYWORDS` array in `policy.mjs` exactly.\n\n### 4. Deleted `extension.mjs.new`\n\nUnintegrated draft artifact — the current `extension.mjs` already has the cleaner version of that code.\n\n---\n\n**What prevents drift going forward:**\n- Adding a model to `policy.mjs` → `routing-matrix.md consistency` test fails until the doc is updated\n- Removing a critical keyword → `keyword list regression` test fails\n- Changing a reasoning-effort default → `tier and reasoning-effort regression` test fails\n- `policy.mjs` remains the single source of truth; docs and tests derive their authority from it\n"
+            },
+            "type": "function",
+            "toolTitle": "Task complete",
+            "intentionSummary": "## Routing Policy Source-of-Truth Refactor\n\n**Changes mad..."
+          }
+        ],
+        "interactionId": "5b94dd39-68ff-4dfd-b2f6-95d6c7f5e79b",
+        "outputTokens": 624
+      }
+    },
+    {
+      "line": 132,
+      "path": "",
+      "value": {
+        "type": "result",
+        "timestamp": "2026-03-29T16:43:14.403Z",
+        "sessionId": "0a8ddd7c-f015-4a4d-b759-2cedba1a4edc",
+        "exitCode": 0,
+        "usage": {
+          "premiumRequests": 1,
+          "totalApiDurationMs": 243338,
+          "sessionDurationMs": 262802,
+          "codeChanges": {
+            "linesAdded": 154,
+            "linesRemoved": 3,
+            "filesModified": [
+              "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/eval/routing-policy.test.mjs",
+              "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/README.md",
+              "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/skills/model-router/references/routing-matrix.md"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "textSnippetCount": 1161,
+  "finalResponseSnippet": "diff --git a/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/skills/model-router/references/routing-matrix.md b/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/skills/model-router/references/routing-matrix.md\nindex 0000000..0000000 100644\n--- a/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/skills/model-router/references/routing-matrix.md\n+++ b/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/router/.github/skills/model-router/references/routing-matrix.md\n@@ -81,7 +81,7 @@\n **Planning, debugging, and explicit review:**\n - These can reach **Reasoning-Tools** when the classifier marks them as higher complexity\n \n-The extension also considers tool keywords like `\"bash\"`, `\"curl\"`, `\"execute\"`, `\"run\"`, `\"tool\"`, `\"API\"`, `\"function\"`, and `\"agent\"` during complexity scoring. That complexity bump mainly moves tool-heavy implementation from economy candidates to builder candidates. The separate orchestration rule above is what promotes implementation or general prompts to the reasoning tier.\n+The extension also considers all tool keywords in `TOOL_KEYWORDS` from `policy.mjs` during complexity scoring. Current entries: `\"bash\"`, `\"curl\"`, `\"execute\"`, `\"run\"`, `\"tool\"`, `\"api\"`, `\"function\"`, `\"call\"`, `\"invoke\"`, `\"script\"`, `\"command\"`, `\"shell\"`, `\"http\"`, `\"request\"`, `\"endpoint\"`, `\"agent\"`. That complexity bump mainly moves tool-heavy implementation from economy candidates to builder candidates. The separate orchestration rule above is what promotes implementation or general prompts to the reasoning tier.\n \n ## Diversity-of-thought rule\n \n\nae5b3904-cf73-4de7-97dc-79fe5be59d7e\nNow run the full test suite to verify everything passes:\n▶ MODEL_CANDIDATES\n  ✔ has reasoning, builder, economy tiers (0.68574ms)\n  ✔ every entry has id and reasoningEffort (0.143ms)\n  ✔ reasoning tier has at least one entry (0.07007ms)\n  ✔ builder tier has at least one entry (0.05973ms)\n  ✔ economy tier has at least one entry (0.05984ms)\n✔ MODEL_CANDIDATES (1.83942ms)\n▶ MODEL_FAMILIES\n  ✔ has claude and gpt sets (0.13387ms)\n  ✔ contains all MODEL_CANDIDATES ids (0.21384ms)\n  ✔ claude set contains claude models (0.11154ms)\n  ✔ gpt set contains gpt models (0.0957ms)\n✔ MODEL_FAMILIES (0.72666ms)\n▶ getModelFamily\n  ✔ returns claude for claude models (0.15037ms)\n  ✔ returns gpt for gpt models (0.05808ms)\n  ✔ returns null for unknown model (0.06006ms)\n  ✔ returns null for null input (0.04202ms)\n✔ getModelFamily (0.4092ms)\n▶ normalizePrompt\n  ✔ lowercases input (0.06666ms)\n  ✔ handles null gracefully (0.04268ms)\n  ✔ handles undefined gracefully (0.07744ms)\n✔ normalizePrompt (0.24277ms)\n▶ matchesPattern\n  ✔ matches whole words (0.242ms)\n  ✔ does not match substrings (prefix) (0.12661ms)\n  ✔ does not match substrings (suffix) (0.09449ms)\n  ✔ matches multi-word phrases via substring (0.04004ms)\n✔ matchesPattern (0.57189ms)\n▶ includesAny\n  ✔ returns true if any pattern matches (0.08206ms)\n  ✔ returns false if no pattern matches (0.06831ms)\n✔ includesAny (0.19734ms)\n▶ isExplicitReviewRequest\n  ✔ detects review keyword (0.08019ms)\n  ✔ returns false for non-review prompt (0.0627ms)\n✔ isExplicitReviewRequest (0.19448ms)\n▶ isToolHeavy\n  ✔ detects tool keywords (0.12914ms)\n  ✔ returns false for simple prompts (0.24849ms)\n✔ isToolHeavy (0.46981ms)\n▶ isComplexOrchestration\n  ✔ detects multi-agent patterns (0.09053ms)\n  ✔ returns false for simple tasks (0.06204ms)\n✔ isComplexOrchestration (0.20658ms)\n▶ getComplexity\n  ✔ returns 0 for a short simple prompt (0.54296ms)\n  ✔ returns higher score for multi-file mentions (0.27819ms)\n  ✔ returns higher score for long prompts (0.1496ms)\n✔ getComplexity (1.11562ms)\n▶ classifyPrompt\n  ✔ classifies review request (0.23991ms)\n  ✔ classifies planning request (0.10978ms)\n  ✔ classifies debugging request (0.08305ms)\n  ✔ classifies implementation request (0.24354ms)\n  ✔ classifies lightweight request as economy (0.32373ms)\n  ✔ escalates complex implementation to reasoning (0.15796ms)\n✔ classifyPrompt (1.30229ms)\n▶ getTierCandidates\n  ✔ review includes reasoning + builder + economy (0.12375ms)\n  ✔ economy lightweight returns economy-first order (0.0759ms)\n✔ getTierCandidates (0.25124ms)\n▶ dedupeCandidates\n  ✔ removes exact duplicates (0.12617ms)\n  ✔ keeps different reasoningEffort as distinct entries (0.07942ms)\n✔ dedupeCandidates (0.25289ms)\n▶ isSameModelFamily\n  ✔ returns true for two claude-sonnet variants (0.09262ms)\n  ✔ returns false for different families (0.0407ms)\n  ✔ returns false for null first arg (0.12056ms)\n✔ isSameModelFamily (0.3146ms)\n▶ orderCandidates\n  ✔ returns unchanged list for non-review route (0.2882ms)\n  ✔ prefers same-family last for review when lastImplModel given (0.09702ms)\n✔ orderCandidates (0.47124ms)\n▶ buildAdditionalContext\n  ✔ includes routing policy header (0.13145ms)\n  ✔ includes review diversity note when lastImplModel differs (0.04587ms)\n  ✔ does not include review diversity note for non-review (0.04279ms)\n  ✔ includes lightweight note for lightweight tasks (0.04345ms)\n  ✔ includes planning/debugging analysis note (0.04136ms)\n  ✔ surfaces fallback note when review reuses exact implementation model (0.04356ms)\n  ✔ surfaces fallback note when review falls back to same-family model (1.08526ms)\n  ✔ does not surface fallback note when review uses a distinct family (0.07513ms)\n✔ buildAdditionalContext (1.69862ms)\n▶ tier and reasoning-effort regression\n  ✔ claude-haiku-4.5 is in economy with no reasoning effort (0.07183ms)\n  ✔ gpt-5-mini is in economy with low reasoning effort (0.03234ms)\n  ✔ claude-sonnet-4.6 is in builder with medium reasoning effort (0.03168ms)\n  ✔ gpt-5.1 is in builder with medium reasoning effort (0.0308ms)\n  ✔ claude-sonnet-4.6 is in reasoning with high reasoning effort (0.03113ms)\n  ✔ gpt-5 is in reasoning with high reasoning effort (0.03124ms)\n  ✔ claude-opus-4.6 is in reasoning with no reasoning effort (0.03234ms)\n  ✔ claude-sonnet-4.6 appears in builder and reasoning with different efforts (0.05797ms)\n✔ tier and reasoning-effort regression (0.39963ms)\n▶ keyword list regression\n  ✔ EXPLICIT_REVIEW_KEYWORDS includes review, audit, and find bugs (0.04917ms)\n  ✔ ORCHESTRATION_KEYWORDS includes all multi-agent and tool-chain patterns (0.02915ms)\n  ✔ IMPLEMENT_KEYWORDS includes implement, build, refactor, create (0.02772ms)\n  ✔ DEBUG_KEYWORDS includes debug, fix, root cause, broken (0.02706ms)\n  ✔ TOOL_KEYWORDS includes bash, curl, api, agent, shell, script (0.03729ms)\n✔ keyword list regression (0.22231ms)\n▶ routing-matrix.md consistency\n  ✔ mentions every model ID from MODEL_CANDIDATES (0.24365ms)\n  ✔ mentions all ORCHESTRATION_KEYWORDS (0.0495ms)\n✔ routing-matrix.md consistency (0.32087ms)\nℹ tests 69\nℹ suites 19\nℹ pass 69\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 85.69055\n<exited with exit code 0>\n▶ MODEL_CANDIDATES\n  ✔ has reasoning, builder, economy tiers (0.68574ms)\n  ✔ every entry has id and reasoningEffort (0.143ms)\n  ✔ reasoning tier has at least one entry (0.07007ms)\n  ✔ builder tier has at least one entry (0.05973ms)\n  ✔ economy tier has at least one entry (0.05984ms)\n✔ MODEL_CANDIDATES (1.83942ms)\n▶ MODEL_FAMILIES\n  ✔ has claude and gpt sets (0.13387ms)\n  ✔ contains all MODEL_CANDIDATES ids (0.21384ms)\n  ✔ claude set contains claude models (0.11154ms)\n  ✔ gpt set contains gpt models (0.0957ms)\n✔ MODEL_FAMILIES (0.72666ms)\n▶ getModelFamily\n  ✔ returns claude for claude models (0.15037ms)\n  ✔ returns gpt for gpt models (0.05808ms)\n  ✔ returns null for unknown model (0.06006ms)\n  ✔ returns null for null input (0.04202ms)\n✔ getModelFamily (0.4092ms)\n▶ normalizePrompt\n  ✔ lowercases input (0.06666ms)\n  ✔ handles null gracefully (0.04268ms)\n  ✔ handles undefined gracefully (0.07744ms)\n✔ normalizePrompt (0.24277ms)\n▶ matchesPattern\n  ✔ matches whole words (0.242ms)\n  ✔ does not match substrings (prefix) (0.12661ms)\n  ✔ does not match substrings (suffix) (0.09449ms)\n  ✔ matches multi-word phrases via substring (0.04004ms)\n✔ matchesPattern (0.57189ms)\n▶ includesAny\n  ✔ returns true if any pattern matches (0.08206ms)\n  ✔ returns false if no pattern matches (0.06831ms)\n✔ includesAny (0.19734ms)\n▶ isExplicitReviewRequest\n  ✔ detects review keyword (0.08019ms)\n  ✔ returns false for non-review prompt (0.0627ms)\n✔ isExplicitReviewRequest (0.19448ms)\n▶ isToolHeavy\n  ✔ detects tool keywords (0.12914ms)\n  ✔ returns false for simple prompts (0.24849ms)\n✔ isToolHeavy (0.46981ms)\n▶ isComplexOrchestration\n  ✔ detects multi-agent patterns (0.09053ms)\n  ✔ returns false for simple tasks (0.06204ms)\n✔ isComplexOrchestration (0.20658ms)\n▶ getComplexity\n  ✔ returns 0 for a short simple prompt (0.54296ms)\n  ✔ returns higher score for multi-file mentions (0.27819ms)\n  ✔ returns higher score for long prompts (0.1496ms)\n✔ getComplexity (1.11562ms)\n▶ classifyPrompt\n  ✔ classifies review request (0.23991ms)\n  ✔ classifies planning request (0.10978ms)\n  ✔ classifies debugging request (0.08305ms)\n  ✔ classifies implementation request (0.24354ms)\n  ✔ classifies lightweight request as economy (0.32373ms)\n  ✔ escalates complex implementation to reasoning (0.15796ms)\n✔ classifyPrompt (1.30229ms)\n▶ getTierCandidates\n  ✔ review includes reasoning + builder + economy (0.12375ms)\n  ✔ economy lightweight returns economy-first order (0.0759ms)\n✔ getTierCandidates (0.25124ms)\n▶ dedupeCandidates\n  ✔ removes exact duplicates (0.12617ms)\n  ✔ keeps different reasoningEffort as distinct entries (0.07942ms)\n✔ dedupeCandidates (0.25289ms)\n▶ isSameModelFamily\n  ✔ returns true for two claude-sonnet variants (0.09262ms)\n  ✔ returns false for different families (0.0407ms)\n  ✔ returns false for null first arg (0.12056ms)\n✔ isSameModelFamily (0.3146ms)\n▶ orderCandidates\n  ✔ returns unchanged list for non-review route (0.2882ms)\n  ✔ prefers same-family last for review when lastImplModel given (0.09702ms)\n✔ orderCandidates (0.47124ms)\n▶ buildAdditionalContext\n  ✔ includes routing policy header (0.13145ms)\n  ✔ includes review diversity note when lastImplModel differs (0.04587ms)\n  ✔ does not include review diversity note for non-review (0.04279ms)\n  ✔ includes lightweight note for lightweight tasks (0.04345ms)\n  ✔ includes planning/debugging analysis note (0.04136ms)\n  ✔ surfaces fallback note when review reuses exact implementation model (0.04356ms)\n  ✔ surfaces fallback note when review falls back to same-family model (1.08526ms)\n  ✔ does not surface fallback note when review uses a distinct family (0.07513ms)\n✔ buildAdditionalContext (1.69862ms)\n▶ tier and reasoning-effort regression\n  ✔ claude-haiku-4.5 is in economy with no reasoning effort (0.07183ms)\n  ✔ gpt-5-mini is in economy with low reasoning effort (0.03234ms)\n  ✔ claude-sonnet-4.6 is in builder with medium reasoning effort (0.03168ms)\n  ✔ gpt-5.1 is in builder with medium reasoning effort (0.0308ms)\n  ✔ claude-sonnet-4.6 is in reasoning with high reasoning effort (0.03113ms)\n  ✔ gpt-5 is in reasoning with high reasoning effort (0.03124ms)\n  ✔ claude-opus-4.6 is in reasoning with no reasoning effort (0.03234ms)\n  ✔ claude-sonnet-4.6 appears in builder and reasoning with different efforts (0.05797ms)\n✔ tier and reasoning-effort regression (0.39963ms)\n▶ keyword list regression\n  ✔ EXPLICIT_REVIEW_KEYWORDS includes review, audit, and find bugs (0.04917ms)\n  ✔ ORCHESTRATION_KEYWORDS includes all multi-agent and tool-chain patterns (0.02915ms)\n  ✔ IMPLEMENT_KEYWORDS includes implement, build, refactor, create (0.02772ms)\n  ✔ DEBUG_KEYWORDS includes debug, fix, root cause, broken (0.02706ms)\n  ✔ TOOL_KEYWORDS includes bash, curl, api, agent, shell, script (0.03729ms)\n✔ keyword list regression (0.22231ms)\n▶ routing-matrix.md consistency\n  ✔ mentions every model ID from MODEL_CANDIDATES (0.24365ms)\n  ✔ mentions all ORCHESTRATION_KEYWORDS (0.0495ms)\n✔ routing-matrix.md consistency (0.32087ms)\nℹ tests 69\nℹ suites 19\nℹ pass 69\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 85.69055\n<exited with exit code 0>\nbe61fed1-4e47-4189-87dd-66b634dad59f\nAll 69 tests pass (up from 54). Now commit:\n[detached HEAD ec3fa00] refactor: routing policy source-of-truth — add regression tests, fix doc drift\n 4 files changed, 154 insertions(+), 352 deletions(-)\n delete mode 100644 .github/extensions/model-router/extension.mjs.new\n<exited with exit code 0>\n[detached HEAD ec3fa00] refactor: routing policy source-of-truth — add regression tests, fix doc drift\n 4 files changed, 154 insertions(+), 352 deletions(-)\n delete mode 100644 .github/extensions/model-router/extension.mjs.new\n<exited with exit code 0>\n4e9bfcac-d612-4866-8db4-b7b2bd47f1bf\n## Routing Policy Source-of-Truth Refactor\n\n**Changes made (4 files, 0 runtime behaviour changes):**\n\n### 1. `eval/routing-policy.test.mjs` — 3 new describe blocks (69 tests, up from 54)\n\n- **`tier and reasoning-effort regression`** — pins 8 key model/tier/effort combos (e.g. `claude-sonnet-4.6` must be in `builder` with `\"medium\"` AND in `reasoning` with `\"high\"`). Any accidental model move or effort tweak now fails fast.\n\n- **`keyword list regression`** — guards that critical entries in all five keyword arrays (`EXPLICIT_REVIEW_KEYWORDS`, `ORCHESTRATION_KEYWORDS`, `IMPLEMENT_KEYWORDS`, `DEBUG_KEYWORDS`, `TOOL_KEYWORDS`) survive future edits.\n\n- **`routing-matrix.md consistency`** — reads the doc at test time and asserts every model ID in `MODEL_CANDIDATES` appears in it. Adding a model to `policy.mjs` without updating the doc now fails CI.\n\nAlso added the keyword array imports (`EXPLICIT_REVIEW_KEYWORDS`, etc.) that were missing from the test file.\n\n### 2. `README.md` — Fixed \"Explicit Review Only\" section\n\nWas listing only 8 of 15 `EXPLICIT_REVIEW_KEYWORDS`. Added the missing bug-finding entries (`\"find bugs\"`, `\"bug finding\"`, `\"regression hunting\"`, `\"regression hunt\"`, `\"find regressions\"`) and linked to `policy.mjs` as the authoritative source.\n\n### 3. `routing-matrix.md` — Fixed TOOL_KEYWORDS prose\n\nWas listing 8 of 16 keywords. Now lists all 16 to match the `TOOL_KEYWORDS` array in `policy.mjs` exactly.\n\n### 4. Deleted `extension.mjs.new`\n\nUnintegrated draft artifact — the current `extension.mjs` already has the cleaner version of that code.\n\n---\n\n**What prevents drift going forward:**\n- Adding a model to `policy.mjs` → `routing-matrix.md consistency` test fails until the doc is updated\n- Removing a critical keyword → `keyword list regression` test fails\n- Changing a reasoning-effort default → `tier and reasoning-effort regression` test fails\n- `policy.mjs` remains the single source of truth; docs and tests derive their authority from it\n\n✓ Task completed: ## Routing Policy Source-of-Truth Refactor\n\n**Changes made (4 files, 0 runtime behaviour changes):**\n\n### 1. `eval/routing-policy.test.mjs` — 3 new describe blocks (69 tests, up from 54)\n\n- **`tier and reasoning-effort regression`** — pins 8 key model/tier/effort combos (e.g. `claude-sonnet-4.6` must be in `builder` with `\"medium\"` AND in `reasoning` with `\"high\"`). Any accidental model move or effort tweak now fails fast.\n\n- **`keyword list regression`** — guards that critical entries in all five keyword arrays (`EXPLICIT_REVIEW_KEYWORDS`, `ORCHESTRATION_KEYWORDS`, `IMPLEMENT_KEYWORDS`, `DEBUG_KEYWORDS`, `TOOL_KEYWORDS`) survive future edits.\n\n- **`routing-matrix.md consistency`** — reads the doc at test time and asserts every model ID in `MODEL_CANDIDATES` appears in it. Adding a model to `policy.mjs` without updating the doc now fails CI.\n\nAlso added the keyword array imports (`EXPLICIT_REVIEW_KEYWORDS`, etc.) that were missing from the test file.\n\n### 2. `README.md` — Fixed \"Explicit Review Only\" section\n\nWas listing only 8 of 15 `EXPLICIT_REVIEW_KEYWORDS`. Added the missing bug-finding entries (`\"find bugs\"`, `\"bug finding\"`, `\"regression hunting\"`, `\"regression hunt\"`, `\"find regressions\"`) and linked to `policy.mjs` as the authoritative source.\n\n### 3. `routing-matrix.md` — Fixed TOOL_KEYWORDS prose\n\nWas listing 8 of 16 keywords. Now lists all 16 to match the `TOOL_KEYWORDS` array in `policy.mjs` exactly.\n\n### 4. Deleted `extension.mjs.new`\n\nUnintegrated draft artifact — the current `extension.mjs` already has the cleaner version of that code.\n\n---\n\n**What prevents drift going forward:**\n- Adding a model to `policy.mjs` → `routing-matrix.md consistency` test fails until the doc is updated\n- Removing a critical keyword → `keyword list regression` test fails\n- Changing a reasoning-effort default → `tier and reasoning-effort regression` test fails\n- `policy.mjs` remains the single source of truth; docs and tests derive their authority from it",
+  "rawArtifactFiles": {
+    "stdoutJsonl": "copilot-output.jsonl",
+    "stderr": "copilot-stderr.txt",
+    "diff": "git-diff.patch"
+  }
+}

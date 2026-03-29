@@ -1,0 +1,10 @@
+ D .github/copilot-instructions.md
+ D .github/extensions/model-router/extension.mjs.new
+ D .github/plugin.json
+ D .github/skills/model-router/SKILL.md
+ D .github/skills/model-router/references/routing-matrix.md
+?? .github/copilot-instructions.md.eval-disabled
+?? .github/extensions/model-router.eval-disabled/extension.mjs.new
+?? .github/extensions/model-router.eval-disabled/policy.mjs
+?? .github/plugin.json.eval-disabled
+?? .github/skills/model-router.eval-disabled/references/

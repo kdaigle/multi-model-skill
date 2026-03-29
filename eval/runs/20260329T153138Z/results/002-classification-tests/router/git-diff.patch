@@ -1,0 +1,253 @@
+diff --git a/eval/classification-regression.test.mjs b/eval/classification-regression.test.mjs
+new file mode 100644
+index 0000000..826dc93
+--- /dev/null
++++ b/eval/classification-regression.test.mjs
+@@ -0,0 +1,247 @@
++/**
++ * Regression tests for prompt-classification heuristics.
++ *
++ * Focuses on three areas that require targeted coverage:
++ *   1. Explicit review detection — all EXPLICIT_REVIEW_KEYWORDS + word-boundary guards
++ *   2. Tool-heavy implementation routing — toolHeavy flag + economy-tier prevention
++ *   3. Orchestration escalation — all ORCHESTRATION_KEYWORDS + false-positive guards + threshold
++ *
++ * No external dependencies — Node built-ins only.
++ * Run with: node --test eval/classification-regression.test.mjs
++ */
++
++import { strict as assert } from "node:assert";
++import { describe, it } from "node:test";
++import {
++  isExplicitReviewRequest,
++  isToolHeavy,
++  isComplexOrchestration,
++  classifyPrompt,
++} from "../.github/extensions/model-router/policy.mjs";
++
++// ---------------------------------------------------------------------------
++// 1. Explicit review detection — full EXPLICIT_REVIEW_KEYWORDS coverage
++// ---------------------------------------------------------------------------
++
++describe("isExplicitReviewRequest — full keyword coverage", () => {
++  // Every entry in EXPLICIT_REVIEW_KEYWORDS must produce true.
++  const truePositives = [
++    ["review keyword",             "please review this change"],
++    ["code review phrase",         "can you do a code review of this pr"],
++    ["review this phrase",         "could you review this before we merge"],
++    ["review the code phrase",     "review the code in auth.js"],
++    ["review my code phrase",      "review my code and leave inline comments"],
++    ["audit keyword",              "audit the security module for vulnerabilities"],
++    ["approval readiness phrase",  "run an approval readiness check on the branch"],
++    ["approval readiness checks",  "do approval readiness checks before the release"],
++    ["approve this phrase",        "approve this change for production deployment"],
++    ["pr review phrase",           "pr review for the new feature branch"],
++    ["find bugs phrase",           "find bugs in the payment processing module"],
++    ["bug finding phrase",         "bug finding session scheduled for friday"],
++    ["regression hunting phrase",  "regression hunting before the release freeze"],
++    ["regression hunt phrase",     "regression hunt the latest batch of commits"],
++    ["find regressions phrase",    "find regressions introduced in the v2 refactor"],
++  ];
++
++  for (const [label, prompt] of truePositives) {
++    it(`detects ${label}`, () => {
++      assert.ok(isExplicitReviewRequest(prompt), `Expected true for: "${prompt}"`);
++    });
++  }
++
++  // Word-boundary guard: "reviewed" must NOT trigger the "review" keyword.
++  // After "review" in "reviewed" the next char is 'e' (word char) → no \b boundary.
++  it("does not fire on 'reviewed' past tense", () => {
++    assert.ok(!isExplicitReviewRequest("i have already reviewed the pull request"));
++  });
++
++  it("does not fire on unrelated implementation prompt", () => {
++    assert.ok(!isExplicitReviewRequest("implement the new caching layer"));
++  });
++});
++
++// ---------------------------------------------------------------------------
++// Review detection → classifyPrompt precedence
++// ---------------------------------------------------------------------------
++
++describe("classifyPrompt — explicit review always routes to reasoning tier", () => {
++  // Each of these prompts activates a different EXPLICIT_REVIEW_KEYWORD.
++  const reviewPrompts = [
++    "audit the authentication module",
++    "please do a code review of this pr",
++    "find bugs in the payment service",
++    "regression hunting before the release",
++    "approval readiness checks for v3",
++    "run a pr review on feature/login",
++    "regression hunt the new changes",
++  ];
++
++  for (const prompt of reviewPrompts) {
++    it(`"${prompt}" → kind=review, tier=reasoning`, () => {
++      const result = classifyPrompt(prompt);
++      assert.equal(result.kind, "review",     `Expected kind=review for: "${prompt}"`);
++      assert.equal(result.tier, "reasoning",  `Expected tier=reasoning for: "${prompt}"`);
++    });
++  }
++
++  it("review keyword beats implement keyword — review check fires first", () => {
++    // "implement" is an IMPLEMENT_KEYWORD; "review" is an EXPLICIT_REVIEW_KEYWORD.
++    // The review branch runs before the implement branch, so kind must be "review".
++    const result = classifyPrompt("implement and then review the changes");
++    assert.equal(result.kind, "review");
++    assert.equal(result.tier, "reasoning");
++  });
++});
++
++// ---------------------------------------------------------------------------
++// 2. Tool-heavy implementation routing — isToolHeavy coverage
++// ---------------------------------------------------------------------------
++
++describe("isToolHeavy — full TOOL_KEYWORDS coverage", () => {
++  const truePositives = [
++    ["bash keyword",     "write a bash wrapper script"],
++    ["curl keyword",     "use curl to hit the endpoint"],
++    ["execute keyword",  "execute the migration script"],
++    ["run keyword",      "run the integration test suite"],
++    ["api keyword",      "connect to the external api"],
++    ["function keyword", "add a function that parses the input"],
++    ["call keyword",     "call the remote service with auth headers"],
++    ["invoke keyword",   "invoke the lambda handler directly"],
++    ["script keyword",   "create a script to automate backups"],
++    ["command keyword",  "add a new command to the cli"],
++    ["shell keyword",    "execute a shell command to verify output"],
++    ["http keyword",     "send an http request to the health endpoint"],
++    ["request keyword",  "submit a request to the api gateway"],
++    ["endpoint keyword", "expose a new endpoint on the router"],
++    ["agent keyword",    "configure an agent to poll the queue"],
++  ];
++
++  for (const [label, prompt] of truePositives) {
++    it(`detects ${label}`, () => {
++      assert.ok(isToolHeavy(prompt), `Expected true for: "${prompt}"`);
++    });
++  }
++
++  // Word-boundary guard: "callback" must NOT trigger the "call" keyword.
++  // In "callback", 'call' is followed by 'b' (word char) → no \b boundary after 'l'.
++  it("does not fire on 'callback' (word-boundary guard for 'call')", () => {
++    assert.ok(!isToolHeavy("use a callback to handle the response event"));
++  });
++
++  it("does not fire on plain prose with no tool keywords", () => {
++    assert.ok(!isToolHeavy("explain the architecture of the new service"));
++  });
++});
++
++// ---------------------------------------------------------------------------
++// Tool-heavy implementation routing — classifyPrompt integration
++// ---------------------------------------------------------------------------
++
++describe("classifyPrompt — tool-heavy implementation", () => {
++  it("sets toolHeavy=true when implementation contains tool keywords", () => {
++    const result = classifyPrompt("implement a function that calls the api");
++    assert.equal(result.kind, "implementation");
++    assert.equal(result.toolHeavy, true);
++  });
++
++  it("sets toolHeavy=false for plain implementation with no tool keywords", () => {
++    const result = classifyPrompt("implement a login form");
++    assert.equal(result.kind, "implementation");
++    assert.equal(result.toolHeavy, false);
++  });
++
++  it("tool keyword lifts complexity above 0, blocking the economy-tier shortcut", () => {
++    // "show" is a LIGHT_KEYWORD; "write" is an IMPLEMENT_KEYWORD; "bash" + "script" are TOOL_KEYWORDS.
++    // isToolHeavy → true → complexity += 1 → complexity = 1 (not 0).
++    // The economy shortcut requires (light keyword AND complexity === 0); complexity=1 breaks it.
++    const result = classifyPrompt("show me how to write a bash script");
++    assert.equal(result.kind, "implementation");
++    assert.equal(result.tier, "builder");
++    assert.ok(result.complexity > 0, "tool keywords should push complexity above 0");
++    assert.equal(result.toolHeavy, true);
++  });
++});
++
++// ---------------------------------------------------------------------------
++// 3. Orchestration escalation — isComplexOrchestration coverage
++// ---------------------------------------------------------------------------
++
++describe("isComplexOrchestration — full ORCHESTRATION_KEYWORDS coverage", () => {
++  const truePositives = [
++    ["parallel agents phrase", "coordinate parallel agents to handle tasks"],
++    ["multiple agents phrase", "spawn multiple agents for the job"],
++    ["multi-agent phrase",     "build a multi-agent pipeline for data processing"],
++    ["parallel tools phrase",  "execute parallel tools to speed up the build"],
++    ["tool chain phrase",      "set up a tool chain for the deployment pipeline"],
++    ["chained tools phrase",   "run chained tools to transform and validate data"],
++  ];
++
++  for (const [label, prompt] of truePositives) {
++    it(`detects ${label}`, () => {
++      assert.ok(isComplexOrchestration(prompt), `Expected true for: "${prompt}"`);
++    });
++  }
++
++  // Bare "orchestrate" / "orchestration" are intentionally excluded from the keyword
++  // list to avoid false positives when tasks merely mention these concepts in prose.
++  it("does not fire on bare 'orchestrate' verb", () => {
++    assert.ok(!isComplexOrchestration("orchestrate the deployment steps carefully"));
++  });
++
++  it("does not fire on bare 'orchestration' noun", () => {
++    assert.ok(!isComplexOrchestration("describe the orchestration pattern used in this service"));
++  });
++
++  it("does not fire on 'chain of thought' (not 'tool chain')", () => {
++    assert.ok(!isComplexOrchestration("use a chain of thought approach to plan the solution"));
++  });
++
++  it("does not fire when only a partial phrase matches ('agent' alone, not 'multiple agents')", () => {
++    assert.ok(!isComplexOrchestration("configure an agent to monitor the queue"));
++  });
++});
++
++// ---------------------------------------------------------------------------
++// Orchestration escalation — classifyPrompt threshold tests
++// ---------------------------------------------------------------------------
++
++describe("classifyPrompt — orchestration escalation threshold", () => {
++  it("multi-agent keyword with low complexity (< 2) does NOT escalate to reasoning", () => {
++    // Prompt: implement + "multi-agent" (orchestration) but only 4 words.
++    // Complexity: isToolHeavy via 'agent' → +1, nothing else → complexity=1.
++    // Escalation condition: isComplexOrchestration AND complexity >= 2 → fails at complexity=1.
++    const result = classifyPrompt("implement a multi-agent task");
++    assert.equal(result.kind, "implementation");
++    assert.notEqual(result.tier, "reasoning",
++      "low-complexity orchestration must not escalate to reasoning");
++  });
++
++  it("multi-agent + multiple files bumps complexity to >= 2 and escalates to reasoning", () => {
++    // "multiple agents" → orchestration, "multiple files" → complexity +2, giving complexity >= 2.
++    const result = classifyPrompt(
++      "implement a system using multiple agents that processes multiple files"
++    );
++    assert.equal(result.kind, "implementation");
++    assert.equal(result.tier, "reasoning",
++      "orchestration with complexity >= 2 must escalate to reasoning");
++  });
++
++  it("'tool chain' alone (complexity < 2) stays at builder tier", () => {
++    // "implement" → implement path; "tool chain" → orchestration; "tool" → isToolHeavy → complexity=1.
++    // 1 < 2 → escalation gate not reached.
++    const result = classifyPrompt("implement a tool chain");
++    assert.equal(result.kind, "implementation");
++    assert.equal(result.tier, "builder",
++      "tool chain alone must not escalate without sufficient complexity");
++  });
++
++  it("parallel agents in general task with complexity >= 2 escalates to reasoning", () => {
++    // No implement/plan/debug keyword → general path.
++    // "parallel agents" → orchestration; "carefully" → complexity +2 → complexity >= 2.
++    const result = classifyPrompt(
++      "coordinate parallel agents carefully to process the entire codebase"
++    );
++    assert.equal(result.tier, "reasoning",
++      "general orchestration task with complexity >= 2 must escalate to reasoning");
++  });
++});

@@ -1,0 +1,26 @@
+{
+  "cwd": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T153138Z/worktrees/006-routing-policy-source-of-truth/fixed",
+  "command": "copilot",
+  "args": [
+    "-p",
+    "Design and implement a maintainable source-of-truth refactor for model routing policy so candidate tiers, reasoning-effort defaults, and the public routing guidance do not drift. Keep runtime behavior compatible unless you uncover a clear bug, but reduce duplication across the extension, the routing matrix, and contributor-facing docs. Add lightweight regression coverage for the shared mapping or exported helpers, and prefer a small architecture plan followed by focused edits instead of a broad rewrite.",
+    "--model",
+    "claude-sonnet-4.6",
+    "--reasoning-effort",
+    "medium",
+    "--output-format",
+    "json",
+    "--stream",
+    "off",
+    "--allow-all",
+    "--no-ask-user",
+    "--autopilot",
+    "--experimental"
+  ],
+  "startModel": "claude-sonnet-4.6",
+  "reasoningEffort": "medium",
+  "variantId": "fixed",
+  "taskId": "006-routing-policy-source-of-truth",
+  "timeoutMs": 1200000,
+  "dryRun": false
+}

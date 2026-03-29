@@ -1,0 +1,82 @@
+{
+  "runDir": "eval/runs/20260329T153138Z/results/002-classification-tests/fixed",
+  "generatedAt": "2026-03-29T16:54:08.335Z",
+  "complete": true,
+  "stages": [
+    {
+      "stage": "prepareWorktree",
+      "ok": true,
+      "taskId": "002-classification-tests",
+      "variantId": "fixed",
+      "baseSha": "39c026f4c0c67b7b7b061afa42c6a3c29cd3d67e",
+      "worktreeRelativePath": "eval/runs/20260329T153138Z/worktrees/002-classification-tests/fixed",
+      "disabledPathCount": 4
+    },
+    {
+      "stage": "copilotRun",
+      "ok": true,
+      "dryRun": false,
+      "exitCode": 0,
+      "timedOut": false,
+      "runStatus": "completed",
+      "startModel": "claude-sonnet-4.6",
+      "reasoningEffort": "medium",
+      "timeoutMs": 600000,
+      "stdoutBytes": 508504,
+      "stderrBytes": 0,
+      "changedFileCount": 1,
+      "changedFiles": [
+        "tests/routing-policy.test.mjs"
+      ]
+    },
+    {
+      "stage": "collectArtifacts",
+      "ok": true,
+      "parseableLineCount": 222,
+      "unparseableLineCount": 0,
+      "gitDiffBytes": 12263,
+      "modelMentions": [
+        "claude-sonnet-4.6"
+      ],
+      "usageCandidateCount": 38
+    },
+    {
+      "stage": "validate",
+      "ok": false,
+      "valid": false,
+      "totalChecks": 5,
+      "passedChecks": 4,
+      "failedChecks": 1,
+      "timedOut": false,
+      "failureMode": null
+    },
+    {
+      "stage": "score",
+      "ok": false,
+      "skipped": false,
+      "judgeTimedOut": false,
+      "judgeModel": "gpt-5.4",
+      "correctnessScore": null,
+      "completenessScore": null,
+      "minimalityScore": null,
+      "verdict": null,
+      "costMode": "observed_tokens_weighted",
+      "relativeCostIndex": 79.103
+    }
+  ],
+  "chainSummary": {
+    "stagesRecorded": [
+      "prepareWorktree",
+      "copilotRun",
+      "collectArtifacts",
+      "validate",
+      "score"
+    ],
+    "anyTimedOut": false,
+    "allOk": false,
+    "startModel": "claude-sonnet-4.6",
+    "changedFileCount": 1,
+    "verdict": null,
+    "correctnessScore": null
+  }
+}

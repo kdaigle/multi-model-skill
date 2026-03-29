@@ -1,0 +1,203 @@
+diff --git a/eval/README.md b/eval/README.md
+index 68db77d..b27661c 100644
+--- a/eval/README.md
++++ b/eval/README.md
+@@ -212,9 +212,11 @@ When a subprocess exceeds its timeout, the harness keeps partial artifacts and r
+ `suite-summary.txt` is a quick overview:
+ 
+ ```text
+-001-status-enhancement -> router: verdict=pass, correctness=4, cost=5.1 (observed_tokens_weighted) [prep✓ run✓ collect✓ valid✓ judge✓] | fixed: ...
++001-status-enhancement -> router: verdict=pass, correctness=4, cost=5.1 (observed_tokens_weighted), tools=21/4t/125s [prep✓ run✓ collect✓ valid✓ judge✓] | fixed: ...
+ ```
+ 
++The `tools=N/Tt/Ds` segment (when present) shows total tool calls / turn count / session seconds from the Copilot run. It is omitted for dry runs or when the JSONL contained no tool execution events.
++
+ The `[prep✓ run✓ collect✓ valid✓ judge✓]` chain at the end of each variant entry shows whether each pipeline stage succeeded (✓), failed (✗), or was not recorded (?). This makes it easy to spot exactly where a harder run went wrong without opening individual JSON files.
+ 
+ ### Routing Trace (`routing-trace.json`)
+@@ -233,7 +235,10 @@ Top-level structure:
+   "complete": true,
+   "stages": [
+     { "stage": "prepareWorktree", "ok": true, "baseSha": "abc123", "disabledPathCount": 2, ... },
+-    { "stage": "copilotRun",      "ok": true, "exitCode": 0, "timedOut": false, "changedFileCount": 3, ... },
++    { "stage": "copilotRun",      "ok": true, "exitCode": 0, "timedOut": false, "changedFileCount": 3,
++      "toolCallCount": 21, "toolCallsByName": {"bash": 8, "view": 7, "edit": 3, "report_intent": 3},
++      "uniqueToolNames": ["bash", "view", "edit", "report_intent"],
++      "turnCount": 4, "sessionDurationMs": 125000, "totalApiDurationMs": 120076, ... },
+     { "stage": "collectArtifacts","ok": true, "parseableLineCount": 42, "gitDiffBytes": 5678, ... },
+     { "stage": "validate",        "ok": true, "valid": true, "passedChecks": 5, "failedChecks": 0, ... },
+     { "stage": "score",           "ok": true, "verdict": "pass", "correctnessScore": 4, "relativeCostIndex": 1.2, ... }
+@@ -245,12 +250,28 @@ Top-level structure:
+     "startModel": "claude-sonnet-4.6",
+     "changedFileCount": 3,
+     "verdict": "pass",
+-    "correctnessScore": 4
++    "correctnessScore": 4,
++    "toolCallCount": 21,
++    "turnCount": 4,
++    "sessionDurationMs": 125000
+   }
+ }
+ ```
+ 
+-The `traceHighlight` field added to each variant in `suite-summary.json` mirrors `chainSummary` for quick machine-readable access without opening per-run files.
++**Tool call fields in `copilotRun`:**
++
++| Field | Description |
++|-------|-------------|
++| `toolCallCount` | Total number of tool calls (paired start + complete events). |
++| `toolCallsByName` | Per-tool call counts, e.g. `{"bash": 8, "view": 7, "edit": 3}`. |
++| `uniqueToolNames` | Deduplicated list of tool names used. |
++| `turnCount` | Number of `assistant.turn_start` events (conversation depth). |
++| `sessionDurationMs` | Total wall-clock session duration from the final `result` event. |
++| `totalApiDurationMs` | Cumulative API time reported in the `result` event. |
++
++The `traceHighlight` field added to each variant in `suite-summary.json` mirrors `chainSummary` (including `toolCallCount`, `turnCount`, and `sessionDurationMs`) for quick machine-readable access without opening per-run files.
++
++**`artifact-summary.json` also gains a `toolCallTrace` field** with the full per-call sequence (`calls` array) for detailed post-hoc analysis of what Copilot actually did during the run.
+ 
+ ### Dry-run output
+ 
+diff --git a/eval/scripts/collect-artifacts.mjs b/eval/scripts/collect-artifacts.mjs
+index e0964cf..04c5910 100755
+--- a/eval/scripts/collect-artifacts.mjs
++++ b/eval/scripts/collect-artifacts.mjs
+@@ -49,6 +49,62 @@ for (const line of parsedLines) {
+   usageCandidates.push(...extractUsageCandidates(line.value).map((candidate) => ({ line: line.index, ...candidate })));
+ }
+ 
++// Extracts a structured trace of every tool call from the Copilot JSONL output.
++// Pairs tool.execution_start with tool.execution_complete by toolCallId to compute
++// per-call duration, and reads session-wide timing from the final result event.
++function extractToolCallTrace(lines) {
++  const pendingStarts = new Map();
++  const calls = [];
++  let sessionDurationMs = null;
++  let totalApiDurationMs = null;
++  let turnCount = 0;
++
++  for (const { value } of lines) {
++    if (!value || typeof value !== 'object') continue;
++    const { type, data, timestamp } = value;
++
++    if (type === 'tool.execution_start' && data?.toolCallId) {
++      pendingStarts.set(data.toolCallId, { toolName: data.toolName ?? null, startTs: timestamp ?? null });
++    } else if (type === 'tool.execution_complete' && data?.toolCallId) {
++      const pending = pendingStarts.get(data.toolCallId);
++      pendingStarts.delete(data.toolCallId);
++      const rawDuration = (pending?.startTs && timestamp)
++        ? new Date(timestamp) - new Date(pending.startTs)
++        : null;
++      calls.push({
++        toolName: pending?.toolName ?? null,
++        durationMs: Number.isFinite(rawDuration) ? Math.max(0, rawDuration) : null,
++        success: data.success ?? null,
++        model: data.model ?? null
++      });
++    } else if (type === 'assistant.turn_start') {
++      turnCount++;
++    } else if (type === 'result') {
++      // top-level result event carries session-wide timing
++      sessionDurationMs = value.usage?.sessionDurationMs ?? null;
++      totalApiDurationMs = value.usage?.totalApiDurationMs ?? null;
++    }
++  }
++
++  const toolCallsByName = {};
++  for (const call of calls) {
++    const name = call.toolName ?? 'unknown';
++    toolCallsByName[name] = (toolCallsByName[name] ?? 0) + 1;
++  }
++
++  return {
++    toolCallCount: calls.length,
++    toolCallsByName,
++    uniqueToolNames: [...new Set(calls.map((c) => c.toolName).filter(Boolean))],
++    turnCount,
++    sessionDurationMs,
++    totalApiDurationMs,
++    calls
++  };
++}
++
++const toolCallTrace = extractToolCallTrace(parsedLines);
++
+ // Track only the actual model that ran, not all mentions in output.
+ // This prevents inflating route penalties from model ID mentions in code/docs.
+ const modelMentions = runSummary.startModel ? [runSummary.startModel] : [];
+@@ -72,6 +128,7 @@ const summary = {
+   usageCandidates,
+   textSnippetCount: textSnippets.length,
+   finalResponseSnippet,
++  toolCallTrace,
+   rawArtifactFiles: {
+     stdoutJsonl: 'copilot-output.jsonl',
+     stderr: 'copilot-stderr.txt',
+@@ -119,7 +176,13 @@ traceStages.push({
+   stdoutBytes: runSummary.stdoutBytes ?? 0,
+   stderrBytes: runSummary.stderrBytes ?? 0,
+   changedFileCount: (runSummary.changedFiles ?? []).length,
+-  changedFiles: runSummary.changedFiles ?? []
++  changedFiles: runSummary.changedFiles ?? [],
++  toolCallCount: toolCallTrace.toolCallCount,
++  toolCallsByName: toolCallTrace.toolCallsByName,
++  uniqueToolNames: toolCallTrace.uniqueToolNames,
++  turnCount: toolCallTrace.turnCount,
++  sessionDurationMs: toolCallTrace.sessionDurationMs,
++  totalApiDurationMs: toolCallTrace.totalApiDurationMs
+ });
+ 
+ traceStages.push({
+diff --git a/eval/scripts/summarize-suite.mjs b/eval/scripts/summarize-suite.mjs
+index 4b40a42..173207e 100755
+--- a/eval/scripts/summarize-suite.mjs
++++ b/eval/scripts/summarize-suite.mjs
+@@ -103,6 +103,7 @@ async function buildRoutingTrace(runDir, runResult, validation, score) {
+     ?? stages.find((s) => s.stage === 'prepareWorktree' && s.variantId)?.variantId
+     ?? null;
+   const changedFileCount = stages.find((s) => s.stage === 'copilotRun')?.changedFileCount ?? 0;
++  const copilotRunStage = stages.find((s) => s.stage === 'copilotRun');
+ 
+   const trace = {
+     runDir: relativeRunDir,
+@@ -116,7 +117,10 @@ async function buildRoutingTrace(runDir, runResult, validation, score) {
+       startModel,
+       changedFileCount,
+       verdict: scoreStage.verdict,
+-      correctnessScore: scoreStage.correctnessScore
++      correctnessScore: scoreStage.correctnessScore,
++      toolCallCount: copilotRunStage?.toolCallCount ?? null,
++      turnCount: copilotRunStage?.turnCount ?? null,
++      sessionDurationMs: copilotRunStage?.sessionDurationMs ?? null
+     }
+   };
+ 
+@@ -149,7 +153,10 @@ for (const taskId of taskIds) {
+       anyTimedOut: trace.chainSummary.anyTimedOut,
+       allOk: trace.chainSummary.allOk,
+       startModel: trace.chainSummary.startModel,
+-      changedFileCount: trace.chainSummary.changedFileCount
++      changedFileCount: trace.chainSummary.changedFileCount,
++      toolCallCount: trace.chainSummary.toolCallCount,
++      turnCount: trace.chainSummary.turnCount,
++      sessionDurationMs: trace.chainSummary.sessionDurationMs
+     };
+ 
+     variants.push({
+@@ -222,7 +229,15 @@ const textSummary = [
+         return `${label}${indicator}`;
+       });
+       const chain = `[${chainParts.join(' ')}]`;
+-      return `${variant.variantId}: status=${variant.status}, timeout=${timeoutLabel}, verdict=${variant.verdict ?? 'n/a'}, correctness=${variant.correctnessScore ?? 'n/a'}, cost=${variant.relativeCostIndex ?? 'n/a'} (${variant.costMode ?? 'n/a'}) ${chain}`;
++      const toolCount = variant.traceHighlight?.toolCallCount;
++      const turns = variant.traceHighlight?.turnCount;
++      const durSec = variant.traceHighlight?.sessionDurationMs != null
++        ? Math.round(variant.traceHighlight.sessionDurationMs / 1000)
++        : null;
++      const toolsInfo = toolCount != null
++        ? `, tools=${toolCount}${turns != null ? `/${turns}t` : ''}${durSec != null ? `/${durSec}s` : ''}`
++        : '';
++      return `${variant.variantId}: status=${variant.status}, timeout=${timeoutLabel}, verdict=${variant.verdict ?? 'n/a'}, correctness=${variant.correctnessScore ?? 'n/a'}, cost=${variant.relativeCostIndex ?? 'n/a'} (${variant.costMode ?? 'n/a'})${toolsInfo} ${chain}`;
+     });
+     return `${task.taskId} -> ${pieces.join(' | ')}`;
+   })
