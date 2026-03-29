@@ -21,17 +21,29 @@ Routes Copilot CLI work to the lowest-cost viable model based on task complexity
 
 ## Installation
 
-This is a project-local Copilot CLI skill + extension. To use:
+Install this skill into your Copilot CLI using:
 
-1. Clone this repo into your project:
-   ```bash
-   git clone https://github.com/kdaigle/multi-model-skill.git
-   # or copy the `.github/` directory to your project
-   ```
+```bash
+npx @github/copilot-cli install-skill kdaigle/multi-model-skill
+```
 
-2. The extension is in `.github/extensions/model-router/` — it will auto-load when you use Copilot CLI in this directory.
+Or, to install from a local directory:
 
-3. The skill is in `.github/skills/model-router/` — it auto-triggers when your request mentions cost, model, review, or optimization.
+```bash
+npx @github/copilot-cli install-skill ./path/to/multi-model-skill
+```
+
+### What Gets Installed
+
+The skill installs:
+- **Extension** (`.github/extensions/model-router/`) — Runs automatically in the background to switch models before each message
+- **Skill** (`.github/skills/model-router/`) — Auto-triggers when your request mentions cost, model, review, or optimization
+- **Instructions** (`.github/copilot-instructions.md`) — Tells Copilot CLI when to activate the skill
+
+After installation:
+- The extension auto-loads and runs on every Copilot CLI message
+- The skill auto-triggers via keyword matching
+- No additional configuration needed
 
 ## How It Works
 
@@ -175,13 +187,28 @@ Returns:
 
 ## Customization
 
-To modify routing decisions, edit:
+To customize routing decisions, locate the installed files:
+
+```bash
+# Find where Copilot CLI installs skills
+ls ~/.copilot/skills/model-router/  # User-scoped installation
+# or
+ls ./.github/extensions/model-router/  # Project-local installation
+```
+
+Then edit:
 
 1. **Task keywords**: Modify `PLAN_KEYWORDS`, `DEBUG_KEYWORDS`, `IMPLEMENT_KEYWORDS` in `extension.mjs`
 2. **Tool keywords**: Modify `TOOL_KEYWORDS` in `extension.mjs`
 3. **Model candidates**: Modify `MODEL_CANDIDATES` object in `extension.mjs`
 4. **Complexity scoring**: Adjust `getComplexity()` function in `extension.mjs`
 5. **Routing policy**: Update `references/routing-matrix.md` with new task-to-model mappings
+
+After making changes, reload the extension:
+```bash
+# In Copilot CLI session
+/clear
+```
 
 ## Technical Details
 
