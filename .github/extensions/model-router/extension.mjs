@@ -569,6 +569,11 @@ function buildAdditionalContext(decision, currentModelId) {
     lines.push("Keep the solution lean and avoid premium-model depth unless the task expands.");
   }
 
+  // For low-complexity implementation, prefer minimal narration
+  if (decision.kind === "implementation" && decision.complexity <= 1) {
+    lines.push("Inspect only the most relevant file(s). Implement directly without extensive planning.");
+  }
+
   if (decision.kind === "planning" || decision.kind === "debugging") {
     lines.push("Favor strong reasoning and structured analysis before acting.");
   }
@@ -578,6 +583,23 @@ function buildAdditionalContext(decision, currentModelId) {
 
 async function trySwitchModel(session, route, currentModelId) {
   let candidates = orderCandidates(dedupeCandidates(getTierCandidates(route)), route);
+
+  // For low-complexity implementation, try same-model reasoning downgrade first
+  // before filtering out the current model entirely.
+  if (route.kind === "implementation" && route.complexity <= 1 && currentModelId) {
+    try {
+      await session.rpc.model.switchTo({
+        modelId: currentModelId,
+        reasoningEffort: "low",
+      });
+      return {
+        id: currentModelId,
+        reasoningEffort: "low",
+      };
+    } catch {
+      // If downgrade fails, continue to model switching logic
+    }
+  }
 
   // Always exclude the current model when known, regardless of task kind.
   if (currentModelId) {

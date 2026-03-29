@@ -1,0 +1,35 @@
+{
+  "taskId": "001-status-enhancement",
+  "variantId": "fixed",
+  "worktreePath": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T053523Z/worktrees/001-status-enhancement/fixed",
+  "worktreeRelativePath": "eval/runs/20260329T053523Z/worktrees/001-status-enhancement/fixed",
+  "runDir": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T053523Z/results/001-status-enhancement/fixed",
+  "baseRef": "HEAD",
+  "baseSha": "9ced9ee960d418372763d5774f0faa53fda1d8e7",
+  "disabledPaths": [
+    {
+      "original": ".github/plugin.json",
+      "renamedTo": ".github/plugin.json.eval-disabled"
+    },
+    {
+      "original": ".github/extensions/model-router",
+      "renamedTo": ".github/extensions/model-router.eval-disabled"
+    },
+    {
+      "original": ".github/skills/model-router",
+      "renamedTo": ".github/skills/model-router.eval-disabled"
+    },
+    {
+      "original": ".github/copilot-instructions.md",
+      "renamedTo": ".github/copilot-instructions.md.eval-disabled"
+    }
+  ],
+  "initialPrune": {
+    "stdout": "",
+    "stderr": ""
+  },
+  "gitWorktreeAdd": {
+    "stdout": "HEAD is now at 9ced9ee Hill-climb: improve router routing and fix eval harness git diff bug",
+    "stderr": "Preparing worktree (detached HEAD 9ced9ee)"
+  }
+}

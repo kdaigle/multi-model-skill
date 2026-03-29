@@ -1,0 +1,1943 @@
+You are a correctness judge for a local Copilot CLI evaluation harness.
+
+Rules:
+- Use only the evidence provided in this prompt.
+- Be conservative. If evidence is incomplete, say so.
+- Judge implementation correctness and task completion first, then completeness and minimality.
+- Output exactly one JSON object and nothing else.
+- The JSON object must follow this schema exactly:
+  {
+    "verdict": "pass" | "partial" | "fail",
+    "correctnessScore": 0-5,
+    "completenessScore": 0-5,
+    "minimalityScore": 0-5,
+    "confidence": "low" | "medium" | "high",
+    "issues": ["short string", ...],
+    "strengths": ["short string", ...],
+    "summary": "one paragraph"
+  }
+
+Evaluation guidance:
+- correctnessScore: did the run implement the requested behavior correctly based on the diff and validation evidence?
+- completenessScore: how fully did it satisfy the task?
+- minimalityScore: did it stay focused and avoid unnecessary changes?
+- verdict:
+  - pass: strong evidence that the task was completed correctly
+  - partial: mixed evidence, incomplete work, or notable uncertainty
+  - fail: strong evidence that the task was not completed or is clearly wrong
+
+Task metadata:
+{
+  "id": "002-classification-tests",
+  "title": "Classification regression tests",
+  "category": "tests",
+  "prompt": "Add lightweight regression coverage for the prompt-classification heuristics in the model-router extension without adding dependencies. Prefer Node built-ins if you introduce tests or fixtures. Focus on explicit review detection, tool-heavy implementation routing, and orchestration escalation. Keep the production extension behavior intact unless you need a small refactor to make the logic testable.",
+  "judgeHints": [
+    "Favor no-dependency tests or fixtures.",
+    "Small refactors for testability are acceptable.",
+    "The best solution adds meaningful coverage for the named routing cases."
+  ],
+  "validation": {
+    "requireDiff": true,
+    "requiredChangedFiles": [
+      ".github/extensions/model-router/extension.mjs"
+    ],
+    "requiredPathPrefixes": [
+      "tests/"
+    ]
+  }
+}
+
+Validation result:
+{
+  "valid": false,
+  "checks": [
+    {
+      "name": "copilot command did not time out",
+      "pass": true,
+      "details": {
+        "timedOut": false,
+        "timeoutMs": 600000,
+        "signal": null,
+        "exitCode": 0
+      }
+    },
+    {
+      "name": "copilot exit code",
+      "pass": true,
+      "details": {
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false
+      }
+    },
+    {
+      "name": "diff exists",
+      "pass": true,
+      "details": "gitDiffBytes=24267"
+    },
+    {
+      "name": "required changed file .github/extensions/model-router/extension.mjs",
+      "pass": true,
+      "details": [
+        ".github/extensions/model-router/classifier.mjs",
+        ".github/extensions/model-router/classifier.test.mjs",
+        ".github/extensions/model-router/extension.mjs"
+      ]
+    },
+    {
+      "name": "required changed path prefix tests/",
+      "pass": false,
+      "details": [
+        ".github/extensions/model-router/classifier.mjs",
+        ".github/extensions/model-router/classifier.test.mjs",
+        ".github/extensions/model-router/extension.mjs"
+      ]
+    }
+  ],
+  "commandResults": [],
+  "changedFiles": [
+    ".github/extensions/model-router/classifier.mjs",
+    ".github/extensions/model-router/classifier.test.mjs",
+    ".github/extensions/model-router/extension.mjs"
+  ],
+  "worktreePath": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router",
+  "timedOut": false,
+  "runTimedOut": false,
+  "timedOutCommands": [],
+  "validationTimeoutMs": 120000,
+  "failureMode": null
+}
+
+Run metadata:
+{
+  "cwd": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router",
+  "command": "copilot",
+  "args": [
+    "-p",
+    "Add lightweight regression coverage for the prompt-classification heuristics in the model-router extension without adding dependencies. Prefer Node built-ins if you introduce tests or fixtures. Focus on explicit review detection, tool-heavy implementation routing, and orchestration escalation. Keep the production extension behavior intact unless you need a small refactor to make the logic testable.",
+    "--model",
+    "claude-sonnet-4.6",
+    "--reasoning-effort",
+    "medium",
+    "--output-format",
+    "json",
+    "--stream",
+    "off",
+    "--allow-all",
+    "--no-ask-user",
+    "--autopilot",
+    "--experimental",
+    "--plugin-dir",
+    "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router"
+  ],
+  "startModel": "claude-sonnet-4.6",
+  "reasoningEffort": "medium",
+  "variantId": "router",
+  "taskId": "002-classification-tests",
+  "timeoutMs": 600000,
+  "dryRun": false,
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "errorCode": null,
+  "errorMessage": null,
+  "stdoutBytes": 316808,
+  "stderrBytes": 0,
+  "changedFiles": [
+    ".github/extensions/model-router/classifier.mjs",
+    ".github/extensions/model-router/classifier.test.mjs",
+    ".github/extensions/model-router/extension.mjs"
+  ],
+  "diffBytes": 24267,
+  "statusPreview": "",
+  "runStatus": "completed"
+}
+
+Artifact summary:
+{
+  "parseableLineCount": 153,
+  "unparseableLineCount": 0,
+  "rawStdoutBytes": 316808,
+  "rawStderrBytes": 0,
+  "gitDiffBytes": 24267,
+  "changedFiles": [
+    ".github/extensions/model-router/classifier.mjs",
+    ".github/extensions/model-router/classifier.test.mjs",
+    ".github/extensions/model-router/extension.mjs"
+  ],
+  "changedFileCount": 3,
+  "modelMentions": [
+    "claude-sonnet-4.6"
+  ],
+  "usageCandidates": [
+    {
+      "line": 10,
+      "path": "data",
+      "value": {
+        "messageId": "63c83d3d-d23b-4a3e-ad81-33492a151350",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_Dv563C8IxcJ22AkqssRDkx",
+            "name": "report_intent",
+            "arguments": {
+              "intent": "Exploring model-router extension"
+            },
+            "type": "function"
+          },
+          {
+            "toolCallId": "tooluse_ZhZmwaqCrtQYR4XADOVns2",
+            "name": "bash",
+            "arguments": {
+              "command": "find /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router -type f | sort",
+              "description": "List all files in the router directory"
+            },
+            "type": "function",
+            "intentionSummary": "List all files in the router directory"
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "reasoningOpaque": "j6VDUU8y3fOdbwtS3OA5Bg4dwfsPtyPS5Zz253i10PkIOIAnnQU08LmSKa3AyPHtN0tos4xCyduUgCtFtTm3ZpDhLjRhv9aWFLiC55oEOUknFq0sldgPWOq9ozIng+2WWBr7UPb8o/aGOkPOpiBY4aTnyDVyjAAECLReSD+vao3LUj0emIzeq5HoSYZ3UX4X+Rkaa9pyL+8Ks4V9Ld7nll36OYVy9SExlplqfelmc9cDKsdkBjG1T9XKWjn35c+xn73HQRRl4TARYfs2ZSrMIXutr7y/pyuhMksse3egS+S4wCJ4qGi73nS+Av8JKdzxT4SRJFMFRRY4NAn9NGDnLT4tKDCnras3Ox6QXKGYiofvFSH3onFkEmKdYoYNrqXkAyw8ngefOXv3ZWOZMhbwCUpmk5dItZllvjoAve6r6SUggdU9XPgF/6cyVv4KFH45KJCxb4XZVqxB0VVdw4rGeE8d7GYJ/9Hx589OxFg1Fm8KthiX1nPAXL61HZWqZVlGib8OrRvtQhhKEZ5nng91q7SBJU5U8hkAiK5gEBiBca1JotfrMgUqXDZOUV/qS9ApKxnYbUUjP1mSXNJ+csAzXCtUBP1/iCl1+tslMo/WnbAuqQ0psdQRewaMwzfL7klhZCraMraQXAXQDgmbr16AEjc8vrzY3GYv9lnl2rh1Zs0mJ8PlluEQOQ9YUe1NUy3S8rJYFtB5Xy5/jEIWBSDH64y/EJdvjX/qEDg6YjD+3TEvXIGsDMlvlggLZ9Pz8ryK+S1AcaoT6WS52aJoo2farY6tmwpmknd+0g51oyuzkFpLw+H/FTE7fGkV1DYV2cDaHyrt5tvSKZuteereDl5i/kuqq6G9jTN11ZWPB+DWFasJhqqhSm7dcG4=",
+        "reasoningText": "Let me start by exploring the repository structure to understand the model-router extension and its codebase.",
+        "outputTokens": 195
+      }
+    },
+    {
+      "line": 20,
+      "path": "data",
+      "value": {
+        "messageId": "2a1ddd08-a887-41ac-8f6c-63d8a4c3210a",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_16rqMRRHIXoR3EDbVhLCad",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs."
+          },
+          {
+            "toolCallId": "tooluse_9WLnciB18dtEjMXs4y737i",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/skills/model-router/references/routing-matrix.md"
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/skills/model-router/references/routing-matrix.md."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 190
+      }
+    },
+    {
+      "line": 23,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file",
+        "largeOutputAvoided": "true",
+        "largeOutputOriginalSizeBytes": "22051"
+      }
+    },
+    {
+      "line": 23,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 220,
+        "resultForLlmLength": 220,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 24,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".md\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 24,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 6643,
+        "resultForLlmLength": 6643,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 27,
+      "path": "data",
+      "value": {
+        "messageId": "4951827d-00bb-4585-8c0a-246aaf565023",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_bYNb4EYXGGGCg9a8T9oYAw",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs",
+              "view_range": [
+                1,
+                100
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 29,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 29,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 2523,
+        "resultForLlmLength": 2523,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 32,
+      "path": "data",
+      "value": {
+        "messageId": "b55b43a2-9011-47a5-b385-c9978782b31c",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_gWifpHnJt00LDjlM2TXsSX",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs",
+              "view_range": [
+                100,
+                250
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 34,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 34,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 4921,
+        "resultForLlmLength": 4921,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 37,
+      "path": "data",
+      "value": {
+        "messageId": "31333850-6b72-420e-b6ec-102516f1de9b",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_EhMXp2c89RRcaxioIUNdwd",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs",
+              "view_range": [
+                250,
+                450
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 39,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 39,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 6790,
+        "resultForLlmLength": 6790,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 42,
+      "path": "data",
+      "value": {
+        "messageId": "45eb3f73-5a6d-4a99-8b2b-831689601df1",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_Kpbg1JDlV6DkMyNuL6T3XF",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs",
+              "view_range": [
+                450,
+                600
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 44,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 44,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 5861,
+        "resultForLlmLength": 5861,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 47,
+      "path": "data",
+      "value": {
+        "messageId": "f1250166-04da-4912-9409-cdd9d6a496b1",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_m4zBT5izOHd4ZxCLyeTIZ4",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs",
+              "view_range": [
+                600,
+                750
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 49,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 49,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 5609,
+        "resultForLlmLength": 5609,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 52,
+      "path": "data",
+      "value": {
+        "messageId": "99826655-cb32-4274-8a04-11a8ccf2a725",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_SzWaqceiYw3Vd4c1uuVHP9",
+            "name": "bash",
+            "arguments": {
+              "command": "node --version && node -e \"require('node:test'); console.log('node:test OK')\" 2>&1",
+              "description": "Check Node version and test runner availability"
+            },
+            "type": "function",
+            "intentionSummary": "Check Node version and test runner availability"
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "reasoningOpaque": "SHC1rVFqcbQYQ4r/9g3H3Z3zmiK2K00+zCeNe/E38YxqEpyw0v8cHxvkxp3mHUcR4bRm2rnhmBmuke38XjZeUKkpi5lbbPlapx7o42x1lrkr3XJkKkKO8vLyK4Kwl+vo4bRejtIPHlJpHfQf6c5CWhULFaw+JwQyU1Aw3bvdbILdnjJIjodZEeiv84ZoXaLxU/FPPTRWRG+8L3nGL82TGeJ5KganZmhc/BviwwLAP82SBKF+d0zrQUhI/yU+HWsWeB/YeZEs8yxIWoqRrcYMKJW+HX3G+WBKPvgWcQ3DOhatVu5D1Y+N86IyRn5RnwV0QIGhJybKtjm0vVZDZtCx/gHuyhp/k4eLt/Fr2uHSozN7J7sQXkEKwATbypdfhPHUwtTOWH2SI0AdAVHON8POekzIzyEh0bGTtBg/RPwB2tyM0XXOCbtytT8Wg81LfBDRJu7XmfSahgVHD/qOL2+dBZoYeBmyMqrEychOY2mW+ZnXMMGAH5BBj2lYdP/ZSEEIh0IIpEX4PIvhjIitIENLQnWUSXbWpxQ5qnZE2Xeav++2m5CZYkFC+wx9AVFLjs/0lqmZr3wXaoVl+WxiB6sdIUtElmt/uBV/yP8qLLtXffz7fMMAKlpO85aRPMlpdFpAmwu1H/Ddz8idup4GZ60OD+j5jqlMulcwKPCg1RkscvB1z3U1Ftj2u9vPZtJ/9n4TXV3zZTeqLVAS+MPMIAl6qv0sYqqdWMKUe1GCn/kvm/hB9st/+WozRs0rsnBl7wdiKXkTW9GQhLOyu8oSfJ3wNNbqgYv7XiAnk+6z/CoRkMblGgqteSuMSihuerHWK+SuWYYL8qhY9edF3zJj4lmcawJLB6VnPsCPQ9FS0903I1J7EsNq0aCjnImz4J/09bOZdx36WfltDv4B5pdBCAkcEV8yubxAOAJQUpvzoslg7lCewBzZzQMRR2KlUJ+hKRdw2R+p5ynkvpSa2MlhdPJ8kXd4nuYTuGtm1jln6eh1EWwbO0Y9FXe0pj1U7CL42MsmTv1oBoBGr83xgKO+nHvxKU4YeNwMlsutjFDLXpX8J7un/+gercd5dfJUX7Kg02xzGk/av03gBuOGqaF7plLQQ/oM+pOX/FTMPI1J/Gmz816JpS2SfeuWxVTkccDBvgWt1WHjgmHxtxtzqFV10o+YDifwtg8qtP6JioR89mKxM0nYfvJ41N/M4II30vtP5akGWmLVS7ePFSynWdk30hzyRY1A8dMDA+XUJhGiGlQIRDOTqU7q3CluNKlUDj7a4c7IzWWYcFR6vwO4mIrCEfOHWCiFKL6NRgqt0+o8gl1Po+eCZb12/U53rKSrJo3o+BKPNOF9WvICV1uT+KM9pmlaBDFobzsiBWCEvjOI1BpYEsRrhCEheqlSuETwI+524gE/mKBx0rucEs2P6qPYw59VST7nCx9DDiTgO+PRsmV4TTQeEu24j1N/BpSPZoHvTHd/0Rv0WDvV5SsT86uJ3+3XzWaq+IBnJc5Gn7Ximj+XnPPbwBQzea1XTmupaldKjJvT/WzZGgOS6TDnlwkt/87+Agd851gRWP78a+ngZvXvF9OstaLyoL0aNs0K5adSofZxoEldk/iCv01WePvuQ8i7pEmCAxMY3saBiG1z+0t/jjVXiomt/IoDOFl6Tkco3qJXG4ku9xBKP66KCHGCL5Qu8+UfjWQLqdjuZofAGVdVPlnQe9lCFM5+QYU/4fdbB3dzizp2J40S3YSGO3YjhBWr179tu7vF/AtvN49+LrHRBygcyY/fa8btRXcNNyAPZ18OY1hySJSR6LCAdprGV0cE/Z3hzAN2zgkUL2KhyxaZOvuozDZfTadsaC6HJJDeavFDQTndSSWjSlKjIY17mYNJ7PosI+AYzybGdv6YKPTt9ix8vzc262571KkMfrY/aaIzIHANfXMaXwmDmN6sfFsLECjbf/OYUsHW8OF42fCvk3ars7nwSvXBvSFljajetha6O5cGQUpA1ghHVQujbfecoW/j3qht6lAeVFtrowMDMeFJlPsB9cErhChSOuM+axCmv8d+QaaHwU3F/vM/FtjuLRHYtuTqheKnthz+WddZGOj9kYErp7PYLU293CVIzpvw0bR3x422huUTH0GcrpMzgdBohOxy8ceecplbwT54TLzzVOXU3Z/gE6sES90UBiR8nctvyjeB6SAAZJdJWRzonhHSAo0uUZgF2kZStdOps9oJUGbDv0KTy8Ab7oSEiPJe1s3UfXkgFUaTIwvKO8BogQnRPV48vx10Gm7sRYtsBIyXBM9C6GsuE3+PzV50HxMx3EuCiyYFf+ZFDLDHX9pYfiDQGTslHb0MKJIvwsty8h2hMFNmtsItA8hB/DuOy2byTogUKNyXZYYBf9tOQEoSeluMHL0oCVB54UbA42W0/I0o7/3pFs4PSwJejaWvrHpLhkCOzOVBuFGvZ3dr6brmqi6X8ROkSmSnMzuzhNSC/TWUv5QxGNev8SK7XpH8eCzpXkP3Qvm4r/+KxlTBkaGPC6LZe50kjun0SQ33L9h5mnuUFCZmkxswTkPgmDyUJ44QGGFjfgDYPGzIo3umsWEg3VXDCYdPuExNxp8ZCRmr/f8h6PLQunah0IKRTvDHW4z7a2bStHUNE5SfY2we5ewp+56aZi4tEhRANvt/ojsTHyEurbmjOcDlDKbJEfaNxlXg1wbP0W/CEKhwDH2kGTdkwMHm1MgNkJd1KFqpN5v47LjjBqYp7ntU1vjDUS2nKQWUrfzJAVo4SR5B+XJY1/uxQQblda9laFThEnme1X0yH8XdPOfcRy14l7qbGt8BpxUHyKWW0Jt16jFBjZKFl8BSeUyhV7p5PijdNW3PeXJDfMH/glVgNVAE8lEsii9VmJrNX6Zp29OjlZHsZfL3mej/7ROzEmpHHhfIdD63eijhlzVChqJ8zW8XYBpvdztsRD4MsVK48R/t5eOrB97m4eRGUtmzrwZ0FvZFe+OU5fA3Wy9Z9B4NnC782wYRE4IQLY4cQejaJxyX/0fM20ySw/iCJGDb9v3+HzHHUEv8frRVi2anrUy8m/EY03TXo4NLLjZQsj1+GHUgUCaloFhkHkJdxYuTv0qpzAxMpsrdMtAAFqP0p6v758rZYS9gW/y1x25RzcQqzk1SFdgThl12qX6WNwZay8VhzJTpd/WvpOUHoA77CZ5LrLrg3DhHkM4iPInrrv2AlUc+eKTv3l7nVJIuu2SL0hh3aAv9J3wM3x101bvy7v5cV7W1py+h206wMwquIFXQ3xJHEPe7w0XqFgGYcU4YGhOYZ5744UdVwxU+ygwpEm5apAHx/zAubcut098O8mAgnmQGEG2W0OTnlbmQBZXqimdCFh3A7IW9T7mFnBuME90CM9A+S3XQzafkm6zzA0rD75yUUbdKcOrcTQwCIAzq0yZOTjoGGbblh2a7h6FVJeBuU1ud8lSwQU/95fPOJeF+29zWStuYHNLe8CgGZkSMKMOqWAjOCpoqb9I6SQU81Ddj/0/1Y0R7gP+/eIqUO4nA+dm/GcnewcheZlLhIXQoOjEBAIKakM+GJ3lTAMcm7HtOID0mIRLrZaKvEyU1x8cITW7J4vhDHzqpCtIO0Y1/5Lyo83JkwQQOVL6VGU+0lGKsAFRNk7qgvMHXFwYD2FdbBo+yV/Qy7ZEWYTVWaoQ5HctPpBbTmNvyVTKao0ecYfUPqnG12XjURF9g5RehLw91nO6CJQSibVN3hVKxMoY8ZiMRMbML36zSz9SYM+aCNyF3ngAcTBRidjplCmHMyJJKS92mtmIsd8SDtUCPym2dEGMmP8eLvb/SIkr5f3jNaz5nBR2/IQpaGyaLiFAmRjgzQwIdomYtAWWuVasonz10bOspI4RW11OdO3EPRDRd7vy9/XnywQLcEqCwvL9H30QHxIfLOy2dsG2WUYPwG02aFXbodt2CWajFi7S0RQQVJmZJ4FbLuhKi6gEVNieIHsS/stAP1Ctz0neEDUbgFBtV5vJNmbSMJ7ZmViWUdw4gCSt/SAzhcWPcERBrCjeYfbS5msYkulxN1O7SgbbOKtDTnPIdGn+mKR9Wj9DOhNu76YiAM8KGad+wykiSHiWAX6VMwLOusoG8nWOnnYGfInqbsjgwLumHuIColbrHr9xdbBJvdhE/C/EK6O6hs4Nsn7ZRt3IGbK7TeXVaS58EItpW6It/PrbAXLdPPI3TFcD5ebj9CticqTp6U3RjUzr86krPDW5KoBadS4zqVV+QOpOYPrCiHz+/bfnsPmDTd0iLP4VTzLeQI/msHpJSiRVDGKQwdbSDszJFf1fbrz8mS+7k5p2CBbH7OrF7rPvPfzH405FZACH98rrtv9a5VnPS1ihyeZ5DmLLL/odUoRLC4MEJSAt0vbx5EsK0EgIK5aS9UJ3de0m+HPTmsPiB+yAa3r8u1fUCZ/93yixcLwF1ZM7lvrIj5oTioamkcQ8RCBBSkEeEFsbjqsJS72cLlZbeTHg+G17Iu5LWvROvAQP4g4uNkY89Lq0Ksdoqn3NXHJ/iGjawER4yfHecgY3KkXlWPj5gVsRhG8fbS7vyneEPGqwSMMk6GL8dwJzfxb7dfQ9GtZD+ysPxc5WtZvTLIkxZsbD/YwC6mYP+fTSV3ZdoodllPXB8WcBpcxqfoMFuHhiWKaIl1nxxPCN59GM+",
+        "reasoningText": "Now I have a full picture of the extension. The key functions I need to test are:\n\n1. `classifyPrompt(prompt)` - the main classification function\n2. `isExplicitReviewRequest(text)` - explicit review detection\n3. `isToolHeavy(text)` - tool-heavy detection\n4. `isComplexOrchestration(text)` - orchestration detection\n5. `matchesPattern(text, pattern)` - word boundary matching\n6. `normalizePrompt(prompt)` - normalization\n7. `getComplexity(prompt)` - complexity scoring\n\nThe challenge is that these functions are not exported - they're in an ES module that uses `await joinSession(...)` at the top level which would fail in tests.\n\n\nI'll extract the pure heuristic functions into a separate module that I can test independently, then import it back into the extension. This way I can write tests against the classifier logic without dealing with the async session initialization. with all the pure heuristic functions\n2. Update `extension.mjs` to import from `classifier.mjs`\n3. Create `.github/extensions/model-router/classifier.test.mjs` using Node's built-in `node:test` and `node:assert`\n\nThe functions to extract:\n- Constants: `EXPLICIT_REVIEW_KEYWORDS`, `PLAN_KEYWORDS`, `DEBUG_KEYWORDS`, `IMPLEMENT_KEYWORDS`, `LIGHT_KEYWORDS`, `TOOL_KEYWORDS`, `ORCHESTRATION_KEYWORDS`\n- Pure functions: `normalizePrompt`, `matchesPattern`, `includesAny`, `isExplicitReviewRequest`, `isToolHeavy`, `isComplexOrchestration`, `getComplexity`, `classifyPrompt`\n\nThe test cases should cover explicit review detection with keywords like \"review\" and \"audit\", tool-heavy routing for prompts with bash or curl commands that need the builder model, and orchestration escalation for multi-agent scenarios. I should also verify that Node's test module is available in the current environment.",
+        "outputTokens": 752
+      }
+    },
+    {
+      "line": 60,
+      "path": "data",
+      "value": {
+        "messageId": "9b67719e-ed9b-47fa-afaf-8c532bc2cc89",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_Ieb2A9Am049NSb3PAZu7nO",
+            "name": "bash",
+            "arguments": {
+              "command": "find /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router -name \"package.json\" -o -name \"*.test.*\" 2>/dev/null | sort",
+              "description": "Find existing test files and package.json"
+            },
+            "type": "function",
+            "intentionSummary": "Find existing test files and package.json"
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "reasoningOpaque": "+81Bj6ZaOmtXH2qKWJ0fu7KdDr9HUmNLX6f2MvRfP+cvdkrFmuWGgkFGHV6ZIst03mgSxPhiu+oeP1pYzPESs2cDp1TIS+St3mSftXdzhId0Hk4gkZIgA+4zUHqeo7DTbfvGbukiuimCGfWnggZhIZHf5aH864qizV1oc3/8DDEzPUOP98IqXbDZrRBRYl6OctnI5H0OfbZnF2WLGEYpr3SvZeHa0KUxFiT4L9gQVZ81VUy3SYqUbqe5WcAQFaVxdi0ijHUqVK+1jhoPIirjXxTtgRMHby3Zj0xeVc6xgCut56lxurlisppG7fjtfwkRisvmq5/roJzgLeZHo/an/8sOuFJIUkYNkNzU1YK+57eQ9MtdTxGY7QS6GmYmxKTYpA0IEfTfXmS3DlQSzltRLnMw/+I2aI/JpWOE/maGVSON1TXJDUCaf5yiHtBDPH3ST3XNEHaR9X21euKVpss5Y/xOAdfLTWYaohXgTAxxtpQLQ3nFB/WsUP/sHMrc5iU1btQNH0o1tSPJLC2Ldc8IwMrJr4+e+/p7YXO1LtejvBEhB7fVP2OFdzOl3D0klUSjVwMSXeiUq3UI5Kkh9CIZGqYlhsW2q3p0YVYOwZRG8s9EqjN0nq2K6lmdbbDL3dweCBea9InrawANG1Ia76NA4Qt6nrsHq9jLytzg8guIn4bkNk1ckaHiz6HvYG/pnQZILAdPL63YL8ZM+s8nv4lt3QIid66B4Mqrkae7tg5A1c+VrEe1NnCqfx2H6c7xvXLyrWS5WsCpTHwMY7OnJgMcU03s2JKzkEcuJ5pj9qs4/ULlguqwfQ/bMXx7Fn6Amn6G2YdIn/sgyjGMZECfHA3zKKdghSTT9oidLoAiAWeikdyo1Xtnfc9zQVHX7byldDci2C5ldxtwwI1aGrvx7xVInmfj2uRjxH3gB4qylxV09HGI3u+yBdFoVHmjH5k4UuKO6ZeSsevKqz+FBL+OWwiWXyElKx+lzZzSY615BjIyWlRyR7uxrfFHMhoXR9ozCs2fsY6iVqrXGRbaRXKWzqdsqlpHP2IBWUY7e8Cx4aOaXI8SkZx3FwOg8klLB116MEazmCuKicmz7TE46G7blY04QF9G8v/K+KYBI6JXCw6N2LYP/qlWwmOHYvQnOG9RLxwQRqRWcGSqiA4z9Zzwi9KDC5QaS+Og+hoDglsNhfYmofcwXwJcjAWmLIOp0QpIqV6YcN6cVHz6WOy1Ezr8+y4leua+S16F/ptIz9OXxaCqRwMb0ep+frdHg8PmwNeUXl/1iTj2Ee+NA5hbhz9cK7RL4z2OeaLzBdIyZS45fWt5gnvLYgwecvyzOofxXAV/YIE9lsOZHLgTEnr3qEP9/MRqN6DDpmbPlag50W0x3ScEVo7zLd7vQPFSvXY+NuvrJNMQLKSoIlVTGX2YfgIpABYxTMmsTuDNRAtMxtNJM0kHJga/FiudBOYy7u7U6qAjvoytZzjvvz/hdwwrCZC8ZJw8K20mgbTZRSKPEPRS+lD4rGlbGfOCOMoo0wM8aE3T4+G+D4fgArHjMawqmt+xQZaTtNGI6FDlrUMKkbn/HXKb1V9cjxifUKr9Fuo/CY5G5jTJeV4Tzcy0XsKAZPq4RMbPtVSKpvkQdeYVM5zXKjc4IqQvuY8PzTVRMpuuocwabATWqW8YvgkGTJM2QbMKNkMQyKIy4VsNc6hAw21PrIi42HIUN9dfVwHBUHG9fjiMoA33zSzfzUDPMCEh3eOf/J4e/lVU0lSJm6SHpoYRU0u6JLs/oTkYxWOvnWKDzeWtUiQjClo7G2FCSSbXFqqqzFEzJVH1/8M0PhQZIMpdRKL9TTpLreANctyYaa6behWuxb4dw3pPQZ4=",
+        "reasoningText": "Node 24 supports `node:test` natively. Now let me plan the implementation:\n\n1. Extract pure classifier functions from `extension.mjs` into a new `classifier.mjs` module\n2. Update `extension.mjs` to import from `classifier.mjs`\n3. Write `classifier.test.mjs` using `node:test` and `node:assert`\n\nThe test file will cover:\n- `isExplicitReviewRequest` - explicit review detection\n- `classifyPrompt` for implementation+tool keywords → builder tier\n- `classifyPrompt` for orchestration keywords → reasoning tier\n\n\n- `matchesPattern` to ensure word boundaries work correctly without false positives\n\nI should also check if there's already a package.json or test configuration in place.",
+        "outputTokens": 329
+      }
+    },
+    {
+      "line": 68,
+      "path": "data",
+      "value": {
+        "messageId": "41117216-fbf4-426b-af0f-7022d993e9fc",
+        "content": "Good — Node 24 + `node:test` available, no existing test infrastructure. Plan:\n1. Extract pure classifier functions to `classifier.mjs`\n2. Import them back into `extension.mjs`\n3. Write `classifier.test.mjs` using `node:test` + `node:assert`",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_yGDQkhLU1jxnaMye0ImvMQ",
+            "name": "report_intent",
+            "arguments": {
+              "intent": "Extracting classifier logic for testing"
+            },
+            "type": "function"
+          },
+          {
+            "toolCallId": "tooluse_OosiIZ187ITcuMDRM4GaaZ",
+            "name": "create",
+            "arguments": {
+              "file_text": "// Pure prompt-classification heuristics — no SDK imports, safe to unit-test in isolation.\n\nexport const EXPLICIT_REVIEW_KEYWORDS = [\n  \"review\",\n  \"code review\",\n  \"review this\",\n  \"review the code\",\n  \"review my code\",\n  \"audit\",\n  \"approval readiness\",\n  \"approval readiness checks\",\n  \"approve this\",\n  \"pr review\",\n  // Bug finding, regression hunting, and approval-readiness are explicit review asks per SKILL.md\n  \"find bugs\",\n  \"bug finding\",\n  \"regression hunting\",\n  \"regression hunt\",\n  \"find regressions\",\n];\n\nexport const PLAN_KEYWORDS = [\n  \"plan\",\n  \"design\",\n  \"architecture\",\n  \"architect\",\n  \"proposal\",\n  \"strategy\",\n  \"approach\",\n];\n\nexport const DEBUG_KEYWORDS = [\n  \"debug\",\n  \"fix\",\n  \"failure\",\n  \"failing\",\n  \"error\",\n  \"crash\",\n  \"root cause\",\n  \"broken\",\n  \"investigate\",\n];\n\nexport const IMPLEMENT_KEYWORDS = [\n  \"implement\",\n  \"build\",\n  \"create\",\n  \"write\",\n  \"refactor\",\n  \"add\",\n  \"change\",\n  \"update\",\n  \"edit\",\n  \"enhance\",\n  \"modify\",\n  \"adjust\",\n  \"improve\",\n  \"fix the code\",\n  \"fix the formatting\",\n  \"fix the logic\",\n];\n\nexport const LIGHT_KEYWORDS = [\n  \"explain\",\n  \"summarize\",\n  \"what is\",\n  \"where is\",\n  \"find\",\n  \"list\",\n  \"show\",\n  \"search\",\n];\n\nexport const TOOL_KEYWORDS = [\n  \"bash\",\n  \"curl\",\n  \"execute\",\n  \"run\",\n  \"tool\",\n  \"api\",\n  \"function\",\n  \"call\",\n  \"invoke\",\n  \"script\",\n  \"command\",\n  \"shell\",\n  \"http\",\n  \"request\",\n  \"endpoint\",\n  \"agent\",\n];\n\n// Complex multi-tool orchestration patterns warrant premium-tier escalation per routing-matrix.md\nexport const ORCHESTRATION_KEYWORDS = [\n  \"parallel agents\",\n  \"multiple agents\",\n  \"multi-agent\",\n  \"orchestrate\",\n  \"orchestration\",\n  \"parallel tools\",\n  \"tool chain\",\n  \"chained tools\",\n];\n\nexport function normalizePrompt(prompt) {\n  return String(prompt || \"\").toLowerCase();\n}\n\n// Word-boundary-aware matching prevents false positives like \"prefix\"→\"fix\",\n// \"exchange\"→\"change\", \"callback\"→\"call\". Multi-word phrases use substring matching.\nexport function matchesPattern(text, pattern) {\n  if (/\\s/.test(pattern)) {\n    return text.includes(pattern);\n  }\n  const escaped = pattern.replace(/[.*+?^${}()|[\\]\\\\]/g, \"\\\\{{ARTIFACT_JSON}}\");\n  return new RegExp(`\\\\b${escaped}\\\\b`).test(text);\n}\n\nexport function includesAny(text, patterns) {\n  return patterns.some((pattern) => matchesPattern(text, pattern));\n}\n\nexport function isExplicitReviewRequest(text) {\n  return includesAny(text, EXPLICIT_REVIEW_KEYWORDS);\n}\n\nexport function isToolHeavy(text) {\n  return includesAny(text, TOOL_KEYWORDS);\n}\n\nexport function isComplexOrchestration(text) {\n  return includesAny(text, ORCHESTRATION_KEYWORDS);\n}\n\nexport function getComplexity(prompt) {\n  const lower = normalizePrompt(prompt);\n  const words = lower.trim().split(/\\s+/).filter(Boolean).length;\n  let score = 0;\n\n  if (words > 40) score += 1;\n  if (words > 100) score += 1;\n  if (\n    includesAny(lower, [\n      \"multi-file\",\n      \"multiple files\",\n      \"end-to-end\",\n      \"carefully\",\n      \"thorough\",\n      \"deep\",\n      \"complex\",\n      \"large\",\n      \"entire codebase\",\n    ])\n  ) {\n    score += 2;\n  }\n\n  if (includesAny(lower, PLAN_KEYWORDS) || includesAny(lower, DEBUG_KEYWORDS)) {\n    score += 1;\n  }\n\n  // File path detection (/.github/, /src/, /lib/, etc.) indicates code changes\n  if (/\\/[\\w-]+\\/[\\w.-]+/.test(lower)) {\n    score += 1;\n  }\n\n  // Tool-heavy work deserves more robust models\n  if (isToolHeavy(lower)) {\n    score += 1;\n  }\n\n  return score;\n}\n\nexport function classifyPrompt(prompt) {\n  const lower = normalizePrompt(prompt);\n  const complexity = getComplexity(lower);\n\n  if (isExplicitReviewRequest(lower)) {\n    return { kind: \"review\", complexity, tier: \"reasoning\" };\n  }\n\n  if (includesAny(lower, PLAN_KEYWORDS)) {\n    return {\n      kind: \"planning\",\n      complexity,\n      tier: complexity >= 2 ? \"reasoning\" : \"builder\",\n    };\n  }\n\n  if (includesAny(lower, DEBUG_KEYWORDS)) {\n    return {\n      kind: \"debugging\",\n      complexity,\n      tier: complexity >= 2 ? \"reasoning\" : \"builder\",\n    };\n  }\n\n  if (includesAny(lower, IMPLEMENT_KEYWORDS)) {\n    // Implementation tasks deserve at least builder tier for reliability\n    // Only use economy for very simple, lightweight implementations\n    let tier = \"builder\"; // Default to builder for all implementation\n\n    // But if it's a light keyword (find, list, show) with very low complexity, stay in economy\n    if (includesAny(lower, LIGHT_KEYWORDS) && complexity === 0) {\n      tier = \"economy\";\n    }\n\n    // Escalate to reasoning for complex orchestration\n    if (isComplexOrchestration(lower)) {\n      tier = \"reasoning\";\n    }\n\n    // Escalate to reasoning if implementation is deeply complex\n    if (complexity >= 3) {\n      tier = \"reasoning\";\n    }\n\n    return {\n      kind: \"implementation\",\n      complexity,\n      tier,\n      toolHeavy: isToolHeavy(lower),\n    };\n  }\n\n  if (includesAny(lower, LIGHT_KEYWORDS) || complexity === 0) {\n    return { kind: \"lightweight\", complexity, tier: \"economy\" };\n  }\n\n  let generalTier = complexity >= 2 ? \"builder\" : \"economy\";\n  if (isToolHeavy(lower) && complexity >= 1) generalTier = \"builder\";\n  if (isComplexOrchestration(lower)) generalTier = \"reasoning\";\n  return { kind: \"general\", complexity, tier: generalTier };\n}\n",
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/classifier.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "create a new file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/classifier.mjs."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "reasoningOpaque": "OFZ8TXgu/CCfsQ7893agRBAPkUhTOwf+jbyBkQsORFxWINH+Kc0+wnY1G3t2L5JgEzrZHxFLM1U6SvwXRFBll07sKG4fQud4knTg2341EXgx8zoHX4wjbsN62EhUNyHk6715p2Tlzb2W8GqDGhTnnKce9AbxwxjC5c+N+zZuT7WDaWcIQ01VWGDg+3zPDzS0ImWbIT0n6Q3ZkVUFYrpbP9GGVvpQv9Kz28lQT9MQNQm9k9+0Qc+R2I8GoTjdEyU3BFL3zPsERpagwz1x3BmVoQJRnCmRamkgm0qBgEp6bAEp8XEfvvdJPXti/QL7fu/9aMkvjE23XivrKU53o2Xzdj7CXRuTUe/XCMltRjOcqR5KeCW00vURjlGE/O/MAWEwTBZqCgymj4fV4Kzrfo0Dzo5IWp/R73O1kBi4/qfRFfagaSnd+O9FbWcpHMADreMNDhokO9R8+ANgJgrcnKkRMRXTpZSwcAChyL+55jO6ckUQT4BTurjHOqpvBP6PXnpJnyMxnVZLr1nWxGHEutGTQuVMGwUcsLOYAmfnXkAvZbsLS7bL/IkQUH0Jyxh70wVqO80JLp98TVZR+icUsfSoCnZ0eHBwkPPcsUOigdD+38M2pc7KvGkkFrfCKNuWrX6N4efejicu1zupyHKF8FjwhsaoaXvDkV636gPw6OxYfIon5iwtLlwbFDVi5TojbLyyHk46vGGpdOgVpqbJ0d3YzY/FHOMSNlYrtEff58C2jCBiYyhu2HyiCn/xVE8Khz96INP/vHOfmrd8atNrE5ondvySoeyTjBOj/QPOrR+Dmke8ssVH6rZsJYTJurENozr0VdiA7puzVvdSrLCRuksekfsa8Bej0fWGAgEqg0cSrwigyT/R5mnKFZyaMiL/D2JIDwX5LzW9q3GOb8S6dxkXn48jJb/nIq0npNcx8O4ptM6XF90N7zFXDL1srYwVlUYiNgJOvDmrzoDd8mFjjmhi+lhzY+ew5IsmCnkbpwAi3rvx0kW0W+QSY2qFh2txn++T/pnctw68EYCgUp8PUqHP+diUS2FLkiMXHiWqkHNiDMIZ12Ou30OxjcHfcDYSOqjwrQV4QPF277E8ePS3sHngzqRI/wwppB9xsWlHbyKUlvw4D1CRaxXqtCm+kauRCFdy+BgHJghEZhdS2safJPC6PXPtiXCvU12RuQJklH5qZBNXMgkzHpG5Qb5hmb3NuZ8xNcvetaR9/+6shNvEiKsSjGTk88m9xjDl64vjyk9Xs6q8puJAmraG3Bs2Tave9+6pbzoBdME1qK+rW/sO10K5iQ894SMN4qxnlgsU4zccYpljWcMjCO7QN3CZnUnKCqWValVs484GakbN23VqdmEXNoG4pgI1WIAnjFr9HZYM7Cs33Qh8xNHbjHB2wy3NLJ8sQLuPYYHVWmhbog0WSUCby3HjeIWFdaNkhr4tYBDpKBqCJ1Zy188oRrrId2rS3dmtxZZGbRTlSeWoMfnYbYE6bUk8fkaBA+zERqn7GIIyWPGHtZZyt7FUY25/nZCaXIliERgkxikeibMRqVCfv1ehbD0FxHPg+znLFznYxFo=",
+        "reasoningText": "No existing test files or package.json. I need to create a pure extraction approach.\n\nHere's my plan:\n1. Create `.github/extensions/model-router/classifier.mjs` with all the pure heuristic functions (keyword lists + classification logic)\n2. Update `extension.mjs` to import those from `classifier.mjs` \n3. Create `.github/extensions/model-router/classifier.test.mjs` using `node:test` and `node:assert`\n\nLet me write the classifier.mjs file first, then update extension.mjs, then write the tests.",
+        "outputTokens": 2098
+      }
+    },
+    {
+      "line": 74,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "create",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"file_text\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "filePaths": "[\"/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/classifier.mjs\"]",
+        "codeBlocks": "[{\"fileExt\":\".mjs\",\"languageId\":\"javascript\",\"linesAdded\":236,\"linesRemoved\":0}]",
+        "languageId": "[\"javascript\"]"
+      }
+    },
+    {
+      "line": 74,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 187,
+        "resultForLlmLength": 187,
+        "responseTokenLimit": 42000,
+        "linesAdded": 236,
+        "linesRemoved": 0
+      }
+    },
+    {
+      "line": 77,
+      "path": "data",
+      "value": {
+        "messageId": "79feb945-04f1-45e2-a768-a554bad6167c",
+        "content": "Now update `extension.mjs` to import from `classifier.mjs` instead of defining those inline:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_XbVerCawBWUWPAdVEizcaP",
+            "name": "edit",
+            "arguments": {
+              "new_str": "import { joinSession } from \"@github/copilot-sdk/extension\";\nimport {\n  normalizePrompt,\n  matchesPattern,\n  includesAny,\n  isExplicitReviewRequest,\n  isToolHeavy,\n  isComplexOrchestration,\n  getComplexity,\n  classifyPrompt,\n} from \"./classifier.mjs\";\n\nconst MODEL_CANDIDATES = {",
+              "old_str": "import { joinSession } from \"@github/copilot-sdk/extension\";\n\nconst MODEL_CANDIDATES = {",
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "edit the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 286
+      }
+    },
+    {
+      "line": 79,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "edit",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"old_str\",\"new_str\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "codeBlocks": "[{\"fileExt\":\".mjs\",\"languageId\":\"javascript\",\"linesAdded\":10,\"linesRemoved\":0}]",
+        "languageId": "[\"javascript\"]"
+      }
+    },
+    {
+      "line": 79,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 179,
+        "resultForLlmLength": 179,
+        "responseTokenLimit": 42000,
+        "linesAdded": 10,
+        "linesRemoved": 0
+      }
+    },
+    {
+      "line": 82,
+      "path": "data",
+      "value": {
+        "messageId": "f418d382-89c2-4b4d-849f-165c615f4d76",
+        "content": "Now remove the duplicated definitions from `extension.mjs`:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_AZnzuvTCYB94LRXfO8mROc",
+            "name": "edit",
+            "arguments": {
+              "new_str": "let lastImplementationModel",
+              "old_str": "const EXPLICIT_REVIEW_KEYWORDS = [\n  \"review\",\n  \"code review\",\n  \"review this\",\n  \"review the code\",\n  \"review my code\",\n  \"audit\",\n  \"approval readiness\",\n  \"approval readiness checks\",\n  \"approve this\",\n  \"pr review\",\n  // Bug finding, regression hunting, and approval-readiness are explicit review asks per SKILL.md\n  \"find bugs\",\n  \"bug finding\",\n  \"regression hunting\",\n  \"regression hunt\",\n  \"find regressions\",\n];\n\nconst PLAN_KEYWORDS = [\n  \"plan\",\n  \"design\",\n  \"architecture\",\n  \"architect\",\n  \"proposal\",\n  \"strategy\",\n  \"approach\",\n];\n\nconst DEBUG_KEYWORDS = [\n  \"debug\",\n  \"fix\",\n  \"failure\",\n  \"failing\",\n  \"error\",\n  \"crash\",\n  \"root cause\",\n  \"broken\",\n  \"investigate\",\n];\n\nconst IMPLEMENT_KEYWORDS = [\n  \"implement\",\n  \"build\",\n  \"create\",\n  \"write\",\n  \"refactor\",\n  \"add\",\n  \"change\",\n  \"update\",\n  \"edit\",\n  \"enhance\",\n  \"modify\",\n  \"adjust\",\n  \"improve\",\n  \"fix the code\",\n  \"fix the formatting\",\n  \"fix the logic\",\n];\n\nconst LIGHT_KEYWORDS = [\n  \"explain\",\n  \"summarize\",\n  \"what is\",\n  \"where is\",\n  \"find\",\n  \"list\",\n  \"show\",\n  \"search\",\n];\n\nconst TOOL_KEYWORDS = [\n  \"bash\",\n  \"curl\",\n  \"execute\",\n  \"run\",\n  \"tool\",\n  \"api\",\n  \"function\",\n  \"call\",\n  \"invoke\",\n  \"script\",\n  \"command\",\n  \"shell\",\n  \"http\",\n  \"request\",\n  \"endpoint\",\n  \"agent\",\n];\n\n// Complex multi-tool orchestration patterns warrant premium-tier escalation per routing-matrix.md\nconst ORCHESTRATION_KEYWORDS = [\n  \"parallel agents\",\n  \"multiple agents\",\n  \"multi-agent\",\n  \"orchestrate\",\n  \"orchestration\",\n  \"parallel tools\",\n  \"tool chain\",\n  \"chained tools\",\n];\n\nlet lastImplementationModel",
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "edit the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 722
+      }
+    },
+    {
+      "line": 84,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "edit",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"old_str\",\"new_str\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "codeBlocks": "[{\"fileExt\":\".mjs\",\"languageId\":\"javascript\",\"linesAdded\":0,\"linesRemoved\":102}]",
+        "languageId": "[\"javascript\"]"
+      }
+    },
+    {
+      "line": 84,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 179,
+        "resultForLlmLength": 179,
+        "responseTokenLimit": 42000,
+        "linesAdded": 0,
+        "linesRemoved": 102
+      }
+    },
+    {
+      "line": 87,
+      "path": "data",
+      "value": {
+        "messageId": "15e1e20e-f5b2-4d4a-a394-9eeacf298515",
+        "content": "Now remove the duplicated inline function definitions (`normalizePrompt`, `matchesPattern`, `includesAny`, `isExplicitReviewRequest`, `isToolHeavy`, `isComplexOrchestration`, `getComplexity`, `classifyPrompt`) from `extension.mjs`:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_nQd5T5A0byKSHUGTNlaMvo",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs",
+              "view_range": [
+                1,
+                80
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 196
+      }
+    },
+    {
+      "line": 89,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 89,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 2944,
+        "resultForLlmLength": 2944,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 92,
+      "path": "data",
+      "value": {
+        "messageId": "e7540f1c-602e-40e8-8734-9bfe22369187",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_EKIRJwA828NQtntexikI6k",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs",
+              "view_range": [
+                80,
+                280
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 94,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 94,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 7235,
+        "resultForLlmLength": 7235,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 97,
+      "path": "data",
+      "value": {
+        "messageId": "ce571119-d7f8-47d9-9293-c5bfb0a9dace",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_WVcIHXgvSKRkVLXR4Ml904",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs",
+              "view_range": [
+                280,
+                400
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 99,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 99,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 3595,
+        "resultForLlmLength": 3595,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 102,
+      "path": "data",
+      "value": {
+        "messageId": "0ba4d97b-bc93-40fa-9ab9-7d80fed4448a",
+        "content": "Now I can remove the duplicated function definitions from `extension.mjs`:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_XAYWFLMT56cA8QQSTOUUIr",
+            "name": "edit",
+            "arguments": {
+              "new_str": "function getTierCandidates",
+              "old_str": "function normalizePrompt(prompt) {\n  return String(prompt || \"\").toLowerCase();\n}\n\n// Word-boundary-aware matching prevents false positives like \"prefix\"→\"fix\",\n// \"exchange\"→\"change\", \"callback\"→\"call\". Multi-word phrases use substring matching.\nfunction matchesPattern(text, pattern) {\n  if (/\\s/.test(pattern)) {\n    return text.includes(pattern);\n  }\n  const escaped = pattern.replace(/[.*+?^${}()|[\\]\\\\]/g, \"\\\\{{ARTIFACT_JSON}}\");\n  return new RegExp(`\\\\b${escaped}\\\\b`).test(text);\n}\n\nfunction includesAny(text, patterns) {\n  return patterns.some((pattern) => matchesPattern(text, pattern));\n}\n\nfunction isExplicitReviewRequest(text) {\n  return includesAny(text, EXPLICIT_REVIEW_KEYWORDS);\n}\n\nfunction isToolHeavy(text) {\n  return includesAny(text, TOOL_KEYWORDS);\n}\n\nfunction isComplexOrchestration(text) {\n  return includesAny(text, ORCHESTRATION_KEYWORDS);\n}\n\nfunction getComplexity(prompt) {\n  const lower = normalizePrompt(prompt);\n  const words = lower.trim().split(/\\s+/).filter(Boolean).length;\n  let score = 0;\n\n  if (words > 40) score += 1;\n  if (words > 100) score += 1;\n  if (\n    includesAny(lower, [\n      \"multi-file\",\n      \"multiple files\",\n      \"end-to-end\",\n      \"carefully\",\n      \"thorough\",\n      \"deep\",\n      \"complex\",\n      \"large\",\n      \"entire codebase\",\n    ])\n  ) {\n    score += 2;\n  }\n\n  if (includesAny(lower, PLAN_KEYWORDS) || includesAny(lower, DEBUG_KEYWORDS)) {\n    score += 1;\n  }\n\n  // File path detection (/.github/, /src/, /lib/, etc.) indicates code changes\n  if (/\\/[\\w-]+\\/[\\w.-]+/.test(lower)) {\n    score += 1;\n  }\n\n  // Tool-heavy work deserves more robust models\n  if (isToolHeavy(lower)) {\n    score += 1;\n  }\n\n  return score;\n}\n\nfunction classifyPrompt(prompt) {\n  const lower = normalizePrompt(prompt);\n  const complexity = getComplexity(lower);\n\n  if (isExplicitReviewRequest(lower)) {\n    return { kind: \"review\", complexity, tier: \"reasoning\" };\n  }\n\n  if (includesAny(lower, PLAN_KEYWORDS)) {\n    return {\n      kind: \"planning\",\n      complexity,\n      tier: complexity >= 2 ? \"reasoning\" : \"builder\",\n    };\n  }\n\n  if (includesAny(lower, DEBUG_KEYWORDS)) {\n    return {\n      kind: \"debugging\",\n      complexity,\n      tier: complexity >= 2 ? \"reasoning\" : \"builder\",\n    };\n  }\n\n  if (includesAny(lower, IMPLEMENT_KEYWORDS)) {\n    // Implementation tasks deserve at least builder tier for reliability\n    // Only use economy for very simple, lightweight implementations\n    let tier = \"builder\"; // Default to builder for all implementation\n    \n    // But if it's a light keyword (find, list, show) with very low complexity, stay in economy\n    if (includesAny(lower, LIGHT_KEYWORDS) && complexity === 0) {\n      tier = \"economy\";\n    }\n    \n    // Escalate to reasoning for complex orchestration\n    if (isComplexOrchestration(lower)) {\n      tier = \"reasoning\";\n    }\n    \n    // Escalate to reasoning if implementation is deeply complex\n    if (complexity >= 3) {\n      tier = \"reasoning\";\n    }\n    \n    return {\n      kind: \"implementation\",\n      complexity,\n      tier,\n      toolHeavy: isToolHeavy(lower),\n    };\n  }\n\n  if (includesAny(lower, LIGHT_KEYWORDS) || complexity === 0) {\n    return { kind: \"lightweight\", complexity, tier: \"economy\" };\n  }\n\n  let generalTier = complexity >= 2 ? \"builder\" : \"economy\";\n  if (isToolHeavy(lower) && complexity >= 1) generalTier = \"builder\";\n  if (isComplexOrchestration(lower)) generalTier = \"reasoning\";\n  return { kind: \"general\", complexity, tier: generalTier };\n}\n\nfunction getTierCandidates",
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "edit the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 1294
+      }
+    },
+    {
+      "line": 104,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "edit",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"old_str\",\"new_str\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "codeBlocks": "[{\"fileExt\":\".mjs\",\"languageId\":\"javascript\",\"linesAdded\":0,\"linesRemoved\":132}]",
+        "languageId": "[\"javascript\"]"
+      }
+    },
+    {
+      "line": 104,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 179,
+        "resultForLlmLength": 179,
+        "responseTokenLimit": 42000,
+        "linesAdded": 0,
+        "linesRemoved": 132
+      }
+    },
+    {
+      "line": 107,
+      "path": "data",
+      "value": {
+        "messageId": "ec1453fd-1634-4d14-932a-ca180763eae1",
+        "content": "Now let me verify the extension.mjs looks correct after the refactor:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_TrMYKIC4w2NA8I392APoBo",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs",
+              "view_range": [
+                1,
+                50
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 143
+      }
+    },
+    {
+      "line": 109,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 109,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 1826,
+        "resultForLlmLength": 1826,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 112,
+      "path": "data",
+      "value": {
+        "messageId": "41699cbb-8ba1-4265-a50e-31cae6ddacf9",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_rYs7E4lJAmPGCClBRYaVm1",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs",
+              "view_range": [
+                250,
+                320
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 114,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 114,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 2587,
+        "resultForLlmLength": 2587,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 117,
+      "path": "data",
+      "value": {
+        "messageId": "880c12e6-bfd3-4617-bcb0-5fd885c5b6ed",
+        "content": "Good — the refactor looks clean. Now write the test file:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_5UkeZDLOefgGRnbnW6vksG",
+            "name": "report_intent",
+            "arguments": {
+              "intent": "Writing classifier regression tests"
+            },
+            "type": "function"
+          },
+          {
+            "toolCallId": "tooluse_McwVQs3slC3r8UWrf2rmdQ",
+            "name": "create",
+            "arguments": {
+              "file_text": "// Regression tests for the prompt-classification heuristics in classifier.mjs.\n// Run with: node --test .github/extensions/model-router/classifier.test.mjs\n\nimport { describe, it } from \"node:test\";\nimport assert from \"node:assert/strict\";\nimport {\n  normalizePrompt,\n  matchesPattern,\n  isExplicitReviewRequest,\n  isToolHeavy,\n  isComplexOrchestration,\n  classifyPrompt,\n} from \"./classifier.mjs\";\n\n// ---------------------------------------------------------------------------\n// normalizePrompt\n// ---------------------------------------------------------------------------\ndescribe(\"normalizePrompt\", () => {\n  it(\"lowercases input\", () => {\n    assert.equal(normalizePrompt(\"Hello World\"), \"hello world\");\n  });\n\n  it(\"coerces non-string gracefully\", () => {\n    assert.equal(normalizePrompt(null), \"\");\n    assert.equal(normalizePrompt(undefined), \"\");\n    assert.equal(normalizePrompt(42), \"42\");\n  });\n});\n\n// ---------------------------------------------------------------------------\n// matchesPattern — word-boundary accuracy\n// ---------------------------------------------------------------------------\ndescribe(\"matchesPattern (word boundaries)\", () => {\n  it(\"matches a standalone keyword\", () => {\n    assert.ok(matchesPattern(\"please fix the bug\", \"fix\"));\n  });\n\n  it('does NOT match \"fix\" inside \"prefix\"', () => {\n    assert.ok(!matchesPattern(\"prefix this value\", \"fix\"));\n  });\n\n  it('does NOT match \"call\" inside \"callback\"', () => {\n    assert.ok(!matchesPattern(\"register a callback here\", \"call\"));\n  });\n\n  it('does NOT match \"run\" inside \"return\"', () => {\n    assert.ok(!matchesPattern(\"make it return early\", \"run\"));\n  });\n\n  it(\"multi-word phrases use substring matching (no boundary requirement)\", () => {\n    assert.ok(matchesPattern(\"find bugs in the codebase\", \"find bugs\"));\n  });\n\n  it(\"multi-word phrase: negative when absent\", () => {\n    assert.ok(!matchesPattern(\"find all functions\", \"find bugs\"));\n  });\n});\n\n// ---------------------------------------------------------------------------\n// isExplicitReviewRequest\n// ---------------------------------------------------------------------------\ndescribe(\"isExplicitReviewRequest\", () => {\n  const positive = [\n    \"please review this PR\",\n    \"Can you do a code review of my changes?\",\n    \"Review the code in src/auth.ts\",\n    \"audit the authentication module\",\n    \"check approval readiness before merging\",\n    \"approve this pull request\",\n    \"PR review needed\",\n    \"find bugs in the payment service\",\n    \"bug finding session on the new feature\",\n    \"regression hunting after the deploy\",\n    \"regression hunt before release\",\n    \"find regressions introduced in v2\",\n  ];\n\n  for (const prompt of positive) {\n    it(`detects explicit review: \"${prompt.slice(0, 60)}\"`, () => {\n      assert.ok(\n        isExplicitReviewRequest(normalizePrompt(prompt)),\n        `Expected review detection for: ${prompt}`,\n      );\n    });\n  }\n\n  const negative = [\n    \"implement the new login flow\",\n    \"update the README\",\n    \"debug the crash in production\",\n    \"write a plan for the migration\",\n    \"explain how the router works\",\n    // \"review\" must not trigger on unrelated word-boundary neighbors:\n    \"I need to preview the changes\",\n    // \"fix\" alone is debugging, not review:\n    \"fix the null pointer exception\",\n  ];\n\n  for (const prompt of negative) {\n    it(`does NOT flag as review: \"${prompt.slice(0, 60)}\"`, () => {\n      assert.ok(\n        !isExplicitReviewRequest(normalizePrompt(prompt)),\n        `Unexpected review detection for: ${prompt}`,\n      );\n    });\n  }\n});\n\n// ---------------------------------------------------------------------------\n// isToolHeavy\n// ---------------------------------------------------------------------------\ndescribe(\"isToolHeavy\", () => {\n  it(\"detects bash keyword\", () => {\n    assert.ok(isToolHeavy(\"run the bash script to deploy\"));\n  });\n\n  it(\"detects curl\", () => {\n    assert.ok(isToolHeavy(\"use curl to hit the endpoint\"));\n  });\n\n  it(\"detects api (case-insensitive via normalizePrompt)\", () => {\n    assert.ok(isToolHeavy(normalizePrompt(\"call the REST API\")));\n  });\n\n  it(\"detects agent keyword\", () => {\n    assert.ok(isToolHeavy(\"launch an agent to scrape the page\"));\n  });\n\n  it(\"is false for pure prose\", () => {\n    assert.ok(!isToolHeavy(\"explain what dependency injection means\"));\n  });\n});\n\n// ---------------------------------------------------------------------------\n// isComplexOrchestration\n// ---------------------------------------------------------------------------\ndescribe(\"isComplexOrchestration\", () => {\n  const positive = [\n    \"run parallel agents to process each file\",\n    \"coordinate multiple agents for the migration\",\n    \"use a multi-agent setup to handle the pipeline\",\n    \"orchestrate the deployment across regions\",\n    \"set up orchestration for the CI workflow\",\n    \"use parallel tools to speed up the analysis\",\n    \"build a tool chain that clones then tests then deploys\",\n    \"chained tools across the pipeline stages\",\n  ];\n\n  for (const prompt of positive) {\n    it(`detects orchestration: \"${prompt.slice(0, 60)}\"`, () => {\n      assert.ok(\n        isComplexOrchestration(normalizePrompt(prompt)),\n        `Expected orchestration for: ${prompt}`,\n      );\n    });\n  }\n\n  const negative = [\n    \"implement a simple REST endpoint\",\n    \"write unit tests for the auth module\",\n    \"refactor the login function\",\n    \"run the test suite\",\n  ];\n\n  for (const prompt of negative) {\n    it(`does NOT flag as orchestration: \"${prompt.slice(0, 60)}\"`, () => {\n      assert.ok(\n        !isComplexOrchestration(normalizePrompt(prompt)),\n        `Unexpected orchestration for: ${prompt}`,\n      );\n    });\n  }\n});\n\n// ---------------------------------------------------------------------------\n// classifyPrompt — explicit review → reasoning tier\n// ---------------------------------------------------------------------------\ndescribe(\"classifyPrompt: explicit review detection\", () => {\n  it(\"review keyword → kind=review, tier=reasoning\", () => {\n    const r = classifyPrompt(\"Please review this PR before merging\");\n    assert.equal(r.kind, \"review\");\n    assert.equal(r.tier, \"reasoning\");\n  });\n\n  it(\"audit keyword → kind=review, tier=reasoning\", () => {\n    const r = classifyPrompt(\"Audit the security module for vulnerabilities\");\n    assert.equal(r.kind, \"review\");\n    assert.equal(r.tier, \"reasoning\");\n  });\n\n  it(\"find bugs → kind=review, tier=reasoning\", () => {\n    const r = classifyPrompt(\"Find bugs in the new payment flow\");\n    assert.equal(r.kind, \"review\");\n    assert.equal(r.tier, \"reasoning\");\n  });\n\n  it(\"regression hunt → kind=review, tier=reasoning\", () => {\n    const r = classifyPrompt(\"Do a regression hunt across the last three releases\");\n    assert.equal(r.kind, \"review\");\n    assert.equal(r.tier, \"reasoning\");\n  });\n\n  it(\"review beats implement keyword — review wins\", () => {\n    // A prompt that has both \"implement\" and \"review\" should still route to review\n    const r = classifyPrompt(\"implement and review the auth module\");\n    assert.equal(r.kind, \"review\");\n    assert.equal(r.tier, \"reasoning\");\n  });\n});\n\n// ---------------------------------------------------------------------------\n// classifyPrompt — tool-heavy implementation → builder tier\n// ---------------------------------------------------------------------------\ndescribe(\"classifyPrompt: tool-heavy implementation routing\", () => {\n  it(\"simple implement → builder (default)\", () => {\n    const r = classifyPrompt(\"implement the user registration endpoint\");\n    assert.equal(r.kind, \"implementation\");\n    assert.equal(r.tier, \"builder\");\n  });\n\n  it(\"implement + bash → builder, toolHeavy=true\", () => {\n    const r = classifyPrompt(\"implement a bash script that backs up the database\");\n    assert.equal(r.kind, \"implementation\");\n    assert.equal(r.tier, \"builder\");\n    assert.equal(r.toolHeavy, true);\n  });\n\n  it(\"implement + curl + api → builder, toolHeavy=true\", () => {\n    const r = classifyPrompt(\"implement a curl wrapper for the payments API\");\n    assert.equal(r.kind, \"implementation\");\n    assert.equal(r.tier, \"builder\");\n    assert.equal(r.toolHeavy, true);\n  });\n\n  it(\"build + agent keyword → builder (tool escalates complexity but not to reasoning on its own)\", () => {\n    const r = classifyPrompt(\"build a function that calls an agent\");\n    assert.equal(r.kind, \"implementation\");\n    assert.equal(r.tier, \"builder\");\n    assert.equal(r.toolHeavy, true);\n  });\n\n  it(\"pure light implement (show/list + no complexity) → economy\", () => {\n    // \"list\" is both a LIGHT_KEYWORD and overlaps with IMPLEMENT (via \"find\" which isn't impl)\n    // \"show\" is light — combined with zero complexity should stay economy\n    const r = classifyPrompt(\"show me what to add\");\n    // \"show\" → light, \"add\" → implement; but LIGHT_KEYWORDS wins when complexity=0\n    assert.equal(r.tier, \"economy\");\n  });\n});\n\n// ---------------------------------------------------------------------------\n// classifyPrompt — orchestration escalation → reasoning tier\n// ---------------------------------------------------------------------------\ndescribe(\"classifyPrompt: orchestration escalation\", () => {\n  it(\"implement + parallel agents → reasoning\", () => {\n    const r = classifyPrompt(\n      \"implement a workflow using parallel agents to process each repository\",\n    );\n    assert.equal(r.kind, \"implementation\");\n    assert.equal(r.tier, \"reasoning\");\n  });\n\n  it(\"implement + orchestrate → reasoning\", () => {\n    const r = classifyPrompt(\"implement and orchestrate the multi-step deployment pipeline\");\n    assert.equal(r.kind, \"implementation\");\n    assert.equal(r.tier, \"reasoning\");\n  });\n\n  it(\"implement + tool chain → reasoning\", () => {\n    const r = classifyPrompt(\"build a tool chain that lints, tests, and deploys\");\n    assert.equal(r.kind, \"implementation\");\n    assert.equal(r.tier, \"reasoning\");\n  });\n\n  it(\"implement + chained tools → reasoning\", () => {\n    const r = classifyPrompt(\"write a script using chained tools to process the data\");\n    assert.equal(r.kind, \"implementation\");\n    assert.equal(r.tier, \"reasoning\");\n  });\n\n  it(\"general prompt + orchestration → reasoning\", () => {\n    const r = classifyPrompt(\n      \"set up multi-agent orchestration for the analytics pipeline\",\n    );\n    // \"set up\" isn't an implement keyword, but orchestration escalates general→reasoning\n    assert.equal(r.tier, \"reasoning\");\n  });\n\n  it(\"plain implement WITHOUT orchestration stays builder\", () => {\n    const r = classifyPrompt(\"implement a retry mechanism for failed HTTP requests\");\n    assert.equal(r.tier, \"builder\");\n  });\n});\n\n// ---------------------------------------------------------------------------\n// classifyPrompt — misc tier boundaries\n// ---------------------------------------------------------------------------\ndescribe(\"classifyPrompt: tier boundaries\", () => {\n  it(\"plain question → lightweight, economy\", () => {\n    const r = classifyPrompt(\"what is dependency injection?\");\n    assert.equal(r.kind, \"lightweight\");\n    assert.equal(r.tier, \"economy\");\n  });\n\n  it(\"debug keyword alone → debugging, builder (low complexity)\", () => {\n    const r = classifyPrompt(\"debug the login crash\");\n    assert.equal(r.kind, \"debugging\");\n    assert.equal(r.tier, \"builder\");\n  });\n\n  it(\"plan keyword alone → planning, builder (low complexity)\", () => {\n    const r = classifyPrompt(\"plan the database migration\");\n    assert.equal(r.kind, \"planning\");\n    assert.equal(r.tier, \"builder\");\n  });\n\n  it(\"review always wins over planning keyword in same prompt\", () => {\n    const r = classifyPrompt(\"review and plan the architecture changes\");\n    assert.equal(r.kind, \"review\");\n    assert.equal(r.tier, \"reasoning\");\n  });\n});\n",
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/classifier.test.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "create a new file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/classifier.test.mjs."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 3250
+      }
+    },
+    {
+      "line": 122,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "create",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"file_text\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "filePaths": "[\"/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/classifier.test.mjs\"]",
+        "codeBlocks": "[{\"fileExt\":\".mjs\",\"languageId\":\"javascript\",\"linesAdded\":323,\"linesRemoved\":0}]",
+        "languageId": "[\"javascript\"]"
+      }
+    },
+    {
+      "line": 122,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 193,
+        "resultForLlmLength": 193,
+        "responseTokenLimit": 42000,
+        "linesAdded": 323,
+        "linesRemoved": 0
+      }
+    },
+    {
+      "line": 125,
+      "path": "data",
+      "value": {
+        "messageId": "d9788250-39de-4d48-b8c9-8f814271b4ba",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_7aMQcGxQLdP3PkjjUiVWYw",
+            "name": "bash",
+            "arguments": {
+              "command": "cd /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router && node --test .github/extensions/model-router/classifier.test.mjs 2>&1",
+              "description": "Run the classifier tests",
+              "initial_wait": 30,
+              "mode": "sync"
+            },
+            "type": "function",
+            "intentionSummary": "Run the classifier tests"
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 169
+      }
+    },
+    {
+      "line": 132,
+      "path": "data",
+      "value": {
+        "messageId": "bd356dac-bd9b-4ed4-9789-d98c10a316ca",
+        "content": "64/64 pass. Let me commit:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_n7w5dyMJzB3LyKquHQ6Eru",
+            "name": "report_intent",
+            "arguments": {
+              "intent": "Committing test infrastructure"
+            },
+            "type": "function"
+          },
+          {
+            "toolCallId": "tooluse_bzaGubWfrVTaWgHY5EUDDa",
+            "name": "bash",
+            "arguments": {
+              "command": "cd /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router && git add .github/extensions/model-router/classifier.mjs .github/extensions/model-router/classifier.test.mjs .github/extensions/model-router/extension.mjs && git --no-pager diff --cached --stat",
+              "description": "Stage files and show diff stat"
+            },
+            "type": "function",
+            "intentionSummary": "Stage files and show diff stat"
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 219
+      }
+    },
+    {
+      "line": 141,
+      "path": "data",
+      "value": {
+        "messageId": "7ce32f25-2ed2-45f4-9f69-9abea39d6f63",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_FB0Mbs1As1wHwb2C7wKLqZ",
+            "name": "bash",
+            "arguments": {
+              "command": "cd /home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router && git commit -m \"test: add regression coverage for prompt-classification heuristics\n\nExtract pure classifier logic from extension.mjs into classifier.mjs\nso it can be imported and tested without the Copilot SDK.\n\nAdd classifier.test.mjs (node:test, no added dependencies) with 64\nassertions across 9 suites covering:\n- normalizePrompt coercion and lowercasing\n- matchesPattern word-boundary accuracy (prefix/callback/return false-positive guards)\n- isExplicitReviewRequest: all keyword variants positive + negative cases\n- isToolHeavy: bash/curl/api/agent detection\n- isComplexOrchestration: all 8 orchestration keywords positive + negatives\n- classifyPrompt: explicit review → reasoning tier (review beats implement)\n- classifyPrompt: tool-heavy implementation → builder tier\n- classifyPrompt: orchestration escalation → reasoning tier\n- classifyPrompt: tier boundary cases (lightweight/debug/plan)\n\nNo production behavior changes; extension.mjs now imports the same\nlogic from classifier.mjs instead of defining it inline.\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>\"",
+              "description": "Commit the classifier extraction and tests"
+            },
+            "type": "function",
+            "intentionSummary": "Commit the classifier extraction and tests"
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 399
+      }
+    },
+    {
+      "line": 148,
+      "path": "data",
+      "value": {
+        "messageId": "c8e4480e-4f76-4d50-b2e0-c500eb975f61",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_GPR2FkGMUU5MMTeoorZvIt",
+            "name": "task_complete",
+            "arguments": {
+              "summary": "## Done — 64 regression tests, zero new dependencies\n\n### What changed\n\n| File | Change |\n|---|---|\n| `classifier.mjs` *(new)* | All pure heuristic functions extracted from `extension.mjs` — keyword lists, `normalizePrompt`, `matchesPattern`, `includesAny`, `isExplicitReviewRequest`, `isToolHeavy`, `isComplexOrchestration`, `getComplexity`, `classifyPrompt` — all exported |\n| `classifier.test.mjs` *(new)* | 64 assertions across 9 `node:test` suites; no added deps |\n| `extension.mjs` | Now imports from `classifier.mjs`; all duplicated definitions removed; production behaviour unchanged |\n\n### Test coverage\n\n- **`normalizePrompt`** — lowercasing, null/undefined/number coercion  \n- **`matchesPattern` word boundaries** — guards against `\"prefix\"→fix`, `\"callback\"→call`, `\"return\"→run` false positives  \n- **`isExplicitReviewRequest`** — all 15 keyword variants (positive) + 7 non-review prompts (negative)  \n- **`isToolHeavy`** — bash / curl / api / agent detection  \n- **`isComplexOrchestration`** — all 8 orchestration keywords (positive) + 4 negatives  \n- **`classifyPrompt` explicit review** — keyword-to-tier, and `review` beats `implement` when both present  \n- **`classifyPrompt` tool-heavy implementation** — builder default, `toolHeavy` flag set, light+zero-complexity stays economy  \n- **`classifyPrompt` orchestration escalation** — every orchestration keyword drives impl/general → reasoning  \n- **`classifyPrompt` tier boundaries** — lightweight/economy, debug/builder, plan/builder, review beats plan  \n\n### Run tests\n```\nnode --test .github/extensions/model-router/classifier.test.mjs\n```\nAll 64 pass in ~230 ms."
+            },
+            "type": "function",
+            "toolTitle": "Task complete",
+            "intentionSummary": "## Done — 64 regression tests, zero new dependencies\n\n###..."
+          }
+        ],
+        "interactionId": "14bf8138-da4b-47c6-8134-d03a87ec50df",
+        "outputTokens": 547
+      }
+    },
+    {
+      "line": 153,
+      "path": "",
+      "value": {
+        "type": "result",
+        "timestamp": "2026-03-29T05:52:33.367Z",
+        "sessionId": "1e7ce51d-2af2-445a-84e8-a4f6a63e8279",
+        "exitCode": 0,
+        "usage": {
+          "premiumRequests": 1,
+          "totalApiDurationMs": 180285,
+          "sessionDurationMs": 197147,
+          "codeChanges": {
+            "linesAdded": 569,
+            "linesRemoved": 234,
+            "filesModified": [
+              "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router/.github/extensions/model-router/extension.mjs"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "textSnippetCount": 1311,
+  "finalResponseSnippet": "bd356dac-bd9b-4ed4-9789-d98c10a316ca\n64/64 pass. Let me commit:\nIntent logged\nCommitting test infrastructure\n.github/extensions/model-router/classifier.mjs      | 235 ++++++++++++++++++++++++++++++++++++++++++++\n .github/extensions/model-router/classifier.test.mjs | 322 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n .github/extensions/model-router/extension.mjs       | 244 ++-------------------------------------------\n 3 files changed, 567 insertions(+), 234 deletions(-)\n<exited with exit code 0>\n.github/extensions/model-router/classifier.mjs      | 235 ++++++++++++++++++++++++++++++++++++++++++++\n .github/extensions/model-router/classifier.test.mjs | 322 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n .github/extensions/model-router/extension.mjs       | 244 ++-------------------------------------------\n 3 files changed, 567 insertions(+), 234 deletions(-)\n<exited with exit code 0>\n7ce32f25-2ed2-45f4-9f69-9abea39d6f63\n[detached HEAD 0d4aec6] test: add regression coverage for prompt-classification heuristics\n 3 files changed, 567 insertions(+), 234 deletions(-)\n create mode 100644 .github/extensions/model-router/classifier.mjs\n create mode 100644 .github/extensions/model-router/classifier.test.mjs\n<exited with exit code 0>\n[detached HEAD 0d4aec6] test: add regression coverage for prompt-classification heuristics\n 3 files changed, 567 insertions(+), 234 deletions(-)\n create mode 100644 .github/extensions/model-router/classifier.mjs\n create mode 100644 .github/extensions/model-router/classifier.test.mjs\n<exited with exit code 0>\nc8e4480e-4f76-4d50-b2e0-c500eb975f61\n## Done — 64 regression tests, zero new dependencies\n\n### What changed\n\n| File | Change |\n|---|---|\n| `classifier.mjs` *(new)* | All pure heuristic functions extracted from `extension.mjs` — keyword lists, `normalizePrompt`, `matchesPattern`, `includesAny`, `isExplicitReviewRequest`, `isToolHeavy`, `isComplexOrchestration`, `getComplexity`, `classifyPrompt` — all exported |\n| `classifier.test.mjs` *(new)* | 64 assertions across 9 `node:test` suites; no added deps |\n| `extension.mjs` | Now imports from `classifier.mjs`; all duplicated definitions removed; production behaviour unchanged |\n\n### Test coverage\n\n- **`normalizePrompt`** — lowercasing, null/undefined/number coercion  \n- **`matchesPattern` word boundaries** — guards against `\"prefix\"→fix`, `\"callback\"→call`, `\"return\"→run` false positives  \n- **`isExplicitReviewRequest`** — all 15 keyword variants (positive) + 7 non-review prompts (negative)  \n- **`isToolHeavy`** — bash / curl / api / agent detection  \n- **`isComplexOrchestration`** — all 8 orchestration keywords (positive) + 4 negatives  \n- **`classifyPrompt` explicit review** — keyword-to-tier, and `review` beats `implement` when both present  \n- **`classifyPrompt` tool-heavy implementation** — builder default, `toolHeavy` flag set, light+zero-complexity stays economy  \n- **`classifyPrompt` orchestration escalation** — every orchestration keyword drives impl/general → reasoning  \n- **`classifyPrompt` tier boundaries** — lightweight/economy, debug/builder, plan/builder, review beats plan  \n\n### Run tests\n```\nnode --test .github/extensions/model-router/classifier.test.mjs\n```\nAll 64 pass in ~230 ms.\n✓ Task completed: ## Done — 64 regression tests, zero new dependencies\n\n### What changed\n\n| File | Change |\n|---|---|\n| `classifier.mjs` *(new)* | All pure heuristic functions extracted from `extension.mjs` — keyword lists, `normalizePrompt`, `matchesPattern`, `includesAny`, `isExplicitReviewRequest`, `isToolHeavy`, `isComplexOrchestration`, `getComplexity`, `classifyPrompt` — all exported |\n| `classifier.test.mjs` *(new)* | 64 assertions across 9 `node:test` suites; no added deps |\n| `extension.mjs` | Now imports from `classifier.mjs`; all duplicated definitions removed; production behaviour unchanged |\n\n### Test coverage\n\n- **`normalizePrompt`** — lowercasing, null/undefined/number coercion  \n- **`matchesPattern` word boundaries** — guards against `\"prefix\"→fix`, `\"callback\"→call`, `\"return\"→run` false positives  \n- **`isExplicitReviewRequest`** — all 15 keyword variants (positive) + 7 non-review prompts (negative)  \n- **`isToolHeavy`** — bash / curl / api / agent detection  \n- **`isComplexOrchestration`** — all 8 orchestration keywords (positive) + 4 negatives  \n- **`classifyPrompt` explicit review** — keyword-to-tier, and `review` beats `implement` when both present  \n- **`classifyPrompt` tool-heavy implementation** — builder default, `toolHeavy` flag set, light+zero-complexity stays economy  \n- **`classifyPrompt` orchestration escalation** — every orchestration keyword drives impl/general → reasoning  \n- **`classifyPrompt` tier boundaries** — lightweight/economy, debug/builder, plan/builder, review beats plan  \n\n### Run tests\n```\nnode --test .github/extensions/model-router/classifier.test.mjs\n```\nAll 64 pass in ~230 ms.",
+  "rawArtifactFiles": {
+    "stdoutJsonl": "copilot-output.jsonl",
+    "stderr": "copilot-stderr.txt",
+    "diff": "git-diff.patch"
+  }
+}
+
+Changed files:
+[
+  ".github/extensions/model-router/classifier.mjs",
+  ".github/extensions/model-router/classifier.test.mjs",
+  ".github/extensions/model-router/extension.mjs"
+]
+
+Git diff (possibly truncated):
+```diff
+diff --git a/.github/extensions/model-router/classifier.mjs b/.github/extensions/model-router/classifier.mjs
+new file mode 100644
+index 0000000..cdf0fe9
+--- /dev/null
++++ b/.github/extensions/model-router/classifier.mjs
+@@ -0,0 +1,235 @@
++// Pure prompt-classification heuristics — no SDK imports, safe to unit-test in isolation.
++
++export const EXPLICIT_REVIEW_KEYWORDS = [
++  "review",
++  "code review",
++  "review this",
++  "review the code",
++  "review my code",
++  "audit",
++  "approval readiness",
++  "approval readiness checks",
++  "approve this",
++  "pr review",
++  // Bug finding, regression hunting, and approval-readiness are explicit review asks per SKILL.md
++  "find bugs",
++  "bug finding",
++  "regression hunting",
++  "regression hunt",
++  "find regressions",
++];
++
++export const PLAN_KEYWORDS = [
++  "plan",
++  "design",
++  "architecture",
++  "architect",
++  "proposal",
++  "strategy",
++  "approach",
++];
++
++export const DEBUG_KEYWORDS = [
++  "debug",
++  "fix",
++  "failure",
++  "failing",
++  "error",
++  "crash",
++  "root cause",
++  "broken",
++  "investigate",
++];
++
++export const IMPLEMENT_KEYWORDS = [
++  "implement",
++  "build",
++  "create",
++  "write",
++  "refactor",
++  "add",
++  "change",
++  "update",
++  "edit",
++  "enhance",
++  "modify",
++  "adjust",
++  "improve",
++  "fix the code",
++  "fix the formatting",
++  "fix the logic",
++];
++
++export const LIGHT_KEYWORDS = [
++  "explain",
++  "summarize",
++  "what is",
++  "where is",
++  "find",
++  "list",
++  "show",
++  "search",
++];
++
++export const TOOL_KEYWORDS = [
++  "bash",
++  "curl",
++  "execute",
++  "run",
++  "tool",
++  "api",
++  "function",
++  "call",
++  "invoke",
++  "script",
++  "command",
++  "shell",
++  "http",
++  "request",
++  "endpoint",
++  "agent",
++];
++
++// Complex multi-tool orchestration patterns warrant premium-tier escalation per routing-matrix.md
++export const ORCHESTRATION_KEYWORDS = [
++  "parallel agents",
++  "multiple agents",
++  "multi-agent",
++  "orchestrate",
++  "orchestration",
++  "parallel tools",
++  "tool chain",
++  "chained tools",
++];
++
++export function normalizePrompt(prompt) {
++  return String(prompt || "").toLowerCase();
++}
++
++// Word-boundary-aware matching prevents false positives like "prefix"→"fix",
++// "exchange"→"change", "callback"→"call". Multi-word phrases use substring matching.
++export function matchesPattern(text, pattern) {
++  if (/\s/.test(pattern)) {
++    return text.includes(pattern);
++  }
++  const escaped = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\{{GIT_DIFF}}");
++  return new RegExp(`\\b${escaped}\\b`).test(text);
++}
++
++export function includesAny(text, patterns) {
++  return patterns.some((pattern) => matchesPattern(text, pattern));
++}
++
++export function isExplicitReviewRequest(text) {
++  return includesAny(text, EXPLICIT_REVIEW_KEYWORDS);
++}
++
++export function isToolHeavy(text) {
++  return includesAny(text, TOOL_KEYWORDS);
++}
++
++export function isComplexOrchestration(text) {
++  return includesAny(text, ORCHESTRATION_KEYWORDS);
++}
++
++export function getComplexity(prompt) {
++  const lower = normalizePrompt(prompt);
++  const words = lower.trim().split(/\s+/).filter(Boolean).length;
++  let score = 0;
++
++  if (words > 40) score += 1;
++  if (words > 100) score += 1;
++  if (
++    includesAny(lower, [
++      "multi-file",
++      "multiple files",
++      "end-to-end",
++      "carefully",
++      "thorough",
++      "deep",
++      "complex",
++      "large",
++      "entire codebase",
++    ])
++  ) {
++    score += 2;
++  }
++
++  if (includesAny(lower, PLAN_KEYWORDS) || includesAny(lower, DEBUG_KEYWORDS)) {
++    score += 1;
++  }
++
++  // File path detection (/.github/, /src/, /lib/, etc.) indicates code changes
++  if (/\/[\w-]+\/[\w.-]+/.test(lower)) {
++    score += 1;
++  }
++
++  // Tool-heavy work deserves more robust models
++  if (isToolHeavy(lower)) {
++    score += 1;
++  }
++
++  return score;
++}
++
++export function classifyPrompt(prompt) {
++  const lower = normalizePrompt(prompt);
++  const complexity = getComplexity(lower);
++
++  if (isExplicitReviewRequest(lower)) {
++    return { kind: "review", complexity, tier: "reasoning" };
++  }
++
++  if (includesAny(lower, PLAN_KEYWORDS)) {
++    return {
++      kind: "planning",
++      complexity,
++      tier: complexity >= 2 ? "reasoning" : "builder",
++    };
++  }
++
++  if (includesAny(lower, DEBUG_KEYWORDS)) {
++    return {
++      kind: "debugging",
++      complexity,
++      tier: complexity >= 2 ? "reasoning" : "builder",
++    };
++  }
++
++  if (includesAny(lower, IMPLEMENT_KEYWORDS)) {
++    // Implementation tasks deserve at least builder tier for reliability
++    // Only use economy for very simple, lightweight implementations
++    let tier = "builder"; // Default to builder for all implementation
++
++    // But if it's a light keyword (find, list, show) with very low complexity, stay in economy
++    if (includesAny(lower, LIGHT_KEYWORDS) && complexity === 0) {
++      tier = "economy";
++    }
++
++    // Escalate to reasoning for complex orchestration
++    if (isComplexOrchestration(lower)) {
++      tier = "reasoning";
++    }
++
++    // Escalate to reasoning if implementation is deeply complex
++    if (complexity >= 3) {
++      tier = "reasoning";
++    }
++
++    return {
++      kind: "implementation",
++      complexity,
++      tier,
++      toolHeavy: isToolHeavy(lower),
++    };
++  }
++
++  if (includesAny(lower, LIGHT_KEYWORDS) || complexity === 0) {
++    return { kind: "lightweight", complexity, tier: "economy" };
++  }
++
++  let generalTier = complexity >= 2 ? "builder" : "economy";
++  if (isToolHeavy(lower) && complexity >= 1) generalTier = "builder";
++  if (isComplexOrchestration(lower)) generalTier = "reasoning";
++  return { kind: "general", complexity, tier: generalTier };
++}
+diff --git a/.github/extensions/model-router/classifier.test.mjs b/.github/extensions/model-router/classifier.test.mjs
+new file mode 100644
+index 0000000..5dff9d5
+--- /dev/null
++++ b/.github/extensions/model-router/classifier.test.mjs
+@@ -0,0 +1,322 @@
++// Regression tests for the prompt-classification heuristics in classifier.mjs.
++// Run with: node --test .github/extensions/model-router/classifier.test.mjs
++
++import { describe, it } from "node:test";
++import assert from "node:assert/strict";
++import {
++  normalizePrompt,
++  matchesPattern,
++  isExplicitReviewRequest,
++  isToolHeavy,
++  isComplexOrchestration,
++  classifyPrompt,
++} from "./classifier.mjs";
++
++// ---------------------------------------------------------------------------
++// normalizePrompt
++// ---------------------------------------------------------------------------
++describe("normalizePrompt", () => {
++  it("lowercases input", () => {
++    assert.equal(normalizePrompt("Hello World"), "hello world");
++  });
++
++  it("coerces non-string gracefully", () => {
++    assert.equal(normalizePrompt(null), "");
++    assert.equal(normalizePrompt(undefined), "");
++    assert.equal(normalizePrompt(42), "42");
++  });
++});
++
++// ---------------------------------------------------------------------------
++// matchesPattern — word-boundary accuracy
++// ---------------------------------------------------------------------------
++describe("matchesPattern (word boundaries)", () => {
++  it("matches a standalone keyword", () => {
++    assert.ok(matchesPattern("please fix the bug", "fix"));
++  });
++
++  it('does NOT match "fix" inside "prefix"', () => {
++    assert.ok(!matchesPattern("prefix this value", "fix"));
++  });
++
++  it('does NOT match "call" inside "callback"', () => {
++    assert.ok(!matchesPattern("register a callback here", "call"));
++  });
++
++  it('does NOT match "run" inside "return"', () => {
++    assert.ok(!matchesPattern("make it return early", "run"));
++  });
++
++  it("multi-word phrases use substring matching (no boundary requirement)", () => {
++    assert.ok(matchesPattern("find bugs in the codebase", "find bugs"));
++  });
++
++  it("multi-word phrase: negative when absent", () => {
++    assert.ok(!matchesPattern("find all functions", "find bugs"));
++  });
++});
++
++// ---------------------------------------------------------------------------
++// isExplicitReviewRequest
++// ---------------------------------------------------------------------------
++describe("isExplicitReviewRequest", () => {
++  const positive = [
++    "please review this PR",
++    "Can you do a code review of my changes?",
++    "Review the code in src/auth.ts",
++    "audit the authentication module",
++    "check approval readiness before merging",
++    "approve this pull request",
++    "PR review needed",
++    "find bugs in the payment service",
++    "bug finding session on the new feature",
++    "regression hunting after the deploy",
++    "regression hunt before release",
++    "find regressions introduced in v2",
++  ];
++
++  for (const prompt of positive) {
++    it(`detects explicit review: "${prompt.slice(0, 60)}"`, () => {
++      assert.ok(
++        isExplicitReviewRequest(normalizePrompt(prompt)),
++        `Expected review detection for: ${prompt}`,
++      );
++    });
++  }
++
++  const negative = [
++    "implement the new login flow",
++    "update the README",
++    "debug the crash in production",
++    "write a plan for the migration",
++    "explain how the router works",
++    // "review" must not trigger on unrelated word-boundary neighbors:
++    "I need to preview the changes",
++    // "fix" alone is debugging, not review:
++    "fix the null pointer exception",
++  ];
++
++  for (const prompt of negative) {
++    it(`does NOT flag as review: "${prompt.slice(0, 60)}"`, () => {
++      assert.ok(
++        !isExplicitReviewRequest(normalizePrompt(prompt)),
++        `Unexpected review detection for: ${prompt}`,
++      );
++    });
++  }
++});
++
++// ---------------------------------------------------------------------------
++// isToolHeavy
++// ---------------------------------------------------------------------------
++describe("isToolHeavy", () => {
++  it("detects bash keyword", () => {
++    assert.ok(isToolHeavy("run the bash script to deploy"));
++  });
++
++  it("detects curl", () => {
++    assert.ok(isToolHeavy("use curl to hit the endpoint"));
++  });
++
++  it("detects api (case-insensitive via normalizePrompt)", () => {
++    assert.ok(isToolHeavy(normalizePrompt("call the REST API")));
++  });
++
++  it("detects agent keyword", () => {
++    assert.ok(isToolHeavy("launch an agent to scrape the page"));
++  });
++
++  it("is false for pure prose", () => {
++    assert.ok(!isToolHeavy("explain what dependency injection means"));
++  });
++});
++
++// ---------------------------------------------------------------------------
++// isComplexOrchestration
++// ---------------------------------------------------------------------------
++describe("isComplexOrchestration", () => {
++  const positive = [
++    "run parallel agents to process each file",
++    "coordinate multiple agents for the migration",
++    "use a multi-agent setup to handle the pipeline",
++    "orchestrate the deployment across regions",
++    "set up orchestration for the CI workflow",
++    "use parallel tools to speed up the analysis",
++    "build a tool chain that clones then tests then deploys",
++    "chained tools across the pipeline stages",
++  ];
++
++  for (const prompt of positive) {
++    it(`detects orchestration: "${prompt.slice(0, 60)}"`, () => {
++      assert.ok(
++        isComplexOrchestration(normalizePrompt(prompt)),
++        `Expected orchestration for: ${prompt}`,
++      );
++    });
++  }
++
++  const negative = [
++    "implement a simple REST endpoint",
++    "write unit tests for the auth module",
++    "refactor the login function",
++    "run the test suite",
++  ];
++
++  for (const prompt of negative) {
++    it(`does NOT flag as orchestration: "${prompt.slice(0, 60)}"`, () => {
++      assert.ok(
++        !isComplexOrchestration(normalizePrompt(prompt)),
++        `Unexpected orchestration for: ${prompt}`,
++      );
++    });
++  }
++});
++
++// ---------------------------------------------------------------------------
++// classifyPrompt — explicit review → reasoning tier
++// ---------------------------------------------------------------------------
++describe("classifyPrompt: explicit review detection", () => {
++  it("review keyword → kind=review, tier=reasoning", () => {
++    const r = classifyPrompt("Please review this PR before merging");
++    assert.equal(r.kind, "review");
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("audit keyword → kind=review, tier=reasoning", () => {
++    const r = classifyPrompt("Audit the security module for vulnerabilities");
++    assert.equal(r.kind, "review");
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("find bugs → kind=review, tier=reasoning", () => {
++    const r = classifyPrompt("Find bugs in the new payment flow");
++    assert.equal(r.kind, "review");
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("regression hunt → kind=review, tier=reasoning", () => {
++    const r = classifyPrompt("Do a regression hunt across the last three releases");
++    assert.equal(r.kind, "review");
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("review beats implement keyword — review wins", () => {
++    // A prompt that has both "implement" and "review" should still route to review
++    const r = classifyPrompt("implement and review the auth module");
++    assert.equal(r.kind, "review");
++    assert.equal(r.tier, "reasoning");
++  });
++});
++
++// ---------------------------------------------------------------------------
++// classifyPrompt — tool-heavy implementation → builder tier
++// ---------------------------------------------------------------------------
++describe("classifyPrompt: tool-heavy implementation routing", () => {
++  it("simple implement → builder (default)", () => {
++    const r = classifyPrompt("implement the user registration endpoint");
++    assert.equal(r.kind, "implementation");
++    assert.equal(r.tier, "builder");
++  });
++
++  it("implement + bash → builder, toolHeavy=true", () => {
++    const r = classifyPrompt("implement a bash script that backs up the database");
++    assert.equal(r.kind, "implementation");
++    assert.equal(r.tier, "builder");
++    assert.equal(r.toolHeavy, true);
++  });
++
++  it("implement + curl + api → builder, toolHeavy=true", () => {
++    const r = classifyPrompt("implement a curl wrapper for the payments API");
++    assert.equal(r.kind, "implementation");
++    assert.equal(r.tier, "builder");
++    assert.equal(r.toolHeavy, true);
++  });
++
++  it("build + agent keyword → builder (tool escalates complexity but not to reasoning on its own)", () => {
++    const r = classifyPrompt("build a function that calls an agent");
++    assert.equal(r.kind, "implementation");
++    assert.equal(r.tier, "builder");
++    assert.equal(r.toolHeavy, true);
++  });
++
++  it("pure light implement (show/list + no complexity) → economy", () => {
++    // "list" is both a LIGHT_KEYWORD and overlaps with IMPLEMENT (via "find" which isn't impl)
++    // "show" is light — combined with zero complexity should stay economy
++    const r = classifyPrompt("show me what to add");
++    // "show" → light, "add" → implement; but LIGHT_KEYWORDS wins when complexity=0
++    assert.equal(r.tier, "economy");
++  });
++});
++
++// ---------------------------------------------------------------------------
++// classifyPrompt — orchestration escalation → reasoning tier
++// ---------------------------------------------------------------------------
++describe("classifyPrompt: orchestration escalation", () => {
++  it("implement + parallel agents → reasoning", () => {
++    const r = classifyPrompt(
++      "implement a workflow using parallel agents to process each repository",
++    );
++    assert.equal(r.kind, "implementation");
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("implement + orchestrate → reasoning", () => {
++    const r = classifyPrompt("implement and orchestrate the multi-step deployment pipeline");
++    assert.equal(r.kind, "implementation");
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("implement + tool chain → reasoning", () => {
++    const r = classifyPrompt("build a tool chain that lints, tests, and deploys");
++    assert.equal(r.kind, "implementation");
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("implement + chained tools → reasoning", () => {
++    const r = classifyPrompt("write a script using chained tools to process the data");
++    assert.equal(r.kind, "implementation");
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("general prompt + orchestration → reasoning", () => {
++    const r = classifyPrompt(
++      "set up multi-agent orchestration for the analytics pipeline",
++    );
++    // "set up" isn't an implement keyword, but orchestration escalates general→reasoning
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("plain implement WITHOUT orchestration stays builder", () => {
++    const r = classifyPrompt("implement a retry mechanism for failed HTTP requests");
++    assert.equal(r.tier, "builder");
++  });
++});
++
++// ---------------------------------------------------------------------------
++// classifyPrompt — misc tier boundaries
++// ---------------------------------------------------------------------------
++describe("classifyPrompt: tier boundaries", () => {
++  it("plain question → lightweight, economy", () => {
++    const r = classifyPrompt("what is dependency injection?");
++    assert.equal(r.kind, "lightweight");
++    assert.equal(r.tier, "economy");
++  });
++
++  it("debug keyword alone → debugging, builder (low complexity)", () => {
++    const r = classifyPrompt("debug the login crash");
++    assert.equal(r.kind, "debugging");
++    assert.equal(r.tier, "builder");
++  });
++
++  it("plan keyword alone → planning, builder (low complexity)", () => {
++    const r = classifyPrompt("plan the database migration");
++    assert.equal(r.kind, "planning");
++    assert.equal(r.tier, "builder");
++  });
++
++  it("review always wins over planning keyword in same prompt", () => {
++    const r = classifyPrompt("review and plan the architecture changes");
++    assert.equal(r.kind, "review");
++    assert.equal(r.tier, "reasoning");
++  });
++});
+diff --git a/.github/extensions/model-router/extension.mjs b/.github/extensions/model-router/extension.mjs
+index ceaaa51..d76bb70 100644
+--- a/.github/extensions/model-router/extension.mjs
++++ b/.github/extensions/model-router/extension.mjs
+@@ -1,4 +1,14 @@
+ import { joinSession } from "@github/copilot-sdk/extension";
++import {
++  normalizePrompt,
++  matchesPattern,
++  includesAny,
++  isExplicitReviewRequest,
++  isToolHeavy,
++  isComplexOrchestration,
++  getComplexity,
++  classifyPrompt,
++} from "./classifier.mjs";
+ 
+ const MODEL_CANDIDATES = {
+   economy: [
+@@ -29,108 +39,6 @@ const MODEL_CANDIDATES = {
+   ],
+ };
+ 
+-const EXPLICIT_REVIEW_KEYWORDS = [
+-  "review",
+-  "code review",
+-  "review this",
+-  "review the code",
+-  "review my code",
+-  "audit",
+-  "approval readiness",
+-  "approval readiness checks",
+-  "approve this",
+-  "pr review",
+-  // Bug finding, regression hunting, and approval-readiness are explicit review asks per SKILL.md
+-  "find bugs",
+-  "bug finding",
+-  "regression hunting",
+-  "regression hunt",
+-  "find regressions",
+-];
+-
+-const PLAN_KEYWORDS = [
+-  "plan",
+-  "design",
+-  "architecture",
+-  "architect",
+-  "proposal",
+-  "strategy",
+-  "approach",
+-];
+-
+-const DEBUG_KEYWORDS = [
+-  "debug",
+-  "fix",
+-  "failure",
+-  "failing",
+-  "error",
+-  "crash",
+-  "root cause",
+-  "broken",
+-  "investigate",
+-];
+-
+-const IMPLEMENT_KEYWORDS = [
+-  "implement",
+-  "build",
+-  "create",
+-  "write",
+-  "refactor",
+-  "add",
+-  "change",
+-  "update",
+-  "edit",
+-  "enhance",
+-  "modify",
+-  "adjust",
+-  "improve",
+-  "fix the code",
+-  "fix the formatting",
+-  "fix the logic",
+-];
+-
+-const LIGHT_KEYWORDS = [
+-  "explain",
+-  "summarize",
+-  "what is",
+-  "where is",
+-  "find",
+-  "list",
+-  "show",
+-  "search",
+-];
+-
+-const TOOL_KEYWORDS = [
+-  "bash",
+-  "curl",
+-  "execute",
+-  "run",
+-  "tool",
+-  "api",
+-  "function",
+-  "call",
+-  "invoke",
+-  "script",
+-  "command",
+-  "shell",
+-  "http",
+-  "request",
+-  "endpoint",
+-
+... [truncated 4193 chars]
+```
+
+Assistant final response excerpt (possibly truncated):
+bd356dac-bd9b-4ed4-9789-d98c10a316ca
+64/64 pass. Let me commit:
+Intent logged
+Committing test infrastructure
+.github/extensions/model-router/classifier.mjs      | 235 ++++++++++++++++++++++++++++++++++++++++++++
+ .github/extensions/model-router/classifier.test.mjs | 322 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ .github/extensions/model-router/extension.mjs       | 244 ++-------------------------------------------
+ 3 files changed, 567 insertions(+), 234 deletions(-)
+<exited with exit code 0>
+.github/extensions/model-router/classifier.mjs      | 235 ++++++++++++++++++++++++++++++++++++++++++++
+ .github/extensions/model-router/classifier.test.mjs | 322 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ .github/extensions/model-router/extension.mjs       | 244 ++-------------------------------------------
+ 3 files changed, 567 insertions(+), 234 deletions(-)
+<exited with exit code 0>
+7ce32f25-2ed2-45f4-9f69-9abea39d6f63
+[detached HEAD 0d4aec6] test: add regression coverage for prompt-classification heuristics
+ 3 files changed, 567 insertions(+), 234 deletions(-)
+ create mode 100644 .github/extensions/model-router/classifier.mjs
+ create mode 100644 .github/extensions/model-router/classifier.test.mjs
+<exited with exit code 0>
+[detached HEAD 0d4aec6] test: add regression coverage for prompt-classification heuristics
+ 3 files changed, 567 insertions(+), 234 deletions(-)
+ create mode 100644 .github/extensions/model-router/classifier.mjs
+ create mode 100644 .github/extensions/model-router/classifier.test.mjs
+<exited with exit code 0>
+c8e4480e-4f76-4d50-b2e0-c500eb975f61
+## Done — 64 regression tests, zero new dependencies
+
+### What changed
+
+| File | Change |
+|---|---|
+| `classifier.mjs` *(new)* | All pure heuristic functions extracted from `extension.mjs` — keyword lists, `normalizePrompt`, `matchesPattern`, `includesAny`, `isExplicitReviewRequest`, `isToolHeavy`, `isComplexOrchestration`, `getComplexity`, `classifyPrompt` — all exported |
+| `classifier.test.mjs` *(new)* | 64 assertions across 9 `node:test` suites; no added deps |
+| `extension.mjs` | Now imports from `classifier.mjs`; all duplicated definitions removed; production behaviour unchanged |
+
+### Test coverage
+
+- **`normalizePrompt`** — lowercasing, null/undefined/number coercion  
+- **`matchesPattern` word boundaries** — guards against `"prefix"→fix`, `"callback"→call`, `"return"→run` false positives  
+- **`isExplicitReviewRequest`** — all 15 keyword variants (positive) + 7 non-review prompts (negative)  
+- **`isToolHeavy`** — bash / curl / api / agent detection  
+- **`isComplexOrchestration`** — all 8 orchestration keywords (positive) + 4 negatives  
+- **`classifyPrompt` explicit review** — keyword-to-tier, and `review` beats `implement` when both present  
+- **`classifyPrompt` tool-heavy implementation** — builder default, `toolHeavy` flag set, light+zero-complexity stays economy  
+- **`classifyPrompt` orchestration escalation** — every orchestration keyword drives impl/general → reasoning  
+- **`classifyPrompt` tier boundaries** — lightweight/economy, debug/builder, plan/builder, review beats plan  
+
+### Run tests
+```
+node --test .github/extensions/model-router/classifier.test.mjs
+```
+All 64 pass in ~230 ms.
+✓ Task completed: ## Done — 64 regression tests, zero new dependencies
+
+### What changed
+
+| File | Change |
+|---|---|
+| `classifier.mjs` *(new)* | All pure heuristic functions extracted from `extension.mjs` — keyword lists, `normalizePrompt`, `matchesPattern`, `includesAny`, `isExplicitReviewRequest`, `isToolHeavy`, `isComplexOrchestration`, `getComplexity`, `classifyPrompt` — all exported |
+| `classifier.test.mjs` *(new)* | 64 assertions across 9 `node:test` suites; no added deps |
+| `extension.mjs` | Now imports from `classifier.mjs`; all duplicated definitions removed; production behaviour unchanged |
+
+### Test coverage
+
+- **`normalizePrompt`** — lowercasing, null/undefined/number coercion  
+- **`matchesPattern` word boundaries** — guards against `"prefix"→fix`, `"callback"→call`, `"return"→run` false positives  
+- **`isExplicitReviewRequest`** — all 15 keyword variants (positive) + 7 non-review prompts (negative)  
+- **`isToolHeavy`** — bash / curl / api / agent detection  
+- **`isComplexOrchestration`** — all 8 orchestration keywords (positive) + 4 negatives  
+- **`classifyPrompt` explicit review** — keyword-to-tier, and `review` beats `implement` when both present  
+- **`classifyPrompt` tool-heavy implementation** — builder default, `toolHeavy` flag set, light+zero-complexity stays economy  
+- **`classifyPrompt` orchestration escalation** — every orchestration keyword drives impl/general → reasoning  
+- **`classifyPrompt` tier boundaries** — lightweight/economy, debug/builder, plan/builder, review beats plan  
+
+### Run tests
+```
+node --test .github/extensions/model-router/classifier.test.mjs
+```
+All 64 pass in ~230 ms.

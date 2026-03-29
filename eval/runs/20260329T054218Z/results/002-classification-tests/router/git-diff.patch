@@ -1,0 +1,836 @@
+diff --git a/.github/extensions/model-router/classifier.mjs b/.github/extensions/model-router/classifier.mjs
+new file mode 100644
+index 0000000..cdf0fe9
+--- /dev/null
++++ b/.github/extensions/model-router/classifier.mjs
+@@ -0,0 +1,235 @@
++// Pure prompt-classification heuristics — no SDK imports, safe to unit-test in isolation.
++
++export const EXPLICIT_REVIEW_KEYWORDS = [
++  "review",
++  "code review",
++  "review this",
++  "review the code",
++  "review my code",
++  "audit",
++  "approval readiness",
++  "approval readiness checks",
++  "approve this",
++  "pr review",
++  // Bug finding, regression hunting, and approval-readiness are explicit review asks per SKILL.md
++  "find bugs",
++  "bug finding",
++  "regression hunting",
++  "regression hunt",
++  "find regressions",
++];
++
++export const PLAN_KEYWORDS = [
++  "plan",
++  "design",
++  "architecture",
++  "architect",
++  "proposal",
++  "strategy",
++  "approach",
++];
++
++export const DEBUG_KEYWORDS = [
++  "debug",
++  "fix",
++  "failure",
++  "failing",
++  "error",
++  "crash",
++  "root cause",
++  "broken",
++  "investigate",
++];
++
++export const IMPLEMENT_KEYWORDS = [
++  "implement",
++  "build",
++  "create",
++  "write",
++  "refactor",
++  "add",
++  "change",
++  "update",
++  "edit",
++  "enhance",
++  "modify",
++  "adjust",
++  "improve",
++  "fix the code",
++  "fix the formatting",
++  "fix the logic",
++];
++
++export const LIGHT_KEYWORDS = [
++  "explain",
++  "summarize",
++  "what is",
++  "where is",
++  "find",
++  "list",
++  "show",
++  "search",
++];
++
++export const TOOL_KEYWORDS = [
++  "bash",
++  "curl",
++  "execute",
++  "run",
++  "tool",
++  "api",
++  "function",
++  "call",
++  "invoke",
++  "script",
++  "command",
++  "shell",
++  "http",
++  "request",
++  "endpoint",
++  "agent",
++];
++
++// Complex multi-tool orchestration patterns warrant premium-tier escalation per routing-matrix.md
++export const ORCHESTRATION_KEYWORDS = [
++  "parallel agents",
++  "multiple agents",
++  "multi-agent",
++  "orchestrate",
++  "orchestration",
++  "parallel tools",
++  "tool chain",
++  "chained tools",
++];
++
++export function normalizePrompt(prompt) {
++  return String(prompt || "").toLowerCase();
++}
++
++// Word-boundary-aware matching prevents false positives like "prefix"→"fix",
++// "exchange"→"change", "callback"→"call". Multi-word phrases use substring matching.
++export function matchesPattern(text, pattern) {
++  if (/\s/.test(pattern)) {
++    return text.includes(pattern);
++  }
++  const escaped = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
++  return new RegExp(`\\b${escaped}\\b`).test(text);
++}
++
++export function includesAny(text, patterns) {
++  return patterns.some((pattern) => matchesPattern(text, pattern));
++}
++
++export function isExplicitReviewRequest(text) {
++  return includesAny(text, EXPLICIT_REVIEW_KEYWORDS);
++}
++
++export function isToolHeavy(text) {
++  return includesAny(text, TOOL_KEYWORDS);
++}
++
++export function isComplexOrchestration(text) {
++  return includesAny(text, ORCHESTRATION_KEYWORDS);
++}
++
++export function getComplexity(prompt) {
++  const lower = normalizePrompt(prompt);
++  const words = lower.trim().split(/\s+/).filter(Boolean).length;
++  let score = 0;
++
++  if (words > 40) score += 1;
++  if (words > 100) score += 1;
++  if (
++    includesAny(lower, [
++      "multi-file",
++      "multiple files",
++      "end-to-end",
++      "carefully",
++      "thorough",
++      "deep",
++      "complex",
++      "large",
++      "entire codebase",
++    ])
++  ) {
++    score += 2;
++  }
++
++  if (includesAny(lower, PLAN_KEYWORDS) || includesAny(lower, DEBUG_KEYWORDS)) {
++    score += 1;
++  }
++
++  // File path detection (/.github/, /src/, /lib/, etc.) indicates code changes
++  if (/\/[\w-]+\/[\w.-]+/.test(lower)) {
++    score += 1;
++  }
++
++  // Tool-heavy work deserves more robust models
++  if (isToolHeavy(lower)) {
++    score += 1;
++  }
++
++  return score;
++}
++
++export function classifyPrompt(prompt) {
++  const lower = normalizePrompt(prompt);
++  const complexity = getComplexity(lower);
++
++  if (isExplicitReviewRequest(lower)) {
++    return { kind: "review", complexity, tier: "reasoning" };
++  }
++
++  if (includesAny(lower, PLAN_KEYWORDS)) {
++    return {
++      kind: "planning",
++      complexity,
++      tier: complexity >= 2 ? "reasoning" : "builder",
++    };
++  }
++
++  if (includesAny(lower, DEBUG_KEYWORDS)) {
++    return {
++      kind: "debugging",
++      complexity,
++      tier: complexity >= 2 ? "reasoning" : "builder",
++    };
++  }
++
++  if (includesAny(lower, IMPLEMENT_KEYWORDS)) {
++    // Implementation tasks deserve at least builder tier for reliability
++    // Only use economy for very simple, lightweight implementations
++    let tier = "builder"; // Default to builder for all implementation
++
++    // But if it's a light keyword (find, list, show) with very low complexity, stay in economy
++    if (includesAny(lower, LIGHT_KEYWORDS) && complexity === 0) {
++      tier = "economy";
++    }
++
++    // Escalate to reasoning for complex orchestration
++    if (isComplexOrchestration(lower)) {
++      tier = "reasoning";
++    }
++
++    // Escalate to reasoning if implementation is deeply complex
++    if (complexity >= 3) {
++      tier = "reasoning";
++    }
++
++    return {
++      kind: "implementation",
++      complexity,
++      tier,
++      toolHeavy: isToolHeavy(lower),
++    };
++  }
++
++  if (includesAny(lower, LIGHT_KEYWORDS) || complexity === 0) {
++    return { kind: "lightweight", complexity, tier: "economy" };
++  }
++
++  let generalTier = complexity >= 2 ? "builder" : "economy";
++  if (isToolHeavy(lower) && complexity >= 1) generalTier = "builder";
++  if (isComplexOrchestration(lower)) generalTier = "reasoning";
++  return { kind: "general", complexity, tier: generalTier };
++}
+diff --git a/.github/extensions/model-router/classifier.test.mjs b/.github/extensions/model-router/classifier.test.mjs
+new file mode 100644
+index 0000000..5dff9d5
+--- /dev/null
++++ b/.github/extensions/model-router/classifier.test.mjs
+@@ -0,0 +1,322 @@
++// Regression tests for the prompt-classification heuristics in classifier.mjs.
++// Run with: node --test .github/extensions/model-router/classifier.test.mjs
++
++import { describe, it } from "node:test";
++import assert from "node:assert/strict";
++import {
++  normalizePrompt,
++  matchesPattern,
++  isExplicitReviewRequest,
++  isToolHeavy,
++  isComplexOrchestration,
++  classifyPrompt,
++} from "./classifier.mjs";
++
++// ---------------------------------------------------------------------------
++// normalizePrompt
++// ---------------------------------------------------------------------------
++describe("normalizePrompt", () => {
++  it("lowercases input", () => {
++    assert.equal(normalizePrompt("Hello World"), "hello world");
++  });
++
++  it("coerces non-string gracefully", () => {
++    assert.equal(normalizePrompt(null), "");
++    assert.equal(normalizePrompt(undefined), "");
++    assert.equal(normalizePrompt(42), "42");
++  });
++});
++
++// ---------------------------------------------------------------------------
++// matchesPattern — word-boundary accuracy
++// ---------------------------------------------------------------------------
++describe("matchesPattern (word boundaries)", () => {
++  it("matches a standalone keyword", () => {
++    assert.ok(matchesPattern("please fix the bug", "fix"));
++  });
++
++  it('does NOT match "fix" inside "prefix"', () => {
++    assert.ok(!matchesPattern("prefix this value", "fix"));
++  });
++
++  it('does NOT match "call" inside "callback"', () => {
++    assert.ok(!matchesPattern("register a callback here", "call"));
++  });
++
++  it('does NOT match "run" inside "return"', () => {
++    assert.ok(!matchesPattern("make it return early", "run"));
++  });
++
++  it("multi-word phrases use substring matching (no boundary requirement)", () => {
++    assert.ok(matchesPattern("find bugs in the codebase", "find bugs"));
++  });
++
++  it("multi-word phrase: negative when absent", () => {
++    assert.ok(!matchesPattern("find all functions", "find bugs"));
++  });
++});
++
++// ---------------------------------------------------------------------------
++// isExplicitReviewRequest
++// ---------------------------------------------------------------------------
++describe("isExplicitReviewRequest", () => {
++  const positive = [
++    "please review this PR",
++    "Can you do a code review of my changes?",
++    "Review the code in src/auth.ts",
++    "audit the authentication module",
++    "check approval readiness before merging",
++    "approve this pull request",
++    "PR review needed",
++    "find bugs in the payment service",
++    "bug finding session on the new feature",
++    "regression hunting after the deploy",
++    "regression hunt before release",
++    "find regressions introduced in v2",
++  ];
++
++  for (const prompt of positive) {
++    it(`detects explicit review: "${prompt.slice(0, 60)}"`, () => {
++      assert.ok(
++        isExplicitReviewRequest(normalizePrompt(prompt)),
++        `Expected review detection for: ${prompt}`,
++      );
++    });
++  }
++
++  const negative = [
++    "implement the new login flow",
++    "update the README",
++    "debug the crash in production",
++    "write a plan for the migration",
++    "explain how the router works",
++    // "review" must not trigger on unrelated word-boundary neighbors:
++    "I need to preview the changes",
++    // "fix" alone is debugging, not review:
++    "fix the null pointer exception",
++  ];
++
++  for (const prompt of negative) {
++    it(`does NOT flag as review: "${prompt.slice(0, 60)}"`, () => {
++      assert.ok(
++        !isExplicitReviewRequest(normalizePrompt(prompt)),
++        `Unexpected review detection for: ${prompt}`,
++      );
++    });
++  }
++});
++
++// ---------------------------------------------------------------------------
++// isToolHeavy
++// ---------------------------------------------------------------------------
++describe("isToolHeavy", () => {
++  it("detects bash keyword", () => {
++    assert.ok(isToolHeavy("run the bash script to deploy"));
++  });
++
++  it("detects curl", () => {
++    assert.ok(isToolHeavy("use curl to hit the endpoint"));
++  });
++
++  it("detects api (case-insensitive via normalizePrompt)", () => {
++    assert.ok(isToolHeavy(normalizePrompt("call the REST API")));
++  });
++
++  it("detects agent keyword", () => {
++    assert.ok(isToolHeavy("launch an agent to scrape the page"));
++  });
++
++  it("is false for pure prose", () => {
++    assert.ok(!isToolHeavy("explain what dependency injection means"));
++  });
++});
++
++// ---------------------------------------------------------------------------
++// isComplexOrchestration
++// ---------------------------------------------------------------------------
++describe("isComplexOrchestration", () => {
++  const positive = [
++    "run parallel agents to process each file",
++    "coordinate multiple agents for the migration",
++    "use a multi-agent setup to handle the pipeline",
++    "orchestrate the deployment across regions",
++    "set up orchestration for the CI workflow",
++    "use parallel tools to speed up the analysis",
++    "build a tool chain that clones then tests then deploys",
++    "chained tools across the pipeline stages",
++  ];
++
++  for (const prompt of positive) {
++    it(`detects orchestration: "${prompt.slice(0, 60)}"`, () => {
++      assert.ok(
++        isComplexOrchestration(normalizePrompt(prompt)),
++        `Expected orchestration for: ${prompt}`,
++      );
++    });
++  }
++
++  const negative = [
++    "implement a simple REST endpoint",
++    "write unit tests for the auth module",
++    "refactor the login function",
++    "run the test suite",
++  ];
++
++  for (const prompt of negative) {
++    it(`does NOT flag as orchestration: "${prompt.slice(0, 60)}"`, () => {
++      assert.ok(
++        !isComplexOrchestration(normalizePrompt(prompt)),
++        `Unexpected orchestration for: ${prompt}`,
++      );
++    });
++  }
++});
++
++// ---------------------------------------------------------------------------
++// classifyPrompt — explicit review → reasoning tier
++// ---------------------------------------------------------------------------
++describe("classifyPrompt: explicit review detection", () => {
++  it("review keyword → kind=review, tier=reasoning", () => {
++    const r = classifyPrompt("Please review this PR before merging");
++    assert.equal(r.kind, "review");
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("audit keyword → kind=review, tier=reasoning", () => {
++    const r = classifyPrompt("Audit the security module for vulnerabilities");
++    assert.equal(r.kind, "review");
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("find bugs → kind=review, tier=reasoning", () => {
++    const r = classifyPrompt("Find bugs in the new payment flow");
++    assert.equal(r.kind, "review");
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("regression hunt → kind=review, tier=reasoning", () => {
++    const r = classifyPrompt("Do a regression hunt across the last three releases");
++    assert.equal(r.kind, "review");
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("review beats implement keyword — review wins", () => {
++    // A prompt that has both "implement" and "review" should still route to review
++    const r = classifyPrompt("implement and review the auth module");
++    assert.equal(r.kind, "review");
++    assert.equal(r.tier, "reasoning");
++  });
++});
++
++// ---------------------------------------------------------------------------
++// classifyPrompt — tool-heavy implementation → builder tier
++// ---------------------------------------------------------------------------
++describe("classifyPrompt: tool-heavy implementation routing", () => {
++  it("simple implement → builder (default)", () => {
++    const r = classifyPrompt("implement the user registration endpoint");
++    assert.equal(r.kind, "implementation");
++    assert.equal(r.tier, "builder");
++  });
++
++  it("implement + bash → builder, toolHeavy=true", () => {
++    const r = classifyPrompt("implement a bash script that backs up the database");
++    assert.equal(r.kind, "implementation");
++    assert.equal(r.tier, "builder");
++    assert.equal(r.toolHeavy, true);
++  });
++
++  it("implement + curl + api → builder, toolHeavy=true", () => {
++    const r = classifyPrompt("implement a curl wrapper for the payments API");
++    assert.equal(r.kind, "implementation");
++    assert.equal(r.tier, "builder");
++    assert.equal(r.toolHeavy, true);
++  });
++
++  it("build + agent keyword → builder (tool escalates complexity but not to reasoning on its own)", () => {
++    const r = classifyPrompt("build a function that calls an agent");
++    assert.equal(r.kind, "implementation");
++    assert.equal(r.tier, "builder");
++    assert.equal(r.toolHeavy, true);
++  });
++
++  it("pure light implement (show/list + no complexity) → economy", () => {
++    // "list" is both a LIGHT_KEYWORD and overlaps with IMPLEMENT (via "find" which isn't impl)
++    // "show" is light — combined with zero complexity should stay economy
++    const r = classifyPrompt("show me what to add");
++    // "show" → light, "add" → implement; but LIGHT_KEYWORDS wins when complexity=0
++    assert.equal(r.tier, "economy");
++  });
++});
++
++// ---------------------------------------------------------------------------
++// classifyPrompt — orchestration escalation → reasoning tier
++// ---------------------------------------------------------------------------
++describe("classifyPrompt: orchestration escalation", () => {
++  it("implement + parallel agents → reasoning", () => {
++    const r = classifyPrompt(
++      "implement a workflow using parallel agents to process each repository",
++    );
++    assert.equal(r.kind, "implementation");
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("implement + orchestrate → reasoning", () => {
++    const r = classifyPrompt("implement and orchestrate the multi-step deployment pipeline");
++    assert.equal(r.kind, "implementation");
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("implement + tool chain → reasoning", () => {
++    const r = classifyPrompt("build a tool chain that lints, tests, and deploys");
++    assert.equal(r.kind, "implementation");
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("implement + chained tools → reasoning", () => {
++    const r = classifyPrompt("write a script using chained tools to process the data");
++    assert.equal(r.kind, "implementation");
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("general prompt + orchestration → reasoning", () => {
++    const r = classifyPrompt(
++      "set up multi-agent orchestration for the analytics pipeline",
++    );
++    // "set up" isn't an implement keyword, but orchestration escalates general→reasoning
++    assert.equal(r.tier, "reasoning");
++  });
++
++  it("plain implement WITHOUT orchestration stays builder", () => {
++    const r = classifyPrompt("implement a retry mechanism for failed HTTP requests");
++    assert.equal(r.tier, "builder");
++  });
++});
++
++// ---------------------------------------------------------------------------
++// classifyPrompt — misc tier boundaries
++// ---------------------------------------------------------------------------
++describe("classifyPrompt: tier boundaries", () => {
++  it("plain question → lightweight, economy", () => {
++    const r = classifyPrompt("what is dependency injection?");
++    assert.equal(r.kind, "lightweight");
++    assert.equal(r.tier, "economy");
++  });
++
++  it("debug keyword alone → debugging, builder (low complexity)", () => {
++    const r = classifyPrompt("debug the login crash");
++    assert.equal(r.kind, "debugging");
++    assert.equal(r.tier, "builder");
++  });
++
++  it("plan keyword alone → planning, builder (low complexity)", () => {
++    const r = classifyPrompt("plan the database migration");
++    assert.equal(r.kind, "planning");
++    assert.equal(r.tier, "builder");
++  });
++
++  it("review always wins over planning keyword in same prompt", () => {
++    const r = classifyPrompt("review and plan the architecture changes");
++    assert.equal(r.kind, "review");
++    assert.equal(r.tier, "reasoning");
++  });
++});
+diff --git a/.github/extensions/model-router/extension.mjs b/.github/extensions/model-router/extension.mjs
+index ceaaa51..d76bb70 100644
+--- a/.github/extensions/model-router/extension.mjs
++++ b/.github/extensions/model-router/extension.mjs
+@@ -1,4 +1,14 @@
+ import { joinSession } from "@github/copilot-sdk/extension";
++import {
++  normalizePrompt,
++  matchesPattern,
++  includesAny,
++  isExplicitReviewRequest,
++  isToolHeavy,
++  isComplexOrchestration,
++  getComplexity,
++  classifyPrompt,
++} from "./classifier.mjs";
+ 
+ const MODEL_CANDIDATES = {
+   economy: [
+@@ -29,108 +39,6 @@ const MODEL_CANDIDATES = {
+   ],
+ };
+ 
+-const EXPLICIT_REVIEW_KEYWORDS = [
+-  "review",
+-  "code review",
+-  "review this",
+-  "review the code",
+-  "review my code",
+-  "audit",
+-  "approval readiness",
+-  "approval readiness checks",
+-  "approve this",
+-  "pr review",
+-  // Bug finding, regression hunting, and approval-readiness are explicit review asks per SKILL.md
+-  "find bugs",
+-  "bug finding",
+-  "regression hunting",
+-  "regression hunt",
+-  "find regressions",
+-];
+-
+-const PLAN_KEYWORDS = [
+-  "plan",
+-  "design",
+-  "architecture",
+-  "architect",
+-  "proposal",
+-  "strategy",
+-  "approach",
+-];
+-
+-const DEBUG_KEYWORDS = [
+-  "debug",
+-  "fix",
+-  "failure",
+-  "failing",
+-  "error",
+-  "crash",
+-  "root cause",
+-  "broken",
+-  "investigate",
+-];
+-
+-const IMPLEMENT_KEYWORDS = [
+-  "implement",
+-  "build",
+-  "create",
+-  "write",
+-  "refactor",
+-  "add",
+-  "change",
+-  "update",
+-  "edit",
+-  "enhance",
+-  "modify",
+-  "adjust",
+-  "improve",
+-  "fix the code",
+-  "fix the formatting",
+-  "fix the logic",
+-];
+-
+-const LIGHT_KEYWORDS = [
+-  "explain",
+-  "summarize",
+-  "what is",
+-  "where is",
+-  "find",
+-  "list",
+-  "show",
+-  "search",
+-];
+-
+-const TOOL_KEYWORDS = [
+-  "bash",
+-  "curl",
+-  "execute",
+-  "run",
+-  "tool",
+-  "api",
+-  "function",
+-  "call",
+-  "invoke",
+-  "script",
+-  "command",
+-  "shell",
+-  "http",
+-  "request",
+-  "endpoint",
+-  "agent",
+-];
+-
+-// Complex multi-tool orchestration patterns warrant premium-tier escalation per routing-matrix.md
+-const ORCHESTRATION_KEYWORDS = [
+-  "parallel agents",
+-  "multiple agents",
+-  "multi-agent",
+-  "orchestrate",
+-  "orchestration",
+-  "parallel tools",
+-  "tool chain",
+-  "chained tools",
+-];
+-
+ let lastImplementationModel = null;
+ let lastReviewModel = null;
+ let lastDecision = null;
+@@ -349,138 +257,6 @@ async function maybeSwapDueToConfusion(session, currentModelId) {
+   }
+ }
+ 
+-function normalizePrompt(prompt) {
+-  return String(prompt || "").toLowerCase();
+-}
+-
+-// Word-boundary-aware matching prevents false positives like "prefix"→"fix",
+-// "exchange"→"change", "callback"→"call". Multi-word phrases use substring matching.
+-function matchesPattern(text, pattern) {
+-  if (/\s/.test(pattern)) {
+-    return text.includes(pattern);
+-  }
+-  const escaped = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+-  return new RegExp(`\\b${escaped}\\b`).test(text);
+-}
+-
+-function includesAny(text, patterns) {
+-  return patterns.some((pattern) => matchesPattern(text, pattern));
+-}
+-
+-function isExplicitReviewRequest(text) {
+-  return includesAny(text, EXPLICIT_REVIEW_KEYWORDS);
+-}
+-
+-function isToolHeavy(text) {
+-  return includesAny(text, TOOL_KEYWORDS);
+-}
+-
+-function isComplexOrchestration(text) {
+-  return includesAny(text, ORCHESTRATION_KEYWORDS);
+-}
+-
+-function getComplexity(prompt) {
+-  const lower = normalizePrompt(prompt);
+-  const words = lower.trim().split(/\s+/).filter(Boolean).length;
+-  let score = 0;
+-
+-  if (words > 40) score += 1;
+-  if (words > 100) score += 1;
+-  if (
+-    includesAny(lower, [
+-      "multi-file",
+-      "multiple files",
+-      "end-to-end",
+-      "carefully",
+-      "thorough",
+-      "deep",
+-      "complex",
+-      "large",
+-      "entire codebase",
+-    ])
+-  ) {
+-    score += 2;
+-  }
+-
+-  if (includesAny(lower, PLAN_KEYWORDS) || includesAny(lower, DEBUG_KEYWORDS)) {
+-    score += 1;
+-  }
+-
+-  // File path detection (/.github/, /src/, /lib/, etc.) indicates code changes
+-  if (/\/[\w-]+\/[\w.-]+/.test(lower)) {
+-    score += 1;
+-  }
+-
+-  // Tool-heavy work deserves more robust models
+-  if (isToolHeavy(lower)) {
+-    score += 1;
+-  }
+-
+-  return score;
+-}
+-
+-function classifyPrompt(prompt) {
+-  const lower = normalizePrompt(prompt);
+-  const complexity = getComplexity(lower);
+-
+-  if (isExplicitReviewRequest(lower)) {
+-    return { kind: "review", complexity, tier: "reasoning" };
+-  }
+-
+-  if (includesAny(lower, PLAN_KEYWORDS)) {
+-    return {
+-      kind: "planning",
+-      complexity,
+-      tier: complexity >= 2 ? "reasoning" : "builder",
+-    };
+-  }
+-
+-  if (includesAny(lower, DEBUG_KEYWORDS)) {
+-    return {
+-      kind: "debugging",
+-      complexity,
+-      tier: complexity >= 2 ? "reasoning" : "builder",
+-    };
+-  }
+-
+-  if (includesAny(lower, IMPLEMENT_KEYWORDS)) {
+-    // Implementation tasks deserve at least builder tier for reliability
+-    // Only use economy for very simple, lightweight implementations
+-    let tier = "builder"; // Default to builder for all implementation
+-    
+-    // But if it's a light keyword (find, list, show) with very low complexity, stay in economy
+-    if (includesAny(lower, LIGHT_KEYWORDS) && complexity === 0) {
+-      tier = "economy";
+-    }
+-    
+-    // Escalate to reasoning for complex orchestration
+-    if (isComplexOrchestration(lower)) {
+-      tier = "reasoning";
+-    }
+-    
+-    // Escalate to reasoning if implementation is deeply complex
+-    if (complexity >= 3) {
+-      tier = "reasoning";
+-    }
+-    
+-    return {
+-      kind: "implementation",
+-      complexity,
+-      tier,
+-      toolHeavy: isToolHeavy(lower),
+-    };
+-  }
+-
+-  if (includesAny(lower, LIGHT_KEYWORDS) || complexity === 0) {
+-    return { kind: "lightweight", complexity, tier: "economy" };
+-  }
+-
+-  let generalTier = complexity >= 2 ? "builder" : "economy";
+-  if (isToolHeavy(lower) && complexity >= 1) generalTier = "builder";
+-  if (isComplexOrchestration(lower)) generalTier = "reasoning";
+-  return { kind: "general", complexity, tier: generalTier };
+-}
+-
+ function getTierCandidates(route) {
+   if (route.kind === "review") {
+     return [

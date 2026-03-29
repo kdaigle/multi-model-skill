@@ -1,0 +1,28 @@
+{
+  "cwd": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router",
+  "command": "copilot",
+  "args": [
+    "-p",
+    "Add lightweight regression coverage for the prompt-classification heuristics in the model-router extension without adding dependencies. Prefer Node built-ins if you introduce tests or fixtures. Focus on explicit review detection, tool-heavy implementation routing, and orchestration escalation. Keep the production extension behavior intact unless you need a small refactor to make the logic testable.",
+    "--model",
+    "claude-sonnet-4.6",
+    "--reasoning-effort",
+    "medium",
+    "--output-format",
+    "json",
+    "--stream",
+    "off",
+    "--allow-all",
+    "--no-ask-user",
+    "--autopilot",
+    "--experimental",
+    "--plugin-dir",
+    "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/router"
+  ],
+  "startModel": "claude-sonnet-4.6",
+  "reasoningEffort": "medium",
+  "variantId": "router",
+  "taskId": "002-classification-tests",
+  "timeoutMs": 600000,
+  "dryRun": false
+}

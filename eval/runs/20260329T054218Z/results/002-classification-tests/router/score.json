@@ -1,0 +1,181 @@
+{
+  "judgeModel": "gpt-5.4",
+  "judgeExitCode": 0,
+  "judgeSignal": null,
+  "judgeTimedOut": false,
+  "judgeTimeoutMs": 300000,
+  "judgeErrorCode": null,
+  "judgeErrorMessage": null,
+  "parsedJudgeResponse": {
+    "verdict": "partial",
+    "correctnessScore": 3,
+    "completenessScore": 2,
+    "minimalityScore": 3,
+    "confidence": "high",
+    "issues": [
+      "Missing required `tests/` path changes",
+      "Regression tests were added under `.github/extensions/model-router/` instead of `tests/`",
+      "`matchesPattern` escape code appears corrupted in diff (`\"\\\\{{GIT_DIFF}}\"`)",
+      "Refactor changed production structure more than minimally necessary"
+    ],
+    "strengths": [
+      "Added no-dependency Node built-in tests",
+      "Covered review detection, tool-heavy routing, and orchestration escalation",
+      "Kept `extension.mjs` wired to extracted classifier logic",
+      "Reported passing local test run"
+    ],
+    "summary": "The run made a serious attempt and likely added meaningful regression coverage with Node built-ins, including the requested heuristic areas, and it refactored the classifier into a testable module while keeping `extension.mjs` connected. However, it did not satisfy the harness requirement to change something under `tests/`, so validation failed. There is also concerning evidence in the diff that the regex escaping logic in `matchesPattern` was altered to a suspicious placeholder string, which creates some uncertainty about production correctness. Because the implementation is close but fails a required path expectation and may contain a subtle logic defect, the result is best judged as partial rather than pass."
+  },
+  "cost": {
+    "mode": "observed_tokens_weighted",
+    "effectiveWeight": 3.5,
+    "routePenalty": 1,
+    "effortMultiplier": 1.15,
+    "observedUsage": [
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 195,
+        "totalTokens": 195
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 190,
+        "totalTokens": 190
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 752,
+        "totalTokens": 752
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 329,
+        "totalTokens": 329
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 2098,
+        "totalTokens": 2098
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 286,
+        "totalTokens": 286
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 722,
+        "totalTokens": 722
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 196,
+        "totalTokens": 196
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1294,
+        "totalTokens": 1294
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 143,
+        "totalTokens": 143
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 3250,
+        "totalTokens": 3250
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 169,
+        "totalTokens": 169
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 219,
+        "totalTokens": 219
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 399,
+        "totalTokens": 399
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 547,
+        "totalTokens": 547
+      }
+    ],
+    "value": 47.483
+  },
+  "validationValid": false,
+  "taskId": "002-classification-tests",
+  "variantId": "router",
+  "startModel": "claude-sonnet-4.6",
+  "status": "completed"
+}

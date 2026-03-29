@@ -1,0 +1,35 @@
+{
+  "taskId": "002-classification-tests",
+  "variantId": "fixed",
+  "worktreePath": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/002-classification-tests/fixed",
+  "worktreeRelativePath": "eval/runs/20260329T054218Z/worktrees/002-classification-tests/fixed",
+  "runDir": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/results/002-classification-tests/fixed",
+  "baseRef": "HEAD",
+  "baseSha": "2f3d549070fa42b38e06f1d68e9bf4f7b7fb22df",
+  "disabledPaths": [
+    {
+      "original": ".github/plugin.json",
+      "renamedTo": ".github/plugin.json.eval-disabled"
+    },
+    {
+      "original": ".github/extensions/model-router",
+      "renamedTo": ".github/extensions/model-router.eval-disabled"
+    },
+    {
+      "original": ".github/skills/model-router",
+      "renamedTo": ".github/skills/model-router.eval-disabled"
+    },
+    {
+      "original": ".github/copilot-instructions.md",
+      "renamedTo": ".github/copilot-instructions.md.eval-disabled"
+    }
+  ],
+  "initialPrune": {
+    "stdout": "",
+    "stderr": ""
+  },
+  "gitWorktreeAdd": {
+    "stdout": "HEAD is now at 2f3d549 fix: remove const redeclaration in collect-artifacts.mjs + add token forensics",
+    "stderr": "Preparing worktree (detached HEAD 2f3d549)"
+  }
+}

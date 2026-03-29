@@ -1,0 +1,18 @@
+{
+  "taskId": "001-status-enhancement",
+  "variantId": "router",
+  "worktreePath": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/worktrees/001-status-enhancement/router",
+  "worktreeRelativePath": "eval/runs/20260329T054218Z/worktrees/001-status-enhancement/router",
+  "runDir": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T054218Z/results/001-status-enhancement/router",
+  "baseRef": "HEAD",
+  "baseSha": "9ced9ee960d418372763d5774f0faa53fda1d8e7",
+  "disabledPaths": [],
+  "initialPrune": {
+    "stdout": "",
+    "stderr": ""
+  },
+  "gitWorktreeAdd": {
+    "stdout": "HEAD is now at 9ced9ee Hill-climb: improve router routing and fix eval harness git diff bug",
+    "stderr": "Preparing worktree (detached HEAD 9ced9ee)"
+  }
+}

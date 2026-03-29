@@ -1,0 +1,42 @@
+{
+  "suiteDir": "eval/runs/20260329T054153Z",
+  "createdAt": "2026-03-29T05:41:53.539Z",
+  "baseRef": "HEAD",
+  "dryRun": false,
+  "startModel": {
+    "id": "claude-sonnet-4.6",
+    "reasoningEffort": "medium"
+  },
+  "judgeSelection": {
+    "startModel": "claude-sonnet-4.6",
+    "judgeModel": "gpt-5.4",
+    "startFamily": "claude",
+    "judgeFamily": "gpt",
+    "source": "config",
+    "differentFamily": true
+  },
+  "initialWorktreeCleanup": {
+    "cleanedWorktrees": [
+      {
+        "worktreePath": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T053523Z/worktrees/001-status-enhancement/fixed",
+        "removedFromGit": true,
+        "removedFromDisk": false,
+        "pruned": false,
+        "pruneStdout": "",
+        "pruneStderr": ""
+      }
+    ],
+    "pruned": true,
+    "pruneStdout": "",
+    "pruneStderr": ""
+  },
+  "tasks": [
+    "001-status-enhancement",
+    "002-classification-tests",
+    "003-keyword-docsync"
+  ],
+  "variants": [
+    "router",
+    "fixed"
+  ]
+}

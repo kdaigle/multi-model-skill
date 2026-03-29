@@ -1,0 +1,82 @@
+diff --git a/.github/extensions/model-router/extension.mjs b/.github/extensions/model-router/extension.mjs
+index ceaaa51..7d412b2 100644
+--- a/.github/extensions/model-router/extension.mjs
++++ b/.github/extensions/model-router/extension.mjs
+@@ -707,18 +707,34 @@ const session = await joinSession({
+       handler: async () => {
+         const current = await session.rpc.model.getCurrent().catch(() => ({ modelId: undefined }));
+         const isLooping = detectLoopingBehavior();
++        const turnsSinceLastSwitch = confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn;
++
++        // Compute a single actionable alert string for the most important confusion signal.
++        let confusionAlert = "OK";
++        if (isLooping && confusionMetrics.errorCount >= CONFUSION_THRESHOLDS.consecutiveErrorThreshold) {
++          confusionAlert = "HIGH: looping + consecutive errors — swap candidate";
++        } else if (isLooping) {
++          confusionAlert = "ELEVATED: looping detected";
++        } else if (confusionMetrics.errorCount >= CONFUSION_THRESHOLDS.consecutiveErrorThreshold) {
++          confusionAlert = "ELEVATED: consecutive errors";
++        } else if (confusionMetrics.repeatedPatternCount >= CONFUSION_THRESHOLDS.repeatingPatternThreshold) {
++          confusionAlert = "ELEVATED: repeated response patterns";
++        }
++
+         return JSON.stringify(
+           {
+-            // Quick-glance summary for local debugging: active model, last impl model, key confusion signals.
+-            debug: {
++            // Concise at-a-glance section for local debugging.
++            snapshot: {
+               activeModel: current.modelId || null,
+-              lastImplModel: lastImplementationModel,
+-              looping: isLooping,
+-              errorCount: confusionMetrics.errorCount,
+-              repeatedPatternCount: confusionMetrics.repeatedPatternCount,
++              lastImplementationModel,
++              confusion: {
++                alert: confusionAlert,
++                isLooping,
++                errorCount: confusionMetrics.errorCount,
++                repeatedPatternCount: confusionMetrics.repeatedPatternCount,
++                turnsSinceLastSwitch,
++              },
+             },
+-            currentModel: current.modelId || null,
+-            lastImplementationModel,
+             lastReviewModel,
+             lastDecision,
+             confusionMetrics: {
+@@ -726,7 +742,7 @@ const session = await joinSession({
+               recentMessageCount: confusionMetrics.recentMessages.length,
+               errorCount: confusionMetrics.errorCount,
+               repeatedPatternCount: confusionMetrics.repeatedPatternCount,
+-              turnsSinceLastConfusionSwitch: confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn,
++              turnsSinceLastConfusionSwitch: turnsSinceLastSwitch,
+               isLooping,
+             },
+           },
+diff --git a/.github/skills/model-router/SKILL.md b/.github/skills/model-router/SKILL.md
+index 32e3821..2ceadc7 100644
+--- a/.github/skills/model-router/SKILL.md
++++ b/.github/skills/model-router/SKILL.md
+@@ -81,12 +81,14 @@ Check confusion metrics with:
+ /model_router_status
+ ```
+ 
+-The output includes a top-level `debug` section for quick local debugging:
++The output includes a top-level `snapshot` section for quick local debugging:
+ 
+ - `activeModel` — the model currently active in the session
+-- `lastImplModel` — the last model the router selected for an implementation task
+-- `looping` — `true` if loop detection has fired
+-- `errorCount` — consecutive errors since the last confusion switch
+-- `repeatedPatternCount` — how many repeated-response patterns have been detected
+-
+-The full `confusionMetrics` block (turn count, message tracking, turns since last switch, etc.) follows for deeper inspection.
++- `lastImplementationModel` — the last model the router selected for an implementation or debugging task
++- `confusion.alert` — human-readable status: `"OK"`, `"ELEVATED: …"`, or `"HIGH: …"` describing the most important signal
++- `confusion.isLooping` — `true` if loop detection has fired
++- `confusion.errorCount` — consecutive errors since the last confusion switch
++- `confusion.repeatedPatternCount` — how many repeated-response patterns have been detected
++- `confusion.turnsSinceLastSwitch` — turns elapsed since the last confusion-triggered model swap
++
++The full `confusionMetrics` block (turn count, message tracking, etc.) follows for deeper inspection.
