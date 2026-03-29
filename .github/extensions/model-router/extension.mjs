@@ -119,13 +119,13 @@ const TOOL_KEYWORDS = [
   "agent",
 ];
 
-// Complex multi-tool orchestration patterns warrant premium-tier escalation per routing-matrix.md
+// Complex multi-tool orchestration patterns warrant premium-tier escalation per routing-matrix.md.
+// Only multi-word action phrases are included; bare "orchestrate"/"orchestration" caused
+// false positives when tasks merely mentioned these concepts in documentation context.
 const ORCHESTRATION_KEYWORDS = [
   "parallel agents",
   "multiple agents",
   "multi-agent",
-  "orchestrate",
-  "orchestration",
   "parallel tools",
   "tool chain",
   "chained tools",
@@ -431,7 +431,7 @@ function classifyPrompt(prompt) {
     return {
       kind: "planning",
       complexity,
-      tier: complexity >= 2 ? "reasoning" : "builder",
+      tier: complexity >= 3 ? "reasoning" : "builder",
     };
   }
 
@@ -439,7 +439,7 @@ function classifyPrompt(prompt) {
     return {
       kind: "debugging",
       complexity,
-      tier: complexity >= 2 ? "reasoning" : "builder",
+      tier: complexity >= 3 ? "reasoning" : "builder",
     };
   }
 
@@ -453,13 +453,13 @@ function classifyPrompt(prompt) {
       tier = "economy";
     }
     
-    // Escalate to reasoning for complex orchestration
-    if (isComplexOrchestration(lower)) {
+    // Escalate to reasoning for complex orchestration only when genuine complexity supports it
+    if (isComplexOrchestration(lower) && complexity >= 2) {
       tier = "reasoning";
     }
     
     // Escalate to reasoning if implementation is deeply complex
-    if (complexity >= 3) {
+    if (complexity >= 4) {
       tier = "reasoning";
     }
     
@@ -477,7 +477,7 @@ function classifyPrompt(prompt) {
 
   let generalTier = complexity >= 2 ? "builder" : "economy";
   if (isToolHeavy(lower) && complexity >= 1) generalTier = "builder";
-  if (isComplexOrchestration(lower)) generalTier = "reasoning";
+  if (isComplexOrchestration(lower) && complexity >= 2) generalTier = "reasoning";
   return { kind: "general", complexity, tier: generalTier };
 }
 
@@ -569,8 +569,8 @@ function buildAdditionalContext(decision, currentModelId) {
     lines.push("Keep the solution lean and avoid premium-model depth unless the task expands.");
   }
 
-  // For low-complexity implementation, prefer minimal narration
-  if (decision.kind === "implementation" && decision.complexity <= 1) {
+  // For low-to-moderate complexity implementation/general, prefer minimal narration
+  if ((decision.kind === "implementation" || decision.kind === "general") && decision.complexity <= 2) {
     lines.push("Inspect only the most relevant file(s). Implement directly without extensive planning.");
   }
 
@@ -584,9 +584,14 @@ function buildAdditionalContext(decision, currentModelId) {
 async function trySwitchModel(session, route, currentModelId) {
   let candidates = orderCandidates(dedupeCandidates(getTierCandidates(route)), route);
 
-  // For low-complexity implementation, try same-model reasoning downgrade first
-  // before filtering out the current model entirely.
-  if (route.kind === "implementation" && route.complexity <= 1 && currentModelId) {
+  // For moderate-complexity implementation/general builder tasks, try same-model
+  // reasoning downgrade first before switching models entirely.
+  if (
+    (route.kind === "implementation" || route.kind === "general") &&
+    route.tier === "builder" &&
+    route.complexity <= 2 &&
+    currentModelId
+  ) {
     try {
       await session.rpc.model.switchTo({
         modelId: currentModelId,
