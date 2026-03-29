@@ -1,0 +1,35 @@
+{
+  "taskId": "002-classification-tests",
+  "variantId": "fixed",
+  "worktreePath": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T061126Z/worktrees/002-classification-tests/fixed",
+  "worktreeRelativePath": "eval/runs/20260329T061126Z/worktrees/002-classification-tests/fixed",
+  "runDir": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T061126Z/results/002-classification-tests/fixed",
+  "baseRef": "HEAD",
+  "baseSha": "b7d99cabe377c16320f9e9483fc4fec17065e1dc",
+  "disabledPaths": [
+    {
+      "original": ".github/plugin.json",
+      "renamedTo": ".github/plugin.json.eval-disabled"
+    },
+    {
+      "original": ".github/extensions/model-router",
+      "renamedTo": ".github/extensions/model-router.eval-disabled"
+    },
+    {
+      "original": ".github/skills/model-router",
+      "renamedTo": ".github/skills/model-router.eval-disabled"
+    },
+    {
+      "original": ".github/copilot-instructions.md",
+      "renamedTo": ".github/copilot-instructions.md.eval-disabled"
+    }
+  ],
+  "initialPrune": {
+    "stdout": "",
+    "stderr": ""
+  },
+  "gitWorktreeAdd": {
+    "stdout": "HEAD is now at b7d99ca Phase 3: Add complex eval tasks and fix false orchestration escalation",
+    "stderr": "Preparing worktree (detached HEAD b7d99ca)"
+  }
+}

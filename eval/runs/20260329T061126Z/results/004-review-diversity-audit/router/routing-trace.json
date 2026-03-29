@@ -1,0 +1,54 @@
+{
+  "runDir": "eval/runs/20260329T061126Z/results/004-review-diversity-audit/router",
+  "generatedAt": "2026-03-29T07:21:56.525Z",
+  "complete": true,
+  "stages": [
+    {
+      "stage": "copilotRun",
+      "ok": false,
+      "dryRun": false,
+      "exitCode": null,
+      "timedOut": true,
+      "runStatus": "timed_out",
+      "startModel": "claude-sonnet-4.6",
+      "changedFileCount": 0,
+      "changedFiles": []
+    },
+    {
+      "stage": "validate",
+      "ok": false,
+      "valid": false,
+      "totalChecks": 5,
+      "passedChecks": 0,
+      "failedChecks": 5,
+      "timedOut": true,
+      "failureMode": "run-timed-out"
+    },
+    {
+      "stage": "score",
+      "ok": false,
+      "skipped": false,
+      "judgeTimedOut": false,
+      "judgeModel": "gpt-5.4",
+      "correctnessScore": null,
+      "completenessScore": null,
+      "minimalityScore": null,
+      "verdict": null,
+      "costMode": "observed_tokens_weighted",
+      "relativeCostIndex": 130.048
+    }
+  ],
+  "chainSummary": {
+    "stagesRecorded": [
+      "copilotRun",
+      "validate",
+      "score"
+    ],
+    "anyTimedOut": true,
+    "allOk": false,
+    "startModel": "claude-sonnet-4.6",
+    "changedFileCount": 0,
+    "verdict": null,
+    "correctnessScore": null
+  }
+}

@@ -1,0 +1,214 @@
+diff --git a/.github/skills/model-router.eval-disabled/SKILL.md b/.github/skills/model-router.eval-disabled/SKILL.md
+new file mode 100644
+index 0000000..36c4bb4
+--- /dev/null
++++ b/.github/skills/model-router.eval-disabled/SKILL.md
+@@ -0,0 +1,92 @@
++---
++name: model-router
++description: Automatically route Copilot CLI work to the lowest-cost viable model and prefer a different model for review than implementation. Use for cost optimization, model selection, building with cheaper models, planning with stronger models, debugging, code review, minimizing token usage, or when you want Copilot to choose the best model for the task.
++---
++
++# Model Router
++
++Use this skill when the user wants Copilot CLI to optimize model choice for cost and task fit.
++
++It does **not** force a code review after implementation. Review behavior should activate only when the user explicitly asks for a review or audit.
++
++## Goals
++
++- Route simple work to the cheapest viable model.
++- Escalate to stronger models only when the task needs deeper reasoning, broader context, or stronger review quality.
++- Prefer a different model for review than the one used for implementation, but only when the user explicitly asks for review.
++
++## How to use this skill
++
++1. Read `references/routing-matrix.md` when you need the task-to-model mapping.
++2. Prefer cheaper models for quick answers, repo exploration, and narrowly scoped edits.
++3. Escalate for deep planning, tricky debugging, architecture work, large refactors, and explicit high-signal review.
++4. Only enter review mode when the user explicitly asks for a review or audit.
++5. When review mode is explicitly requested, prefer a different model than the last implementation model when one is available.
++6. If the extension is installed and running, let it switch the session model automatically. If it is not available, follow the routing matrix manually and tell the user when a model switch would help.
++
++## Routing heuristics
++
++Treat these as signs that a cheap model is sufficient:
++
++- Short factual questions
++- Small single-file edits
++- Basic code explanations
++- File finding and lightweight repo exploration
++
++Treat these as signs to escalate:
++
++- Multi-file implementation
++- Architecture or implementation planning
++- Debugging failures with unclear root cause
++- Explicit requests to review or audit code
++- Large prompts with multiple constraints
++- **Tool-heavy implementation work** (tasks involving bash, curl, API calls, agents, or complex function orchestration)
++
++## Tool-aware routing
++
++When tasks involve tool calls or agentic workflows:
++
++- **Single or light tool calls**: Economy tier is fine (Haiku 4.5 has excellent tool support)
++- **Tool-heavy implementation**: Escalate to Standard Builder tier
++- **Planning, debugging, or explicit review with additional complexity**: Reasoning tier may be appropriate
++
++The current extension detects tool keywords like "bash", "curl", "execute", "run", "tool", "api", "function", "call", "invoke", "script", "command", "shell", "http", "request", "endpoint", and "agent" and uses them as one input to complexity scoring. In practice, this mainly moves tool-heavy implementation from economy candidates to builder candidates.
++
++## Review diversity rule
++
++When you have recently used one model for implementation, prefer a different model for explicit review asks such as:
++
++- code review
++- audit
++- approval readiness
++
++If only one eligible model is available, fall back gracefully and say so.
++
++## Confusion detection and recovery
++
++If the extension detects signs that the agent may be looping or stuck (e.g., repeated similar responses, self-contradictions, accumulated errors), it may automatically swap to an alternate model family at the same or better caliber. This helps avoid wasting tokens on a confused agent.
++
++**Important:** The extension errs on the side of patience, especially when the agent is in active thinking (reasoning display enabled). It will only swap after seeing multiple strong signals of confusion over several turns, not on the first error or unclear response.
++
++**Signals that may trigger a swap:**
++- Multiple similar consecutive responses (looping)
++- Two or more consecutive errors
++- Agent acknowledging confusion ("I'm not sure", "I'm confused", etc.)
++
++**Example:** If a Claude-based model is looping, the extension may switch to a GPT-based model at the same reasoning tier, giving the problem a different perspective.
++
++Check confusion metrics with:
++
++```
++/model_router_status
++```
++
++The output includes a top-level `debug` section for quick local debugging:
++
++- `activeModel` — the model currently active in the session
++- `lastImplModel` — the last model the router selected for an implementation task
++- `looping` — `true` if loop detection has fired
++- `errorCount` — consecutive errors since the last confusion switch
++- `repeatedPatternCount` — how many repeated-response patterns have been detected
++
++The full `confusionMetrics` block (turn count, message tracking, turns since last switch, etc.) follows for deeper inspection.
+diff --git a/.github/skills/model-router.eval-disabled/references/routing-matrix.md b/.github/skills/model-router.eval-disabled/references/routing-matrix.md
+new file mode 100644
+index 0000000..201b92f
+--- /dev/null
++++ b/.github/skills/model-router.eval-disabled/references/routing-matrix.md
+@@ -0,0 +1,97 @@
++# Model Routing Matrix
++
++This file is the routing reference for the `model-router` skill.
++
++The extension uses runtime heuristics and tries models in priority order. Treat this matrix as the policy source of truth.
++
++## Tool Calling Tier Legend
++
++Models are grouped by their tool-calling capability tier:
++- **Economy-Tools**: Good fit for simple, low-cost tool use
++- **Standard-Tools**: Better fit for implementation that needs more than lightweight routing
++- **Reasoning-Tools**: Use when the classifier has already escalated work into the reasoning tier
++
++## Cost-aware tiers
++
++### Economy tier
++
++Use these first for low-risk, low-complexity work.
++
++| Model | Best use | Tool Calling |
++| --- | --- | --- |
++| `claude-haiku-4.5` | Fast lightweight classification, short answers, quick summaries, simple repo exploration | Economy-Tools: Good first choice for simple tool use |
++| `gpt-4.1` | Low-cost general coding help, concise explanations, small focused edits | Economy-Tools: Suitable for simple tool use |
++| `gpt-5-mini` | Small implementation tasks, lightweight reasoning, low-cost follow-up work | Economy-Tools: Suitable for simple tool use |
++| `gpt-5.4-mini` | Similar to `gpt-5-mini`; use when available for cheap routing and concise execution | Economy-Tools: Suitable for simple tool use |
++
++### Standard builder tier
++
++Use for normal implementation and medium-complexity work.
++
++| Model | Best use | Tool Calling |
++| --- | --- | --- |
++| `claude-sonnet-4` | Solid default coding model for moderate implementation and codebase understanding | Standard-Tools: Builder-tier option |
++| `claude-sonnet-4.5` | Strong default for implementation, refactors, and balanced coding tasks | Standard-Tools: Builder-tier option |
++| `claude-sonnet-4.6` | Strong builder candidate for medium-to-hard implementation; also available later as a reasoning-tier fallback with higher effort | Standard-Tools: Builder-tier option |
++| `gpt-5.1` | General implementation, deeper reasoning than economy tier, useful alternate builder | Standard-Tools: Builder-tier option |
++| `gpt-5.2` | Similar to `gpt-5.1`, suitable for medium-to-hard implementation | Standard-Tools: Builder-tier option |
++| `gpt-5.3-codex` | Code-heavy implementation and targeted code transformation when available | Standard-Tools: Builder-tier option |
++| `gpt-5.1-codex` | Alternate code-specialized builder for implementation and refactoring | Standard-Tools: Builder-tier option |
++
++### Reasoning tier
++
++Use when the classifier escalates planning, debugging, or explicit review.
++
++| Model | Best use | Tool Calling |
++| --- | --- | --- |
++| `gpt-5` | Complex planning, hard debugging, and explicit review | Reasoning-Tools: Reasoning-tier option |
++| `gpt-5.4` | Strong high-reasoning generalist for planning and careful review | Reasoning-Tools: Reasoning-tier option |
++| `claude-sonnet-4.6` | High-reasoning fallback for planning, debugging, or review; the extension can select it with `high` reasoning effort | Reasoning-Tools: Reasoning-tier option |
++| `gpt-5.1-codex-max` | Code-focused review or hard implementation when available | Reasoning-Tools: Reasoning-tier option |
++| `claude-opus-4.5` | Deep review, architecture reasoning, and difficult debugging | Reasoning-Tools: Reasoning-tier option |
++| `claude-opus-4.6` | Deep reasoning, high-signal review, and difficult planning | Reasoning-Tools: Reasoning-tier option |
++| `claude-opus-4.6-1m` | Same general role as `claude-opus-4.6`, especially when large context is useful | Reasoning-Tools: Reasoning-tier option |
++
++## Task routing policy
++
++| Task type | Preferred tier | Fallback |
++| --- | --- | --- |
++| Quick Q&A, short explanation, simple search | Economy | Standard builder |
++| Small single-file edit | Economy | Standard builder |
++| Normal implementation | Standard builder | Economy for trivial work, reasoning for tougher work |
++| Multi-file implementation | Standard builder | Reasoning |
++| Complex orchestration request (parallel agents, chained tools) | Reasoning | Standard builder |
++| Complex plan or architecture proposal | Reasoning | Strongest standard builder |
++| Debugging with unclear root cause | Reasoning | Strongest standard builder |
++| Explicit code review / audit request | Reasoning using a different model than implementation if possible | Best available different standard builder |
++
++## Tool-aware routing
++
++When a task involves tool calls or agentic workflows, follow the current classifier behavior:
++
++**Tool-heavy implementation:**
++- Tool keywords add complexity
++- Implementation prompts with tool keywords are pushed toward **Standard-Tools**
++
++**Complex orchestration escalation:**
++- For prompts classified as **implementation** or **general**, orchestration keywords escalate directly to **Reasoning-Tools**
++- This rule is keyword-based, not a generic "3+ tools" threshold
++- Current orchestration keywords: `"parallel agents"`, `"multiple agents"`, `"multi-agent"`, `"parallel tools"`, `"tool chain"`, `"chained tools"`
++
++**Planning, debugging, and explicit review:**
++- These can reach **Reasoning-Tools** when the classifier marks them as higher complexity
++
++The extension also considers tool keywords like `"bash"`, `"curl"`, `"execute"`, `"run"`, `"tool"`, `"api"`, `"function"`, `"call"`, `"invoke"`, `"script"`, `"command"`, `"shell"`, `"http"`, `"request"`, `"endpoint"`, and `"agent"` during complexity scoring. That complexity bump mainly moves tool-heavy implementation from economy candidates to builder candidates. The separate orchestration rule above is what promotes implementation or general prompts to the reasoning tier.
++
++## Diversity-of-thought rule
++
++For explicit review requests, prefer a different model than the one most recently used for implementation:
++
++- Different family is best, such as `claude-sonnet-*` for build and `gpt-5*` for review.
++- If a different family is unavailable, use a different concrete model in the same family.
++- If no alternative is available, reuse the current model and surface that the fallback happened.
++
++## Notes
++
++- Exact billing multipliers are installation-specific and may change. The extension therefore uses a conservative candidate order instead of hardcoded pricing claims.
++- If your Copilot CLI install exposes a smaller model set, the router should still work by falling through its candidate list until a switch succeeds.
+diff --git a/README.md b/README.md
+index a0d7342..1073d6e 100644
+--- a/README.md
++++ b/README.md
+@@ -216,7 +216,7 @@ Factors that increase complexity score:
+ - Prompt length (>40 words +1, >100 words +1)
+ - Keywords: multi-file, end-to-end, carefully, thorough, complex, large, entire codebase (+2)
+ - Task type: planning, debugging (+1)
+-- Tool keywords: bash, curl, api, execute (+1)
++- Tool keywords: bash, curl, execute, run, tool, api, function, call, invoke, script, command, shell, http, request, endpoint, agent (+1)
+ 
+ Higher scores escalate from economy → builder → reasoning tiers.
+ 

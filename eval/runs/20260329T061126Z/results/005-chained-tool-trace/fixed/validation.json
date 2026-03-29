@@ -1,0 +1,68 @@
+{
+  "valid": true,
+  "checks": [
+    {
+      "name": "copilot command did not time out",
+      "pass": true,
+      "details": {
+        "timedOut": false,
+        "timeoutMs": 600000,
+        "signal": null,
+        "exitCode": 0
+      }
+    },
+    {
+      "name": "copilot exit code",
+      "pass": true,
+      "details": {
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false
+      }
+    },
+    {
+      "name": "diff exists",
+      "pass": true,
+      "details": "gitDiffBytes=8188"
+    },
+    {
+      "name": "required changed file eval/scripts/collect-artifacts.mjs",
+      "pass": true,
+      "details": [
+        "eval/README.md",
+        "eval/scripts/collect-artifacts.mjs",
+        "eval/scripts/summarize-suite.mjs"
+      ]
+    },
+    {
+      "name": "required changed file eval/scripts/summarize-suite.mjs",
+      "pass": true,
+      "details": [
+        "eval/README.md",
+        "eval/scripts/collect-artifacts.mjs",
+        "eval/scripts/summarize-suite.mjs"
+      ]
+    },
+    {
+      "name": "required changed file eval/README.md",
+      "pass": true,
+      "details": [
+        "eval/README.md",
+        "eval/scripts/collect-artifacts.mjs",
+        "eval/scripts/summarize-suite.mjs"
+      ]
+    }
+  ],
+  "commandResults": [],
+  "changedFiles": [
+    "eval/README.md",
+    "eval/scripts/collect-artifacts.mjs",
+    "eval/scripts/summarize-suite.mjs"
+  ],
+  "worktreePath": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T061126Z/worktrees/005-chained-tool-trace/fixed",
+  "timedOut": false,
+  "runTimedOut": false,
+  "timedOutCommands": [],
+  "validationTimeoutMs": 120000,
+  "failureMode": null
+}

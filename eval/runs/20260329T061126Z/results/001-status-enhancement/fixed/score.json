@@ -1,0 +1,228 @@
+{
+  "judgeModel": "gpt-5.4",
+  "judgeExitCode": null,
+  "judgeSignal": null,
+  "judgeTimedOut": false,
+  "judgeTimeoutMs": 300000,
+  "judgeErrorCode": "E2BIG",
+  "judgeErrorMessage": "spawnSync copilot E2BIG",
+  "parsedJudgeResponse": null,
+  "cost": {
+    "mode": "observed_tokens_weighted",
+    "effectiveWeight": 3.5,
+    "routePenalty": 1,
+    "effortMultiplier": 1.15,
+    "observedUsage": [
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 209,
+        "totalTokens": 209
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 238,
+        "totalTokens": 238
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 181,
+        "totalTokens": 181
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 238,
+        "totalTokens": 238
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 236,
+        "totalTokens": 236
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 130,
+        "totalTokens": 130
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 365,
+        "totalTokens": 365
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 117,
+        "totalTokens": 117
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 357,
+        "totalTokens": 357
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 149,
+        "totalTokens": 149
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 516,
+        "totalTokens": 516
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 618,
+        "totalTokens": 618
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 109,
+        "totalTokens": 109
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 424,
+        "totalTokens": 424
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1529,
+        "totalTokens": 1529
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 997,
+        "totalTokens": 997
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 129,
+        "totalTokens": 129
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1197,
+        "totalTokens": 1197
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 144,
+        "totalTokens": 144
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 364,
+        "totalTokens": 364
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1157,
+        "totalTokens": 1157
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 130,
+        "totalTokens": 130
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 704,
+        "totalTokens": 704
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 207,
+        "totalTokens": 207
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 179,
+        "totalTokens": 179
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 418,
+        "totalTokens": 418
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 195,
+        "totalTokens": 195
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 252,
+        "totalTokens": 252
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 440,
+        "totalTokens": 440
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 139,
+        "totalTokens": 139
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 134,
+        "totalTokens": 134
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 302,
+        "totalTokens": 302
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 247,
+        "totalTokens": 247
+      }
+    ],
+    "value": 51.83
+  },
+  "validationValid": true,
+  "taskId": "001-status-enhancement",
+  "variantId": "fixed",
+  "startModel": "claude-sonnet-4.6",
+  "status": "failed"
+}

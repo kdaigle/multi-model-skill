@@ -1,0 +1,85 @@
+{
+  "runDir": "eval/runs/20260329T061126Z/results/006-routing-policy-source-of-truth/router",
+  "generatedAt": "2026-03-29T07:21:56.534Z",
+  "complete": true,
+  "stages": [
+    {
+      "stage": "prepareWorktree",
+      "ok": true,
+      "taskId": "006-routing-policy-source-of-truth",
+      "variantId": "router",
+      "baseSha": "877f806b8488339f4306f7e2f306f6a98312c2c1",
+      "worktreeRelativePath": "eval/runs/20260329T061126Z/worktrees/006-routing-policy-source-of-truth/router",
+      "disabledPathCount": 0
+    },
+    {
+      "stage": "copilotRun",
+      "ok": true,
+      "dryRun": false,
+      "exitCode": 0,
+      "timedOut": false,
+      "runStatus": "completed",
+      "startModel": "claude-sonnet-4.6",
+      "reasoningEffort": "medium",
+      "timeoutMs": 600000,
+      "stdoutBytes": 379718,
+      "stderrBytes": 0,
+      "changedFileCount": 4,
+      "changedFiles": [
+        ".github/extensions/model-router/extension.mjs",
+        ".github/extensions/model-router/policy.mjs",
+        ".github/extensions/model-router/policy.test.mjs",
+        ".github/skills/model-router/references/routing-matrix.md"
+      ]
+    },
+    {
+      "stage": "collectArtifacts",
+      "ok": true,
+      "parseableLineCount": 263,
+      "unparseableLineCount": 0,
+      "gitDiffBytes": 12592,
+      "modelMentions": [
+        "claude-sonnet-4.6"
+      ],
+      "usageCandidateCount": 76
+    },
+    {
+      "stage": "validate",
+      "ok": false,
+      "valid": false,
+      "totalChecks": 7,
+      "passedChecks": 5,
+      "failedChecks": 2,
+      "timedOut": false,
+      "failureMode": null
+    },
+    {
+      "stage": "score",
+      "ok": false,
+      "skipped": false,
+      "judgeTimedOut": false,
+      "judgeModel": "gpt-5.4",
+      "correctnessScore": null,
+      "completenessScore": null,
+      "minimalityScore": null,
+      "verdict": null,
+      "costMode": "observed_tokens_weighted",
+      "relativeCostIndex": 51.979
+    }
+  ],
+  "chainSummary": {
+    "stagesRecorded": [
+      "prepareWorktree",
+      "copilotRun",
+      "collectArtifacts",
+      "validate",
+      "score"
+    ],
+    "anyTimedOut": false,
+    "allOk": false,
+    "startModel": "claude-sonnet-4.6",
+    "changedFileCount": 4,
+    "verdict": null,
+    "correctnessScore": null
+  }
+}

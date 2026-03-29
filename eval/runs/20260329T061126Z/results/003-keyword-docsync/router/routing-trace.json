@@ -1,0 +1,57 @@
+{
+  "runDir": "eval/runs/20260329T061126Z/results/003-keyword-docsync/router",
+  "generatedAt": "2026-03-29T07:21:56.519Z",
+  "complete": true,
+  "stages": [
+    {
+      "stage": "copilotRun",
+      "ok": true,
+      "dryRun": false,
+      "exitCode": 0,
+      "timedOut": false,
+      "runStatus": "completed",
+      "startModel": "claude-sonnet-4.6",
+      "changedFileCount": 2,
+      "changedFiles": [
+        ".github/skills/model-router/references/routing-matrix.md",
+        "README.md"
+      ]
+    },
+    {
+      "stage": "validate",
+      "ok": false,
+      "valid": false,
+      "totalChecks": 6,
+      "passedChecks": 5,
+      "failedChecks": 1,
+      "timedOut": false,
+      "failureMode": null
+    },
+    {
+      "stage": "score",
+      "ok": true,
+      "skipped": false,
+      "judgeTimedOut": false,
+      "judgeModel": "gpt-5.4",
+      "correctnessScore": 3,
+      "completenessScore": 2,
+      "minimalityScore": 5,
+      "verdict": "partial",
+      "costMode": "observed_tokens_weighted",
+      "relativeCostIndex": 22.294
+    }
+  ],
+  "chainSummary": {
+    "stagesRecorded": [
+      "copilotRun",
+      "validate",
+      "score"
+    ],
+    "anyTimedOut": false,
+    "allOk": false,
+    "startModel": "claude-sonnet-4.6",
+    "changedFileCount": 2,
+    "verdict": "partial",
+    "correctnessScore": 3
+  }
+}

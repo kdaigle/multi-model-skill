@@ -1,0 +1,57 @@
+{
+  "runDir": "eval/runs/20260329T061126Z/results/001-status-enhancement/fixed",
+  "generatedAt": "2026-03-29T07:21:56.499Z",
+  "complete": true,
+  "stages": [
+    {
+      "stage": "copilotRun",
+      "ok": true,
+      "dryRun": false,
+      "exitCode": 0,
+      "timedOut": false,
+      "runStatus": "completed",
+      "startModel": "claude-sonnet-4.6",
+      "changedFileCount": 2,
+      "changedFiles": [
+        ".github/extensions/model-router/extension.mjs",
+        ".github/skills/model-router/SKILL.md"
+      ]
+    },
+    {
+      "stage": "validate",
+      "ok": true,
+      "valid": true,
+      "totalChecks": 4,
+      "passedChecks": 4,
+      "failedChecks": 0,
+      "timedOut": false,
+      "failureMode": null
+    },
+    {
+      "stage": "score",
+      "ok": false,
+      "skipped": false,
+      "judgeTimedOut": false,
+      "judgeModel": "gpt-5.4",
+      "correctnessScore": null,
+      "completenessScore": null,
+      "minimalityScore": null,
+      "verdict": null,
+      "costMode": "observed_tokens_weighted",
+      "relativeCostIndex": 51.83
+    }
+  ],
+  "chainSummary": {
+    "stagesRecorded": [
+      "copilotRun",
+      "validate",
+      "score"
+    ],
+    "anyTimedOut": false,
+    "allOk": false,
+    "startModel": "claude-sonnet-4.6",
+    "changedFileCount": 2,
+    "verdict": null,
+    "correctnessScore": null
+  }
+}

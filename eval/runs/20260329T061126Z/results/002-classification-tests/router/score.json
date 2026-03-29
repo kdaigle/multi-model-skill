@@ -1,0 +1,228 @@
+{
+  "judgeModel": "gpt-5.4",
+  "judgeExitCode": 0,
+  "judgeSignal": null,
+  "judgeTimedOut": false,
+  "judgeTimeoutMs": 300000,
+  "judgeErrorCode": null,
+  "judgeErrorMessage": null,
+  "parsedJudgeResponse": {
+    "verdict": "partial",
+    "correctnessScore": 4,
+    "completenessScore": 3,
+    "minimalityScore": 3,
+    "confidence": "high",
+    "issues": [
+      "Validation failed because no files were added under the required `tests/` path prefix",
+      "Tests were added beside the extension instead of in `tests/`, so the harness contract was not fully satisfied",
+      "The change introduces a fairly large refactor for a test task, increasing surface area beyond the minimum needed"
+    ],
+    "strengths": [
+      "Adds no-dependency regression tests using Node built-ins",
+      "Covers the requested routing cases: explicit review, tool-heavy implementation, and orchestration escalation",
+      "Includes evidence that the new test suite passes (`59/59`)",
+      "Keeps the production extension wired through `extension.mjs` with extracted pure logic for testability"
+    ],
+    "summary": "The run appears to implement the requested regression coverage correctly in substance: it extracts classification logic into a testable module, adds focused Node built-in tests for explicit review detection, tool-heavy implementation routing, and orchestration escalation, and reports all 59 tests passing. However, the task is not fully complete for this harness because validation explicitly required a changed path under `tests/`, and the added tests live in `.github/extensions/model-router/` instead. Given that unmet required-path condition, this should be judged as partial rather than pass."
+  },
+  "cost": {
+    "mode": "observed_tokens_weighted",
+    "effectiveWeight": 3.5,
+    "routePenalty": 1,
+    "effortMultiplier": 1.15,
+    "observedUsage": [
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 247,
+        "totalTokens": 247
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 95,
+        "totalTokens": 95
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 221,
+        "totalTokens": 221
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 274,
+        "totalTokens": 274
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 190,
+        "totalTokens": 190
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 834,
+        "totalTokens": 834
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 285,
+        "totalTokens": 285
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 2022,
+        "totalTokens": 2022
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 289,
+        "totalTokens": 289
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 685,
+        "totalTokens": 685
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 739,
+        "totalTokens": 739
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 141,
+        "totalTokens": 141
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1314,
+        "totalTokens": 1314
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 164,
+        "totalTokens": 164
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 192,
+        "totalTokens": 192
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 489,
+        "totalTokens": 489
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 387,
+        "totalTokens": 387
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 3017,
+        "totalTokens": 3017
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 168,
+        "totalTokens": 168
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 451,
+        "totalTokens": 451
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 137,
+        "totalTokens": 137
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 173,
+        "totalTokens": 173
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 439,
+        "totalTokens": 439
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 483,
+        "totalTokens": 483
+      }
+    ],
+    "value": 57.63
+  },
+  "validationValid": false,
+  "taskId": "002-classification-tests",
+  "variantId": "router",
+  "startModel": "claude-sonnet-4.6",
+  "status": "completed"
+}

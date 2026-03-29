@@ -1,0 +1,152 @@
+diff --git a/eval/README.md b/eval/README.md
+index 68db77d..d702be8 100644
+--- a/eval/README.md
++++ b/eval/README.md
+@@ -234,23 +234,72 @@ Top-level structure:
+   "stages": [
+     { "stage": "prepareWorktree", "ok": true, "baseSha": "abc123", "disabledPathCount": 2, ... },
+     { "stage": "copilotRun",      "ok": true, "exitCode": 0, "timedOut": false, "changedFileCount": 3, ... },
+-    { "stage": "collectArtifacts","ok": true, "parseableLineCount": 42, "gitDiffBytes": 5678, ... },
+-    { "stage": "validate",        "ok": true, "valid": true, "passedChecks": 5, "failedChecks": 0, ... },
+-    { "stage": "score",           "ok": true, "verdict": "pass", "correctnessScore": 4, "relativeCostIndex": 1.2, ... }
++    { "stage": "collectArtifacts","ok": true, "parseableLineCount": 42, "gitDiffBytes": 5678,
++      "textSnippetCount": 18, "finalResponseLength": 1240, ... },
++    { "stage": "validate",        "ok": false, "valid": false, "passedChecks": 3, "failedChecks": 2,
++      "failedCheckNames": ["required changed file eval/scripts/collect-artifacts.mjs", "diff exists"], ... },
++    { "stage": "score",           "ok": true, "verdict": "partial", "correctnessScore": 2, "relativeCostIndex": 1.2, ... }
+   ],
+   "chainSummary": {
+     "stagesRecorded": ["prepareWorktree", "copilotRun", "collectArtifacts", "validate", "score"],
+     "anyTimedOut": false,
+-    "allOk": true,
++    "allOk": false,
+     "startModel": "claude-sonnet-4.6",
+-    "changedFileCount": 3,
+-    "verdict": "pass",
+-    "correctnessScore": 4
++    "changedFileCount": 1,
++    "verdict": "partial",
++    "correctnessScore": 2
+   }
+ }
+ ```
+ 
+-The `traceHighlight` field added to each variant in `suite-summary.json` mirrors `chainSummary` for quick machine-readable access without opening per-run files.
++Key per-stage fields:
++
++| Stage | Notable fields |
++|-------|---------------|
++| `prepareWorktree` | `baseSha`, `worktreeRelativePath`, `disabledPathCount` |
++| `copilotRun` | `exitCode`, `timedOut`, `runStatus`, `startModel`, `changedFiles`, `changedFileCount` |
++| `collectArtifacts` | `gitDiffBytes`, `modelMentions`, `textSnippetCount`, `finalResponseLength` |
++| `validate` | `valid`, `passedChecks`, `failedChecks`, `failedCheckNames`, `failureMode` |
++| `score` | `verdict`, `correctnessScore`, `completenessScore`, `relativeCostIndex`, `judgeTimedOut` |
++
++The `traceHighlight` field added to each variant in `suite-summary.json` includes a pre-computed `traceChain` string (e.g. `[prep✓ run✓ collect✓ valid✗ judge✓]`) and mirrors `chainSummary` for quick machine-readable access without opening per-run files. Each variant entry also includes a `tracePath` field pointing directly to its `routing-trace.json`.
++
++### Debugging with the Routing Trace
++
++When a run fails or produces unexpected output, the routing trace is the fastest path to the root cause. Look at the `validate` stage's `failedCheckNames` to see exactly which checks failed, then cross-reference with `copilotRun.changedFiles` to see what the model actually modified.
++
++**Example: required file not changed**
++
++```
++suite-summary.txt:
++  003-keyword-docsync -> router: status=failed, ... [prep✓ run✓ collect✓ valid✗ judge✓]
++```
++
++Open `routing-trace.json` and find the validate stage:
++
++```json
++{ "stage": "validate", "ok": false, "valid": false, "failedChecks": 1,
++  "failedCheckNames": ["required changed file docs/keywords.md"] }
++```
++
++Cross-reference with `copilotRun.changedFiles`: the model modified `src/keywords.js` but not `docs/keywords.md`. The diff is in `git-diff.patch` for inspection.
++
++**Example: run timed out**
++
++```json
++{ "stage": "copilotRun", "ok": false, "timedOut": true, "runStatus": "timed_out", "changedFileCount": 0 }
++```
++
++If `changedFileCount` is 0 but `collectArtifacts.gitDiffBytes > 0`, the model made changes that were not committed before the timeout. Check `copilot-stderr.txt` for error details.
++
++**Example: model produced no output**
++
++```json
++{ "stage": "collectArtifacts", "ok": true, "textSnippetCount": 0, "finalResponseLength": 0,
++  "gitDiffBytes": 0 }
++```
++
++`textSnippetCount: 0` and `finalResponseLength: 0` together indicate the model's JSONL output contained no text content. The model may have exited immediately or produced only non-text messages. Check `copilot-output.jsonl` and `copilot-stderr.txt` for raw details.
+ 
+ ### Dry-run output
+ 
+diff --git a/eval/scripts/collect-artifacts.mjs b/eval/scripts/collect-artifacts.mjs
+index e0964cf..97f4778 100755
+--- a/eval/scripts/collect-artifacts.mjs
++++ b/eval/scripts/collect-artifacts.mjs
+@@ -129,7 +129,9 @@ traceStages.push({
+   unparseableLineCount: summary.unparseableLineCount,
+   gitDiffBytes: summary.gitDiffBytes,
+   modelMentions: summary.modelMentions,
+-  usageCandidateCount: (summary.usageCandidates ?? []).length
++  usageCandidateCount: (summary.usageCandidates ?? []).length,
++  textSnippetCount: summary.textSnippetCount,
++  finalResponseLength: (summary.finalResponseSnippet ?? '').length
+ });
+ 
+ const routingTrace = {
+diff --git a/eval/scripts/summarize-suite.mjs b/eval/scripts/summarize-suite.mjs
+index 4b40a42..786e9e5 100755
+--- a/eval/scripts/summarize-suite.mjs
++++ b/eval/scripts/summarize-suite.mjs
+@@ -79,6 +79,7 @@ async function buildRoutingTrace(runDir, runResult, validation, score) {
+     totalChecks: (validation.checks ?? []).length,
+     passedChecks: (validation.checks ?? []).filter((c) => c.pass).length,
+     failedChecks: (validation.checks ?? []).filter((c) => !c.pass).length,
++    failedCheckNames: (validation.checks ?? []).filter((c) => !c.pass).map((c) => c.name),
+     timedOut: validation.timedOut ?? false,
+     failureMode: validation.failureMode ?? null
+   };
+@@ -143,9 +144,13 @@ for (const taskId of taskIds) {
+ 
+     const trace = await buildRoutingTrace(runDir, runResult, validation, score);
+     const traceByStage = Object.fromEntries(trace.stages.map((s) => [s.stage, s]));
++    const traceStageOrder = ['prepareWorktree', 'copilotRun', 'collectArtifacts', 'validate', 'score'];
++    const traceStageLabels = { prepareWorktree: 'prep', copilotRun: 'run', collectArtifacts: 'collect', validate: 'valid', score: 'judge' };
++    const traceChain = '[' + traceStageOrder.map((s) => `${traceStageLabels[s]}${stageIndicator(traceByStage[s])}`).join(' ') + ']';
+     const traceHighlight = {
+       stages: trace.chainSummary.stagesRecorded,
+       stagesOk: Object.fromEntries(trace.stages.map((s) => [s.stage, s.ok])),
++      traceChain,
+       anyTimedOut: trace.chainSummary.anyTimedOut,
+       allOk: trace.chainSummary.allOk,
+       startModel: trace.chainSummary.startModel,
+@@ -155,6 +160,7 @@ for (const taskId of taskIds) {
+     variants.push({
+       variantId,
+       runDir: path.relative(ROOT_DIR, runDir),
++      tracePath: path.relative(ROOT_DIR, path.join(runDir, 'routing-trace.json')),
+       status,
+       timedOut,
+       timeoutStages,
+@@ -212,16 +218,7 @@ const textSummary = [
+   ...tasks.map((task) => {
+     const pieces = task.variants.map((variant) => {
+       const timeoutLabel = variant.timeoutStages.length > 0 ? variant.timeoutStages.join('+') : 'none';
+-      const stageOrder = ['prepareWorktree', 'copilotRun', 'collectArtifacts', 'validate', 'score'];
+-      const stageLabels = { prepareWorktree: 'prep', copilotRun: 'run', collectArtifacts: 'collect', validate: 'valid', score: 'judge' };
+-      const ok = variant.traceHighlight?.stagesOk ?? {};
+-      const recorded = new Set(variant.traceHighlight?.stages ?? []);
+-      const chainParts = stageOrder.map((stage) => {
+-        const label = stageLabels[stage];
+-        const indicator = recorded.has(stage) ? (ok[stage] ? '✓' : '✗') : '?';
+-        return `${label}${indicator}`;
+-      });
+-      const chain = `[${chainParts.join(' ')}]`;
++      const chain = variant.traceHighlight?.traceChain ?? '[?]';
+       return `${variant.variantId}: status=${variant.status}, timeout=${timeoutLabel}, verdict=${variant.verdict ?? 'n/a'}, correctness=${variant.correctnessScore ?? 'n/a'}, cost=${variant.relativeCostIndex ?? 'n/a'} (${variant.costMode ?? 'n/a'}) ${chain}`;
+     });
+     return `${task.taskId} -> ${pieces.join(' | ')}`;

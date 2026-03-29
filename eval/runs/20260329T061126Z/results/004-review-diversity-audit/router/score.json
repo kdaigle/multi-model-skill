@@ -1,0 +1,234 @@
+{
+  "judgeModel": "gpt-5.4",
+  "judgeExitCode": null,
+  "judgeSignal": null,
+  "judgeTimedOut": false,
+  "judgeTimeoutMs": 300000,
+  "judgeErrorCode": "E2BIG",
+  "judgeErrorMessage": "spawnSync copilot E2BIG",
+  "parsedJudgeResponse": null,
+  "cost": {
+    "mode": "observed_tokens_weighted",
+    "effectiveWeight": 3.5,
+    "routePenalty": 1,
+    "effortMultiplier": 1.15,
+    "observedUsage": [
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 138,
+        "totalTokens": 138
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 228,
+        "totalTokens": 228
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 174,
+        "totalTokens": 174
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 116,
+        "totalTokens": 116
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 145,
+        "totalTokens": 145
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 141,
+        "totalTokens": 141
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 198,
+        "totalTokens": 198
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 155,
+        "totalTokens": 155
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 116,
+        "totalTokens": 116
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 122,
+        "totalTokens": 122
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 135,
+        "totalTokens": 135
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 239,
+        "totalTokens": 239
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 128,
+        "totalTokens": 128
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 128,
+        "totalTokens": 128
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 128,
+        "totalTokens": 128
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 15234,
+        "totalTokens": 15234
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 188,
+        "totalTokens": 188
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 138,
+        "totalTokens": 138
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 308,
+        "totalTokens": 308
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 234,
+        "totalTokens": 234
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 147,
+        "totalTokens": 147
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 230,
+        "totalTokens": 230
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 129,
+        "totalTokens": 129
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 133,
+        "totalTokens": 133
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 138,
+        "totalTokens": 138
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 2681,
+        "totalTokens": 2681
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 4543,
+        "totalTokens": 4543
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 953,
+        "totalTokens": 953
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 363,
+        "totalTokens": 363
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 464,
+        "totalTokens": 464
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 358,
+        "totalTokens": 358
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 123,
+        "totalTokens": 123
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 3378,
+        "totalTokens": 3378
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 129,
+        "totalTokens": 129
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 148,
+        "totalTokens": 148
+      }
+    ],
+    "value": 130.048
+  },
+  "validationValid": false,
+  "taskId": "004-review-diversity-audit",
+  "variantId": "router",
+  "startModel": "claude-sonnet-4.6",
+  "status": "failed"
+}
