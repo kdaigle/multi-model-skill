@@ -1,58 +1,81 @@
 # multi-model-skill
 
-A Copilot CLI skill + extension for automatic cost-optimized model routing with tool-aware capabilities.
+A Copilot CLI skill, with an optional repo-local extension, for cost-aware model routing.
 
 ## What It Does
 
-Routes Copilot CLI work to the lowest-cost viable model based on task complexity and type, with automatic escalation to stronger models when needed. Includes tool-aware routing to match models to their tool-calling strengths.
+Routes Copilot CLI work to the lowest-cost viable model based on task type and complexity. The current extension also bumps tool-heavy implementation work from economy candidates to builder candidates.
 
 - **Economy tier** → Quick Q&A, simple edits, lightweight exploration
-- **Standard builder tier** → Normal implementation, multi-file work, tool-heavy tasks
-- **Premium reasoning tier** → Complex planning, difficult debugging, explicit code review
+- **Standard builder tier** → Normal implementation, multi-file work, tool-heavy implementation
+- **Reasoning tier** → Complex planning, difficult debugging, explicit code review
 
 ## Key Features
 
-✅ **Automatic model switching** - Extension runs in background and routes tasks  
-✅ **Tool-aware routing** - Detects tool keywords (bash, curl, API, etc.) and escalates appropriately  
-✅ **Cost-optimized** - Prefers cheap models for simple tasks, saves expensive models for when they matter  
-✅ **Explicit review only** - No forced post-implementation review; review triggers only on explicit request  
-✅ **Review diversity** - When reviewing code, prefers a different model than implementation if available  
+✅ **Optional automatic model switching** - The repo-local extension can switch models before each turn
+✅ **Tool-aware implementation routing** - Tool keywords can move implementation work from economy to builder candidates
+✅ **Cost-optimized** - Prefers cheaper models for lightweight work and escalates only when the classifier does
+✅ **Explicit review only** - No forced post-implementation review; review mode only starts on explicit review phrases
+✅ **Review diversity** - For explicit review, prefers a different model than the last implementation model when available
 ✅ **Graceful fallback** - If preferred model unavailable, tries next candidate in tier  
 
 ## Installation
 
-Install this skill into your Copilot CLI using:
+GitHub Copilot CLI skills are installed by placing them in a supported skills directory. This repo does **not** rely on a documented `npx ... install-skill` flow.
 
-```bash
-npx @github/copilot-cli install-skill kdaigle/multi-model-skill
+### Project-scoped install
+
+Copy these files into the target repository:
+
+```text
+.github/skills/model-router/SKILL.md
+.github/skills/model-router/references/routing-matrix.md
+.github/copilot-instructions.md
 ```
 
-Or, to install from a local directory:
+This matches the official Copilot CLI skill layout under `.github/skills/`.
 
-```bash
-npx @github/copilot-cli install-skill ./path/to/multi-model-skill
+### Personal install
+
+For a personal skill shared across repositories, copy the `model-router` skill directory to:
+
+```text
+~/.copilot/skills/model-router/
+```
+
+If Copilot CLI is already running, reload skills with:
+
+```text
+/skills reload
+```
+
+Useful related commands:
+
+```text
+/skills list
+/skills info model-router
 ```
 
 ### What Gets Installed
 
-The skill installs:
-- **Extension** (`.github/extensions/model-router/`) — Runs automatically in the background to switch models before each message
-- **Skill** (`.github/skills/model-router/`) — Auto-triggers when your request mentions cost, model, review, or optimization
-- **Instructions** (`.github/copilot-instructions.md`) — Tells Copilot CLI when to activate the skill
+This repository contains:
+- **Skill** (`.github/skills/model-router/`) — Routing guidance that Copilot can load when relevant, or when you invoke `/model-router`
+- **Instructions** (`.github/copilot-instructions.md`) — Repo guidance for using the skill consistently
+- **Optional extension** (`.github/extensions/model-router/`) — Repo-local hook that can switch models before each prompt
 
-After installation:
-- The extension auto-loads and runs on every Copilot CLI message
-- The skill auto-triggers via keyword matching
-- No additional configuration needed
+After copying the skill:
+- Copilot can load it when the prompt matches the skill description
+- You can invoke it explicitly with `/model-router`
+- If you added the extension too, the extension can apply automatic model switching for this repository
 
 ## How It Works
 
 ### Skill (`SKILL.md`)
 - Provides routing policy documentation and heuristics
-- Triggered automatically by AI intent matching on keywords
-- Referenced when detailed routing context is needed
+- May be selected by Copilot when relevant to the prompt
+- Can also be invoked explicitly with `/model-router`
 
-### Extension (`extension.mjs`)
+### Optional extension (`extension.mjs`)
 - Runs as a subprocess communicating with Copilot CLI over JSON-RPC
 - Runs the `onUserPromptSubmitted` hook before each message
 - Classifies the prompt to determine task type and complexity
@@ -61,23 +84,23 @@ After installation:
 
 ### Routing Matrix (`references/routing-matrix.md`)
 - Detailed task-to-model mapping
-- Cost tier organization (Economy, Standard Builder, Premium Reasoning)
+- Cost tier organization (Economy, Standard Builder, Reasoning)
 - Tool-calling capability breakdown
 - Diversity-of-thought rule for review
 
 ## Tool-Aware Routing
 
-The router automatically detects tool keywords and escalates complexity:
+The extension detects tool keywords and adds complexity for implementation prompts:
 
 **Keywords detected:**
 - Execution: `bash`, `curl`, `execute`, `run`, `script`, `command`, `shell`
 - Integration: `api`, `http`, `endpoint`, `request`, `function`
 - Orchestration: `tool`, `call`, `invoke`, `agent`
 
-**Escalation logic:**
-- **Single/light tool calls** → Economy tier works great (Haiku 4.5 has strong tool support)
-- **Multi-tool chains** → Standard Builder tier for better orchestration
-- **Complex parallel orchestration** → Premium tier (Opus 4.6, GPT-5.4) with agent support
+**Current routing behavior:**
+- **Lightweight or non-implementation work** → usually stays in economy unless other complexity signals apply
+- **Tool-heavy implementation** → moves to builder candidates
+- **Planning, debugging, and explicit review** → may escalate to reasoning candidates based on the classifier
 
 ## Model Coverage
 
@@ -88,12 +111,13 @@ The router automatically detects tool keywords and escalates complexity:
 
 ### Standard Builder Tier
 - `claude-sonnet-4`, `claude-sonnet-4.5`
-- `claude-sonnet-4.6` (improved tool orchestration)
+- `claude-sonnet-4.6` (builder-tier candidate with medium reasoning effort)
 - `gpt-5.1`, `gpt-5.2`, `gpt-5.3-codex`, `gpt-5.1-codex`
 
-### Premium Reasoning Tier
-- `gpt-5`, `gpt-5.4` (best-in-class tool calling, free-form support)
-- `claude-opus-4.5`, `claude-opus-4.6`, `claude-opus-4.6-1m` (parallel agents)
+### Reasoning Tier
+- `gpt-5`, `gpt-5.4`
+- `claude-sonnet-4.6` (high-reasoning fallback for hard planning, debugging, or review)
+- `claude-opus-4.5`, `claude-opus-4.6`, `claude-opus-4.6-1m`
 - `gpt-5.1-codex-max`
 
 ## Usage Examples
@@ -107,14 +131,13 @@ User: "What does this function do?"
 ### Tool-Heavy Implementation
 ```
 User: "Write a bash script that fetches data from an API and processes it with curl"
-→ Automatically escalates to Standard Builder (Sonnet 4.6 or GPT-5.1) 
-   due to bash/curl/api keywords
+→ Routes to builder candidates because the implementation prompt is tool-heavy
 ```
 
 ### Explicit Code Review
 ```
 User: "Review my PR for bugs and security issues"
-→ Premium tier (GPT-5.4 or Opus 4.6)
+→ Reasoning candidates first
 → Uses different model than last implementation if available
 ```
 
@@ -137,7 +160,7 @@ User: "Review my PR for bugs and security issues"
 
 1. **Classify the prompt**: Detect task type (implementation, planning, debugging, review, lightweight)
 2. **Score complexity**: Based on word count, keywords, and tool usage
-3. **Determine tier**: Lightweight/economy → builder → reasoning based on task type + complexity
+3. **Determine candidate tier**: Economy, builder, or reasoning based on task type + complexity
 4. **Select candidate model**: Choose from tier's model list in order of preference
 5. **Apply diversity rule**: For review, prefer different model than last implementation
 6. **Switch model**: Call `session.rpc.model.switchTo()` before the agent sees the prompt
@@ -146,11 +169,11 @@ User: "Review my PR for bugs and security issues"
 ## Diversity-of-Thought Rule
 
 When you explicitly ask for a code review:
-- Prefers a different **model family** (e.g., Claude-based for build, GPT-based for review)
+- Prefers a different **model family** when possible (for example, Claude-based for build and GPT-based for review)
 - Falls back to different concrete model in same family if needed
 - Gracefully reuses current model if no alternative available
 
-This improves review quality by using different reasoning patterns.
+This aims to improve review quality by using different reasoning patterns when an alternative is available.
 
 ## Complexity Scoring
 
@@ -166,10 +189,10 @@ Higher scores escalate from economy → builder → reasoning tiers.
 
 **Important:** This router does NOT automatically review code after implementation.
 
-Review mode triggers ONLY when you explicitly ask:
-- "review", "code review", "audit", "approval readiness", "review this", "review my code", "approve this", "PR review"
+Review mode triggers only on explicit phrases such as:
+- "review", "code review", "review this", "review my code", "audit", "approval readiness", "approve this", "PR review"
 
-Generic mentions of "bug" or "security" do NOT trigger review mode—only explicit review keywords do.
+Generic mentions of "bug" or "security" do not trigger review mode by themselves.
 
 ## Extension Status
 
@@ -187,14 +210,7 @@ Returns:
 
 ## Customization
 
-To customize routing decisions, locate the installed files:
-
-```bash
-# Find where Copilot CLI installs skills
-ls ~/.copilot/skills/model-router/  # User-scoped installation
-# or
-ls ./.github/extensions/model-router/  # Project-local installation
-```
+To customize routing decisions, edit the skill or extension in the location where you placed it:
 
 Then edit:
 
@@ -204,11 +220,12 @@ Then edit:
 4. **Complexity scoring**: Adjust `getComplexity()` function in `extension.mjs`
 5. **Routing policy**: Update `references/routing-matrix.md` with new task-to-model mappings
 
-After making changes, reload the extension:
+After changing the skill during a live CLI session, reload skills:
 ```bash
-# In Copilot CLI session
-/clear
+/skills reload
 ```
+
+If you changed the extension, restart the relevant Copilot CLI session so the repo-local extension is reloaded.
 
 ## Technical Details
 
@@ -216,7 +233,7 @@ After making changes, reload the extension:
 - **Communication**: JSON-RPC over stdio (no console.log; use `session.log()`)
 - **Hook**: `onUserPromptSubmitted` fires before each user message
 - **Model switching**: `session.rpc.model.switchTo({ modelId, reasoningEffort })`
-- **Reasoning effort**: Supported by GPT models and Claude Sonnet/Opus (values: low/medium/high)
+- **Reasoning effort**: The extension requests `low`, `medium`, or `high` where supported
 
 ## License
 
@@ -232,5 +249,4 @@ Improvements welcome! Consider:
 
 ---
 
-**Repository:** https://github.com/kdaigle/multi-model-skill  
-**Skill auto-triggers on:** "cost", "model", "review", "optimize", "cheap", "expensive", etc.
+**Repository:** https://github.com/kdaigle/multi-model-skill

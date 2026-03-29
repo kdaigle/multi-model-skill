@@ -19,7 +19,7 @@ It does **not** force a code review after implementation. Review behavior should
 
 1. Read `references/routing-matrix.md` when you need the task-to-model mapping.
 2. Prefer cheaper models for quick answers, repo exploration, and narrowly scoped edits.
-3. Escalate for deep planning, tricky debugging, architecture work, large refactors, and high-signal review.
+3. Escalate for deep planning, tricky debugging, architecture work, large refactors, and explicit high-signal review.
 4. Only enter review mode when the user explicitly asks for a review or audit.
 5. When review mode is explicitly requested, prefer a different model than the last implementation model when one is available.
 6. If the extension is installed and running, let it switch the session model automatically. If it is not available, follow the routing matrix manually and tell the user when a model switch would help.
@@ -40,25 +40,24 @@ Treat these as signs to escalate:
 - Debugging failures with unclear root cause
 - Explicit requests to review or audit code
 - Large prompts with multiple constraints
-- **Tool-heavy work** (tasks involving bash, curl, API calls, agents, or complex function orchestration)
+- **Tool-heavy implementation work** (tasks involving bash, curl, API calls, agents, or complex function orchestration)
 
 ## Tool-aware routing
 
 When tasks involve tool calls or agentic workflows:
 
 - **Single or light tool calls**: Economy tier is fine (Haiku 4.5 has excellent tool support)
-- **Multi-tool chains or complex orchestration**: Escalate to Standard Builder tier (Sonnet 4.6, GPT-5.x)
-- **Parallel agent teams or multi-step orchestration**: Use Premium reasoning tier (Opus 4.6, GPT-5.4)
+- **Tool-heavy implementation**: Escalate to Standard Builder tier
+- **Planning, debugging, or explicit review with additional complexity**: Reasoning tier may be appropriate
 
-The extension automatically detects tool keywords like "bash", "curl", "API", "execute", "agent" and escalates tool-heavy implementation from Economy to Standard Builder tier when appropriate.
+The current extension detects tool keywords like "bash", "curl", "API", "execute", and "agent" and uses them as one input to complexity scoring. In practice, this mainly moves tool-heavy implementation from economy candidates to builder candidates.
 
 ## Review diversity rule
 
-When you have recently used one model for implementation, prefer a different model for these explicit review asks:
+When you have recently used one model for implementation, prefer a different model for explicit review asks such as:
 
 - code review
-- bug finding
-- regression hunting
-- approval readiness checks
+- audit
+- approval readiness
 
 If only one eligible model is available, fall back gracefully and say so.

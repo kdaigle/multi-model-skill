@@ -35,8 +35,15 @@ const EXPLICIT_REVIEW_KEYWORDS = [
   "review my code",
   "audit",
   "approval readiness",
+  "approval readiness checks",
   "approve this",
   "pr review",
+  // Bug finding, regression hunting, and approval-readiness are explicit review asks per SKILL.md
+  "find bugs",
+  "bug finding",
+  "regression hunting",
+  "regression hunt",
+  "find regressions",
 ];
 
 const PLAN_KEYWORDS = [
@@ -103,6 +110,18 @@ const TOOL_KEYWORDS = [
   "agent",
 ];
 
+// Complex multi-tool orchestration patterns warrant premium-tier escalation per routing-matrix.md
+const ORCHESTRATION_KEYWORDS = [
+  "parallel agents",
+  "multiple agents",
+  "multi-agent",
+  "orchestrate",
+  "orchestration",
+  "parallel tools",
+  "tool chain",
+  "chained tools",
+];
+
 let lastImplementationModel = null;
 let lastReviewModel = null;
 let lastDecision = null;
@@ -111,8 +130,18 @@ function normalizePrompt(prompt) {
   return String(prompt || "").toLowerCase();
 }
 
+// Word-boundary-aware matching prevents false positives like "prefix"→"fix",
+// "exchange"→"change", "callback"→"call". Multi-word phrases use substring matching.
+function matchesPattern(text, pattern) {
+  if (/\s/.test(pattern)) {
+    return text.includes(pattern);
+  }
+  const escaped = pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`\\b${escaped}\\b`).test(text);
+}
+
 function includesAny(text, patterns) {
-  return patterns.some((pattern) => text.includes(pattern));
+  return patterns.some((pattern) => matchesPattern(text, pattern));
 }
 
 function isExplicitReviewRequest(text) {
@@ -121,6 +150,10 @@ function isExplicitReviewRequest(text) {
 
 function isToolHeavy(text) {
   return includesAny(text, TOOL_KEYWORDS);
+}
+
+function isComplexOrchestration(text) {
+  return includesAny(text, ORCHESTRATION_KEYWORDS);
 }
 
 function getComplexity(prompt) {
@@ -188,6 +221,10 @@ function classifyPrompt(prompt) {
     if (isToolHeavy(lower) && complexity >= 1) {
       tier = "builder";
     }
+    // Complex multi-tool orchestration (parallel agents, tool chains, etc.) warrants premium
+    if (isComplexOrchestration(lower)) {
+      tier = "reasoning";
+    }
     return {
       kind: "implementation",
       complexity,
@@ -200,7 +237,10 @@ function classifyPrompt(prompt) {
     return { kind: "lightweight", complexity, tier: "economy" };
   }
 
-  return { kind: "general", complexity, tier: complexity >= 2 ? "builder" : "economy" };
+  let generalTier = complexity >= 2 ? "builder" : "economy";
+  if (isToolHeavy(lower) && complexity >= 1) generalTier = "builder";
+  if (isComplexOrchestration(lower)) generalTier = "reasoning";
+  return { kind: "general", complexity, tier: generalTier };
 }
 
 function getTierCandidates(route) {
@@ -301,13 +341,15 @@ function buildAdditionalContext(decision, currentModelId) {
 async function trySwitchModel(session, route, currentModelId) {
   let candidates = orderCandidates(dedupeCandidates(getTierCandidates(route)), route);
 
+  // Always exclude the current model when known, regardless of task kind.
   if (currentModelId) {
-    candidates = candidates.filter((candidate) => {
-      if (route.kind !== "review") {
-        return true;
-      }
-      return candidate.id !== currentModelId || candidate.id !== lastImplementationModel;
-    });
+    candidates = candidates.filter((candidate) => candidate.id !== currentModelId);
+  }
+
+  // For review diversity: exclude the last implementation model unconditionally so the
+  // filter applies even when getCurrent() fails and currentModelId is undefined.
+  if (route.kind === "review" && lastImplementationModel) {
+    candidates = candidates.filter((candidate) => candidate.id !== lastImplementationModel);
   }
 
   let selected = null;
