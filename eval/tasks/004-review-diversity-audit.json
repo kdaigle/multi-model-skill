@@ -16,5 +16,6 @@
     "requiredPathPrefixes": [
       "tests/"
     ]
-  }
+  },
+  "timeoutMs": 1200000
 }

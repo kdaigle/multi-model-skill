@@ -2,7 +2,7 @@
 
 This file is the routing reference for the `model-router` skill.
 
-The extension uses runtime heuristics and tries models in priority order. Treat this matrix as the policy source of truth.
+The extension uses runtime heuristics and tries models in priority order. This matrix is derived from `policy.mjs` — edit that file to change model lists or routing logic.
 
 ## Tool Calling Tier Legend
 
@@ -76,7 +76,7 @@ When a task involves tool calls or agentic workflows, follow the current classif
 **Complex orchestration escalation:**
 - For prompts classified as **implementation** or **general**, orchestration keywords escalate directly to **Reasoning-Tools**
 - This rule is keyword-based, not a generic "3+ tools" threshold
-- Current orchestration keywords: `"parallel agents"`, `"multiple agents"`, `"multi-agent"`, `"orchestrate"`, `"orchestration"`, `"parallel tools"`, `"tool chain"`, `"chained tools"`
+- Current orchestration keywords: `"parallel agents"`, `"multiple agents"`, `"multi-agent"`, `"parallel tools"`, `"tool chain"`, `"chained tools"`
 
 **Planning, debugging, and explicit review:**
 - These can reach **Reasoning-Tools** when the classifier marks them as higher complexity

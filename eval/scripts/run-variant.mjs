@@ -46,7 +46,7 @@ const startModel = values['start-model'] ?? modelsConfig.implementationStartMode
 const reasoningEffort = values['reasoning-effort'] ?? modelsConfig.implementationStartModel.reasoningEffort ?? 'medium';
 const timeoutMs = resolveTimeoutMs('copilot', {
   modelsConfig,
-  overrideMs: variant.timeoutMs
+  overrideMs: task.timeoutMs ?? variant.timeoutMs
 });
 
 await ensureDir(runDir);

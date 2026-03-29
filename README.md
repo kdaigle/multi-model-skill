@@ -106,10 +106,15 @@ After copying the skill:
 - May be selected by Copilot when relevant to the prompt
 - Can also be invoked explicitly with `/model-router`
 
+### Policy module (`policy.mjs`)
+- Single source-of-truth for all routing constants and pure functions
+- Exports `MODEL_CANDIDATES` (tiers + reasoning efforts), `MODEL_FAMILIES` (auto-derived), keyword arrays, and all classification helpers
+- Edit this file to change model lists, keywords, or routing logic
+
 ### Optional extension (`extension.mjs`)
+- Imports all routing logic from `policy.mjs`
 - Runs as a subprocess communicating with Copilot CLI over JSON-RPC
 - Runs the `onUserPromptSubmitted` hook before each message
-- Classifies the prompt to determine task type and complexity
 - Selects and switches models before sending to agent
 - Tracks last implementation model to prefer different model for review
 
@@ -151,6 +156,10 @@ The extension detects tool keywords and adds complexity for implementation promp
 - `claude-opus-4.5`, `claude-opus-4.6`, `claude-opus-4.6-1m`
 - `gpt-5.1-codex-max`
 
+> **Source of truth:** Model lists and reasoning efforts are defined in
+> `.github/extensions/model-router/policy.mjs`. Edit that file to add or
+> remove models — the extension and docs should stay in sync automatically.
+
 ## Usage Examples
 
 ### Simple Classification
@@ -187,8 +196,11 @@ The `eval/` directory contains a local-first harness for comparing router-enable
 │           └── routing-matrix.md             # Detailed model tier & task mapping
 ├── extensions/
 │   └── model-router/
-│       └── extension.mjs                     # Runtime extension for auto-switching
+│       ├── policy.mjs                        # Source-of-truth: model lists, keywords, pure functions
+│       └── extension.mjs                     # Runtime extension (imports from policy.mjs)
 └── copilot-instructions.md                   # Instructions for skill activation
+tests/
+└── routing-policy.test.mjs                   # Regression tests for shared routing helpers
 ```
 
 ## How Routing Decisions Are Made
@@ -245,15 +257,17 @@ Returns:
 
 ## Customization
 
-To customize routing decisions, edit the skill or extension in the location where you placed it:
+All routing constants and pure functions live in a single file — edit it to change behaviour:
 
-Then edit:
+```
+.github/extensions/model-router/policy.mjs
+```
 
-1. **Task keywords**: Modify `PLAN_KEYWORDS`, `DEBUG_KEYWORDS`, `IMPLEMENT_KEYWORDS` in `extension.mjs`
-2. **Tool keywords**: Modify `TOOL_KEYWORDS` in `extension.mjs`
-3. **Model candidates**: Modify `MODEL_CANDIDATES` object in `extension.mjs`
-4. **Complexity scoring**: Adjust `getComplexity()` function in `extension.mjs`
-5. **Routing policy**: Update `references/routing-matrix.md` with new task-to-model mappings
+1. **Model candidates**: Modify `MODEL_CANDIDATES` (tiers + reasoning efforts). `MODEL_FAMILIES` is derived automatically.
+2. **Task keywords**: Modify `PLAN_KEYWORDS`, `DEBUG_KEYWORDS`, `IMPLEMENT_KEYWORDS`, `LIGHT_KEYWORDS`
+3. **Tool keywords**: Modify `TOOL_KEYWORDS` and `ORCHESTRATION_KEYWORDS`
+4. **Complexity scoring**: Adjust `getComplexity()` in `policy.mjs`
+5. **Routing policy**: Update `references/routing-matrix.md` to reflect any changes
 
 After changing the skill during a live CLI session, reload skills:
 ```bash

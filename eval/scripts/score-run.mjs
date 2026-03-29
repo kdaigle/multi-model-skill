@@ -144,12 +144,58 @@ const judgeArgs = [
   '--no-custom-instructions'
 ];
 
-const judgeResult = runCommand('copilot', judgeArgs, {
+async function invokeJudgeWithRetry(args, options, maxRetries = 2) {
+  let lastResult = null;
+  let lastError = null;
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    console.error(`[Judge] Attempt ${attempt + 1}/${maxRetries + 1}...`);
+    try {
+      const result = runCommand('copilot', args, options);
+      const stdout = result.stdout?.trim() ?? '';
+      const hasOutput = stdout.length > 0;
+      const isTimeout = result.timedOut || result.signal === 'SIGTERM';
+
+      console.error(`[Judge] Exit code: ${result.status}, Timeout: ${isTimeout}, Output length: ${stdout.length}`);
+
+      if (hasOutput && !isTimeout) {
+        return result;
+      }
+
+      lastResult = result;
+      if (attempt < maxRetries) {
+        const delayMs = Math.pow(2, attempt) * 3000;
+        console.error(`[Judge] Retrying in ${delayMs}ms...`);
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+      }
+    } catch (err) {
+      lastError = err;
+      console.error(`[Judge] Error: ${err.message}`);
+      if (attempt < maxRetries) {
+        const delayMs = Math.pow(2, attempt) * 3000;
+        console.error(`[Judge] Retrying in ${delayMs}ms...`);
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+      }
+    }
+  }
+
+  return lastResult ?? { stdout: '', stderr: lastError?.message ?? '', status: null, signal: null, timedOut: false, error: lastError };
+}
+
+const judgeResult = await invokeJudgeWithRetry(judgeArgs, {
   cwd: runDir,
   timeout: judgeTimeoutMs
 });
 await writeText(path.join(runDir, 'judge-output.jsonl'), judgeResult.stdout);
 await writeText(path.join(runDir, 'judge-stderr.txt'), judgeResult.stderr);
+
+const outputLength = judgeResult.stdout?.length ?? 0;
+const hasOutput = outputLength > 0;
+console.error(`[Judge] Output diagnostics: length=${outputLength}, hasOutput=${hasOutput}, status=${judgeResult.status}, timedOut=${judgeResult.timedOut}`);
+
+if (!hasOutput && judgeResult.stderr) {
+  console.error(`[Judge] stderr: ${judgeResult.stderr.substring(0, 500)}`);
+}
 
 const parsedLines = parseJsonLines(judgeResult.stdout);
 const candidateTexts = [];

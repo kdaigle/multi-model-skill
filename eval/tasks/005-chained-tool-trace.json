@@ -15,5 +15,6 @@
       "eval/scripts/summarize-suite.mjs",
       "eval/README.md"
     ]
-  }
+  },
+  "timeoutMs": 1200000
 }

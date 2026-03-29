@@ -11,8 +11,8 @@ export const TASKS_DIR = path.join(EVAL_DIR, 'tasks');
 export const PROMPTS_DIR = path.join(EVAL_DIR, 'prompts');
 export const RUNS_DIR = path.join(EVAL_DIR, 'runs');
 const DEFAULT_TIMEOUTS_MS = Object.freeze({
-  copilotMs: 10 * 60 * 1000,
-  judgeMs: 5 * 60 * 1000,
+  copilotMs: 15 * 60 * 1000,
+  judgeMs: 10 * 60 * 1000,
   validationMs: 2 * 60 * 1000
 });
 const TIMEOUT_ENV_KEYS = Object.freeze({
