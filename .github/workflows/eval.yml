@@ -1,0 +1,302 @@
+# Eval Harness CI
+#
+# Runs the model-router evaluation suite in CI, comparing router-guided runs
+# against a fixed-model baseline. Raw artifacts are preserved and a readable
+# summary is published to the Actions step summary.
+#
+# Required secrets (set in repo Settings → Secrets and variables → Actions):
+#   COPILOT_CLI_TOKEN  – GitHub PAT with the `copilot` OAuth scope, used to
+#                        authenticate the Copilot CLI process.
+#   ANTHROPIC_API_KEY  – (Optional) needed if the harness calls Claude models
+#                        directly rather than routing through Copilot.
+#   OPENAI_API_KEY     – (Optional) needed if the harness calls OpenAI models
+#                        directly.
+#
+# NOTE: Cost accounting is not tracked here. The harness may emit per-run token
+# counts in its JSON output; treat those as estimates only.
+
+name: Eval Harness
+
+on:
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: "Test suite to run"
+        required: false
+        default: "all"
+        type: choice
+        options:
+          - all
+          - routing
+          - quality
+      fixed_model:
+        description: "Model ID for fixed-model comparison run"
+        required: false
+        default: "claude-haiku-4.5"
+      skip_fixed:
+        description: "Skip the fixed-model comparison run"
+        required: false
+        default: "false"
+        type: boolean
+
+  # Weekly baseline on Mondays at 06:00 UTC; runs the full suite.
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Job: router-run  – run the eval suite with the model-router skill active
+# ─────────────────────────────────────────────────────────────────────────────
+jobs:
+  router-run:
+    name: "Eval – router mode"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
+
+      - name: Install project dependencies
+        # Only runs when a lockfile is present; the harness may be dependency-free.
+        if: hashFiles('package-lock.json') != ''
+        run: npm ci --ignore-scripts
+
+      - name: Install Copilot CLI
+        # The Copilot CLI is distributed as an npm package. Adjust the package
+        # name / version if your harness uses a different distribution channel.
+        # See eval/docs/ci-setup.md for alternatives (gh extension, direct download).
+        run: npm install -g @github/copilot-cli
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Authenticate Copilot CLI
+        # Writes auth state so the CLI can make Copilot API calls non-interactively.
+        # COPILOT_CLI_TOKEN must be a GitHub PAT with the `copilot` scope.
+        run: |
+          if [[ -z "${COPILOT_CLI_TOKEN}" ]]; then
+            echo "::warning::COPILOT_CLI_TOKEN is not set. Copilot API calls will fail."
+          else
+            copilot auth login --with-token <<< "${COPILOT_CLI_TOKEN}" 2>/dev/null \
+              || echo "::notice::Auth command not available; token passed via env only."
+          fi
+        env:
+          COPILOT_CLI_TOKEN: ${{ secrets.COPILOT_CLI_TOKEN }}
+
+      - name: Run eval – router mode
+        run: |
+          mkdir -p eval/runs/router
+          node eval/scripts/run-suite.mjs \
+            --mode router \
+            --suite "${{ inputs.suite || 'all' }}" \
+            --out eval/runs/router
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COPILOT_CLI_TOKEN: ${{ secrets.COPILOT_CLI_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Surface run metadata in artifact JSON for later comparison.
+          EVAL_RUN_ID: ${{ github.run_id }}
+          EVAL_REF: ${{ github.sha }}
+
+      - name: Upload router-run artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-router-${{ github.run_id }}
+          path: eval/runs/router/
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job: fixed-run  – re-run the same suite pinned to a single model (baseline)
+  # ─────────────────────────────────────────────────────────────────────────────
+  fixed-run:
+    name: "Eval – fixed model (${{ inputs.fixed_model || 'claude-haiku-4.5' }})"
+    runs-on: ubuntu-latest
+    # Skip when the caller explicitly opts out (manual runs only; schedule always runs).
+    if: ${{ github.event_name == 'schedule' || inputs.skip_fixed != 'true' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: "**/package-lock.json"
+
+      - name: Install project dependencies
+        if: hashFiles('package-lock.json') != ''
+        run: npm ci --ignore-scripts
+
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot-cli
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Authenticate Copilot CLI
+        run: |
+          if [[ -z "${COPILOT_CLI_TOKEN}" ]]; then
+            echo "::warning::COPILOT_CLI_TOKEN is not set. Copilot API calls will fail."
+          else
+            copilot auth login --with-token <<< "${COPILOT_CLI_TOKEN}" 2>/dev/null \
+              || echo "::notice::Auth command not available; token passed via env only."
+          fi
+        env:
+          COPILOT_CLI_TOKEN: ${{ secrets.COPILOT_CLI_TOKEN }}
+
+      - name: Run eval – fixed model
+        run: |
+          mkdir -p eval/runs/fixed
+          node eval/scripts/run-suite.mjs \
+            --mode fixed \
+            --model "${{ inputs.fixed_model || 'claude-haiku-4.5' }}" \
+            --suite "${{ inputs.suite || 'all' }}" \
+            --out eval/runs/fixed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COPILOT_CLI_TOKEN: ${{ secrets.COPILOT_CLI_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EVAL_RUN_ID: ${{ github.run_id }}
+          EVAL_REF: ${{ github.sha }}
+
+      - name: Upload fixed-run artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-fixed-${{ github.run_id }}
+          path: eval/runs/fixed/
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job: summarize  – download both artifact sets, diff them, write step summary
+  # ─────────────────────────────────────────────────────────────────────────────
+  summarize:
+    name: "Publish eval summary"
+    runs-on: ubuntu-latest
+    needs: [router-run, fixed-run]
+    # Run even if one job failed so we surface partial results.
+    if: always()
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Download router artifacts
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: eval-router-${{ github.run_id }}
+          path: eval/runs/router
+
+      - name: Download fixed artifacts
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: eval-fixed-${{ github.run_id }}
+          path: eval/runs/fixed
+
+      - name: Write step summary
+        run: |
+          node - <<'SUMMARY_EOF'
+          const fs   = require('fs');
+          const path = require('path');
+
+          const STEP_SUMMARY = process.env.GITHUB_STEP_SUMMARY;
+          const lines = [];
+          const push  = (s = '') => lines.push(s);
+
+          const runId  = process.env.GITHUB_RUN_ID  || 'unknown';
+          const ref    = process.env.GITHUB_SHA      || 'unknown';
+          const repo   = process.env.GITHUB_REPOSITORY || 'unknown';
+          const server = process.env.GITHUB_SERVER_URL || 'https://github.com';
+          const artifactBase = `${server}/${repo}/actions/runs/${runId}`;
+
+          push('# Eval Harness Results');
+          push();
+          push(`**Run:** [${runId}](${artifactBase})  `);
+          push(`**Commit:** \`${ref.slice(0,8)}\`  `);
+          push(`**Suite:** \`${process.env.EVAL_SUITE || 'all'}\``);
+          push();
+
+          function loadSummary(dir) {
+            const summaryPath = path.join(dir, 'summary.json');
+            if (!fs.existsSync(summaryPath)) return null;
+            try { return JSON.parse(fs.readFileSync(summaryPath, 'utf8')); }
+            catch { return null; }
+          }
+
+          const router = loadSummary('eval/runs/router');
+          const fixed  = loadSummary('eval/runs/fixed');
+
+          if (!router && !fixed) {
+            push('> ⚠️  No summary.json found in either run directory.');
+            push('> Check the individual job logs for errors.');
+          } else {
+            push('## Router vs Fixed-model Comparison');
+            push();
+            push('| Metric | Router | Fixed model |');
+            push('|--------|--------|-------------|');
+
+            const metrics = new Set([
+              ...Object.keys(router || {}),
+              ...Object.keys(fixed  || {}),
+            ]);
+            // Skip metadata fields
+            const skip = new Set(['runId', 'ref', 'mode', 'model', 'suite', 'timestamp']);
+
+            for (const key of metrics) {
+              if (skip.has(key)) continue;
+              const r = router?.[key] ?? '—';
+              const f = fixed?.[key]  ?? '—';
+              push(`| \`${key}\` | ${r} | ${f} |`);
+            }
+            push();
+
+            if (router?.model) push(`> **Router selected models:** ${router.model}`);
+            if (fixed?.model)  push(`> **Fixed model:** \`${fixed.model}\``);
+            push();
+          }
+
+          push('## Artifacts');
+          push();
+          push(`Raw run files (JSON + logs) are attached to this workflow run:`);
+          push(`- [eval-router-${runId}](${artifactBase}) — router-mode outputs`);
+          push(`- [eval-fixed-${runId}](${artifactBase}) — fixed-model baseline`);
+          push();
+          push('Artifacts are retained for **30 days**.');
+          push();
+          push('## Caveats');
+          push();
+          push('- Token counts in summary.json are estimates from the model API; they do not account for CLI overhead or retries.');
+          push('- Cost comparisons are not included here. Map token counts to pricing manually using the model\'s current rate card.');
+          push('- Scheduled runs use default inputs (`suite: all`, `fixed_model: claude-haiku-4.5`).');
+          push('- The fixed-model run can be skipped on manual dispatch via the `skip_fixed` input.');
+
+          fs.writeFileSync(STEP_SUMMARY, lines.join('\n') + '\n');
+          console.log('Step summary written.');
+          SUMMARY_EOF
+        env:
+          GITHUB_STEP_SUMMARY: ${{ env.GITHUB_STEP_SUMMARY }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          EVAL_SUITE: ${{ inputs.suite || 'all' }}
