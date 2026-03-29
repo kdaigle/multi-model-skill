@@ -88,5 +88,6 @@ The output includes a top-level `debug` section for quick local debugging:
 - `looping` — `true` if loop detection has fired
 - `errorCount` — consecutive errors since the last confusion switch
 - `repeatedPatternCount` — how many repeated-response patterns have been detected
+- `turnsSinceLastSwitch` — turns elapsed since the last confusion-triggered model swap; values below 5 mean the swap cooldown is still active
 
 The full `confusionMetrics` block (turn count, message tracking, turns since last switch, etc.) follows for deeper inspection.

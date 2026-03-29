@@ -316,6 +316,8 @@ const session = await joinSession({
           .getCurrent()
           .catch(() => ({ modelId: undefined }));
         const isLooping = detectLoopingBehavior();
+        const turnsSinceLastSwitch =
+          confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn;
         return JSON.stringify(
           {
             // Quick-glance summary for local debugging
@@ -325,6 +327,7 @@ const session = await joinSession({
               looping: isLooping,
               errorCount: confusionMetrics.errorCount,
               repeatedPatternCount: confusionMetrics.repeatedPatternCount,
+              turnsSinceLastSwitch,
             },
             currentModel: current.modelId || null,
             lastImplementationModel,
@@ -335,8 +338,7 @@ const session = await joinSession({
               recentMessageCount: confusionMetrics.recentMessages.length,
               errorCount: confusionMetrics.errorCount,
               repeatedPatternCount: confusionMetrics.repeatedPatternCount,
-              turnsSinceLastConfusionSwitch:
-                confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn,
+              turnsSinceLastConfusionSwitch: turnsSinceLastSwitch,
               isLooping,
             },
           },
