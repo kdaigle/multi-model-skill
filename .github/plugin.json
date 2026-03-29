@@ -1,0 +1,23 @@
+{
+  "name": "model-router",
+  "description": "Automatically route Copilot CLI work to the lowest-cost viable model. Optimizes for cost while escalating complex work to stronger models. Includes optional auto-switching extension and explicit-review-only code review with diversity of thought.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Kyle Daigle",
+    "email": "kydaigle@github.com"
+  },
+  "license": "MIT",
+  "keywords": [
+    "model-routing",
+    "cost-optimization",
+    "model-selection",
+    "ai-agents",
+    "code-review"
+  ],
+  "skills": [
+    ".github/skills/model-router/"
+  ],
+  "extensions": [
+    ".github/extensions/model-router/"
+  ]
+}

@@ -21,9 +21,21 @@ Routes Copilot CLI work to the lowest-cost viable model based on task type and c
 
 ## Installation
 
-GitHub Copilot CLI automatically discovers skills placed in supported directories. The recommended installation method is using Git to clone and copy the skill files.
+### Option 1: Plugin Installation (Easiest)
 
-### Option 1: Project-specific Installation
+Install the model-router as a Copilot CLI plugin:
+
+```bash
+copilot plugin install kdaigle/multi-model-skill
+```
+
+This installs the plugin for your current project. To list installed plugins:
+
+```bash
+copilot /plugin list
+```
+
+### Option 2: Git Clone (Project-specific)
 
 Install the skill for a single repository:
 
@@ -44,7 +56,7 @@ cp -r /tmp/multi-model-skill/.github/extensions/model-router .github/extensions/
 rm -rf /tmp/multi-model-skill
 ```
 
-### Option 2: Personal Installation (Recommended)
+### Option 3: Personal Installation
 
 Install the skill globally for all your projects:
 
