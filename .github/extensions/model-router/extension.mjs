@@ -8,13 +8,15 @@ const MODEL_CANDIDATES = {
     { id: "gpt-5.4-mini", reasoningEffort: "low" },
   ],
   builder: [
-    { id: "claude-sonnet-4" },
-    { id: "claude-sonnet-4.5" },
+    // Prioritize models with reasoning support for better implementation quality
     { id: "claude-sonnet-4.6", reasoningEffort: "medium" },
-    { id: "gpt-5.1", reasoningEffort: "medium" },
     { id: "gpt-5.2", reasoningEffort: "medium" },
     { id: "gpt-5.3-codex", reasoningEffort: "medium" },
     { id: "gpt-5.1-codex", reasoningEffort: "medium" },
+    { id: "gpt-5.1", reasoningEffort: "medium" },
+    // Non-reasoning models as fallback
+    { id: "claude-sonnet-4" },
+    { id: "claude-sonnet-4.5" },
   ],
   reasoning: [
     { id: "gpt-5", reasoningEffort: "high" },
@@ -78,6 +80,13 @@ const IMPLEMENT_KEYWORDS = [
   "change",
   "update",
   "edit",
+  "enhance",
+  "modify",
+  "adjust",
+  "improve",
+  "fix the code",
+  "fix the formatting",
+  "fix the logic",
 ];
 
 const LIGHT_KEYWORDS = [
@@ -397,6 +406,11 @@ function getComplexity(prompt) {
     score += 1;
   }
 
+  // File path detection (/.github/, /src/, /lib/, etc.) indicates code changes
+  if (/\/[\w-]+\/[\w.-]+/.test(lower)) {
+    score += 1;
+  }
+
   // Tool-heavy work deserves more robust models
   if (isToolHeavy(lower)) {
     score += 1;
@@ -430,15 +444,25 @@ function classifyPrompt(prompt) {
   }
 
   if (includesAny(lower, IMPLEMENT_KEYWORDS)) {
-    // Tool-heavy implementation should use stronger models for orchestration
-    let tier = complexity >= 2 ? "builder" : "economy";
-    if (isToolHeavy(lower) && complexity >= 1) {
-      tier = "builder";
+    // Implementation tasks deserve at least builder tier for reliability
+    // Only use economy for very simple, lightweight implementations
+    let tier = "builder"; // Default to builder for all implementation
+    
+    // But if it's a light keyword (find, list, show) with very low complexity, stay in economy
+    if (includesAny(lower, LIGHT_KEYWORDS) && complexity === 0) {
+      tier = "economy";
     }
-    // Complex multi-tool orchestration (parallel agents, tool chains, etc.) warrants premium
+    
+    // Escalate to reasoning for complex orchestration
     if (isComplexOrchestration(lower)) {
       tier = "reasoning";
     }
+    
+    // Escalate to reasoning if implementation is deeply complex
+    if (complexity >= 3) {
+      tier = "reasoning";
+    }
+    
     return {
       kind: "implementation",
       complexity,
@@ -682,8 +706,17 @@ const session = await joinSession({
       },
       handler: async () => {
         const current = await session.rpc.model.getCurrent().catch(() => ({ modelId: undefined }));
+        const isLooping = detectLoopingBehavior();
         return JSON.stringify(
           {
+            // Quick-glance summary for local debugging: active model, last impl model, key confusion signals.
+            debug: {
+              activeModel: current.modelId || null,
+              lastImplModel: lastImplementationModel,
+              looping: isLooping,
+              errorCount: confusionMetrics.errorCount,
+              repeatedPatternCount: confusionMetrics.repeatedPatternCount,
+            },
             currentModel: current.modelId || null,
             lastImplementationModel,
             lastReviewModel,
@@ -694,7 +727,7 @@ const session = await joinSession({
               errorCount: confusionMetrics.errorCount,
               repeatedPatternCount: confusionMetrics.repeatedPatternCount,
               turnsSinceLastConfusionSwitch: confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn,
-              isLooping: detectLoopingBehavior(),
+              isLooping,
             },
           },
           null,

@@ -81,4 +81,12 @@ Check confusion metrics with:
 /model_router_status
 ```
 
-This shows turn count, error count, recent message tracking, and whether looping was detected.
+The output includes a top-level `debug` section for quick local debugging:
+
+- `activeModel` — the model currently active in the session
+- `lastImplModel` — the last model the router selected for an implementation task
+- `looping` — `true` if loop detection has fired
+- `errorCount` — consecutive errors since the last confusion switch
+- `repeatedPatternCount` — how many repeated-response patterns have been detected
+
+The full `confusionMetrics` block (turn count, message tracking, turns since last switch, etc.) follows for deeper inspection.

@@ -1,0 +1,990 @@
+You are a correctness judge for a local Copilot CLI evaluation harness.
+
+Rules:
+- Use only the evidence provided in this prompt.
+- Be conservative. If evidence is incomplete, say so.
+- Judge implementation correctness and task completion first, then completeness and minimality.
+- Output exactly one JSON object and nothing else.
+- The JSON object must follow this schema exactly:
+  {
+    "verdict": "pass" | "partial" | "fail",
+    "correctnessScore": 0-5,
+    "completenessScore": 0-5,
+    "minimalityScore": 0-5,
+    "confidence": "low" | "medium" | "high",
+    "issues": ["short string", ...],
+    "strengths": ["short string", ...],
+    "summary": "one paragraph"
+  }
+
+Evaluation guidance:
+- correctnessScore: did the run implement the requested behavior correctly based on the diff and validation evidence?
+- completenessScore: how fully did it satisfy the task?
+- minimalityScore: did it stay focused and avoid unnecessary changes?
+- verdict:
+  - pass: strong evidence that the task was completed correctly
+  - partial: mixed evidence, incomplete work, or notable uncertainty
+  - fail: strong evidence that the task was not completed or is clearly wrong
+
+Task metadata:
+{
+  "id": "001-status-enhancement",
+  "title": "Status output enhancement",
+  "category": "behavioral-change",
+  "prompt": "Enhance the /model_router_status output so it is more actionable for local debugging. Keep the change focused: add a concise section that clearly distinguishes the active model, the last routed implementation model, and the most important confusion or looping counters. Preserve existing behavior otherwise, and only update docs if the visible status contract materially changes.",
+  "judgeHints": [
+    "Prefer a small targeted change.",
+    "Do not break existing status reporting.",
+    "Documentation updates are optional unless the command output contract changes."
+  ],
+  "validation": {
+    "requireDiff": true,
+    "requiredChangedFiles": [
+      ".github/extensions/model-router/extension.mjs"
+    ]
+  }
+}
+
+Validation result:
+{
+  "valid": true,
+  "checks": [
+    {
+      "name": "copilot command did not time out",
+      "pass": true,
+      "details": {
+        "timedOut": false,
+        "timeoutMs": 180000,
+        "signal": null,
+        "exitCode": 0
+      }
+    },
+    {
+      "name": "copilot exit code",
+      "pass": true,
+      "details": {
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false
+      }
+    },
+    {
+      "name": "diff exists",
+      "pass": true,
+      "details": "gitDiffBytes=3495"
+    },
+    {
+      "name": "required changed file .github/extensions/model-router/extension.mjs",
+      "pass": true,
+      "details": [
+        ".github/extensions/model-router/extension.mjs",
+        ".github/skills/model-router/SKILL.md"
+      ]
+    }
+  ],
+  "commandResults": [],
+  "changedFiles": [
+    ".github/extensions/model-router/extension.mjs",
+    ".github/skills/model-router/SKILL.md"
+  ],
+  "worktreePath": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router",
+  "timedOut": false,
+  "runTimedOut": false,
+  "timedOutCommands": [],
+  "validationTimeoutMs": 120000,
+  "failureMode": null
+}
+
+Run metadata:
+{
+  "cwd": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router",
+  "command": "copilot",
+  "args": [
+    "-p",
+    "Enhance the /model_router_status output so it is more actionable for local debugging. Keep the change focused: add a concise section that clearly distinguishes the active model, the last routed implementation model, and the most important confusion or looping counters. Preserve existing behavior otherwise, and only update docs if the visible status contract materially changes.",
+    "--model",
+    "claude-sonnet-4.6",
+    "--reasoning-effort",
+    "medium",
+    "--output-format",
+    "json",
+    "--stream",
+    "off",
+    "--allow-all",
+    "--no-ask-user",
+    "--autopilot",
+    "--experimental",
+    "--plugin-dir",
+    "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router"
+  ],
+  "startModel": "claude-sonnet-4.6",
+  "reasoningEffort": "medium",
+  "variantId": "router",
+  "taskId": "001-status-enhancement",
+  "timeoutMs": 180000,
+  "dryRun": false,
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "errorCode": null,
+  "errorMessage": null,
+  "stdoutBytes": 175625,
+  "stderrBytes": 0,
+  "changedFiles": [
+    ".github/extensions/model-router/extension.mjs",
+    ".github/skills/model-router/SKILL.md"
+  ],
+  "diffBytes": 3495,
+  "statusPreview": "",
+  "runStatus": "completed"
+}
+
+Artifact summary:
+{
+  "parseableLineCount": 104,
+  "unparseableLineCount": 0,
+  "rawStdoutBytes": 175625,
+  "rawStderrBytes": 0,
+  "gitDiffBytes": 3495,
+  "changedFiles": [
+    ".github/extensions/model-router/extension.mjs",
+    ".github/skills/model-router/SKILL.md"
+  ],
+  "changedFileCount": 2,
+  "modelMentions": [
+    "claude-sonnet-4",
+    "claude-sonnet-4.6",
+    "claude-haiku-4.5",
+    "gpt-4.1",
+    "gpt-5-mini",
+    "gpt-5.4-mini",
+    "claude-sonnet-4.5",
+    "gpt-5.1",
+    "gpt-5.2",
+    "gpt-5.3-codex",
+    "gpt-5.1-codex",
+    "gpt-5",
+    "gpt-5.4",
+    "gpt-5.1-codex-max",
+    "claude-opus-4.5",
+    "claude-opus-4.6",
+    "claude-opus-4.6-1m"
+  ],
+  "usageCandidates": [
+    {
+      "line": 10,
+      "path": "data",
+      "value": {
+        "messageId": "f52e69ed-b1da-4cc2-b6b3-6995ecde6eef",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_blEHHHJC7JuYm2e1ldIRUy",
+            "name": "report_intent",
+            "arguments": {
+              "intent": "Exploring model router codebase"
+            },
+            "type": "function"
+          },
+          {
+            "toolCallId": "tooluse_HtNaH9pXYHyQTVvalO2fCm",
+            "name": "bash",
+            "arguments": {
+              "command": "find /home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router -type f | head -60 && echo \"---\" && ls -la",
+              "description": "List all files in the router directory"
+            },
+            "type": "function",
+            "intentionSummary": "List all files in the router directory"
+          }
+        ],
+        "interactionId": "56f2d38b-3679-4d75-81ad-b9f3aa707c5b",
+        "reasoningOpaque": "9Ig1Wg4vHe6OypiM9Z4EQ5F5n6SBoJiC4XTnNLi36bO7lUnfS0sbFcLfqa4l6eM4OfCckF5cP3tfB3xf89Ez10jqy+X7rDsvwMfY0/Lv7isTh74Gf9OuFt2nA8BODwEZMAKCExQvposkjzYYHW3QroVyI349J2PYuLU1Rdx5ytKMCkml7t7MCge6sY/2bRNfmOBvIG/i8DFHbgUcAHekN4GtCKbXyYYN2+IrKw2zLz0RTOJLWCf7gHBjUy0eJ9PveZYBIEBmenGue7AXnsQWMa+uOxdXgzsDdQyMpl/4giLYEtBJtyz+iJ6IW7PRC1xIpqQRP/ikXzPh+EhaS6WwKdIY/Eml/7n10tJUqwdEGPd9Rb1sbOesFOpr0ihxtxvcHm8BxlZCHtzgB2HRVVsUJtYga56RNf/44kukHVAJ9Cp838TYCe2icy4ZvfWWQizOzYsH+wCm5IfAsdX8cZhLxmaA0nI0TnCqOdnzdtkCbNfcEg+05NK1ssZh8IMx+LBv1DPz9+wwoyozn0WkMc9w0JBLdOlN7gtCD15EWO4BE0Y9L0rSuvmUMhKrA5SGGstmUT/lhRFdJB6mNAs/TWelDVReSS94PdFWgjKvUiHFBKOSxjR/vmViJ4xRZ+BvnPVg0HBQ2vdvwMgCeV2eZICYFfZSB7mYQ+wSiR4wyw7eLRv64Pzktaop/n6fI3zLQSbbUsq1xs1MpBcwZAaex9AVqkhwm195DGqIpPHLOx+ogkAX4GbnCG6HWN8W0erjpArHg1DVSuBBiP27jX5kdMTmeqgL6hPm2XDEikeV2s5EvLxezJpgTS0QvquyqnVSofbABtTQ6Dd/4tHEIcjJ/ijaG2dRI/5Lws7tWyxrfraU1GiD7YujB8y2ZMA7zJSFHDgevBVqZDU=",
+        "reasoningText": "Let me start by exploring the codebase to understand the current structure of the model router and its status output.",
+        "outputTokens": 210
+      }
+    },
+    {
+      "line": 20,
+      "path": "data",
+      "value": {
+        "messageId": "0dca7a6a-d6c7-4a82-a119-f5fdc99e1680",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_VYLrz0TWnC0u2ZtqgqLgG5",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/extensions/model-router/extension.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/extensions/model-router/extension.mjs."
+          },
+          {
+            "toolCallId": "tooluse_c0WeT6NY460uFXy09XsvoO",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/skills/model-router/SKILL.md"
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/skills/model-router/SKILL.md."
+          }
+        ],
+        "interactionId": "56f2d38b-3679-4d75-81ad-b9f3aa707c5b",
+        "outputTokens": 187
+      }
+    },
+    {
+      "line": 23,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file",
+        "largeOutputAvoided": "true",
+        "largeOutputOriginalSizeBytes": "20935"
+      }
+    },
+    {
+      "line": 23,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 220,
+        "resultForLlmLength": 220,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 24,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".md\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 24,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 4541,
+        "resultForLlmLength": 4541,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 27,
+      "path": "data",
+      "value": {
+        "messageId": "1c728d7a-7668-4268-902f-a7e788a73f07",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_DamJcSQK7bUMq9rKYXLwpO",
+            "name": "bash",
+            "arguments": {
+              "command": "wc -l /home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/extensions/model-router/extension.mjs",
+              "description": "Check line count of extension file"
+            },
+            "type": "function",
+            "intentionSummary": "Check line count of extension file"
+          }
+        ],
+        "interactionId": "56f2d38b-3679-4d75-81ad-b9f3aa707c5b",
+        "outputTokens": 128
+      }
+    },
+    {
+      "line": 34,
+      "path": "data",
+      "value": {
+        "messageId": "4ef6afb9-cf35-41a3-be85-546bc34dc2b3",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_5JAOjK97rMOFKDJKfbEcEP",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/extensions/model-router/extension.mjs",
+              "view_range": [
+                1,
+                100
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "56f2d38b-3679-4d75-81ad-b9f3aa707c5b",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 36,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 36,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 2379,
+        "resultForLlmLength": 2379,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 39,
+      "path": "data",
+      "value": {
+        "messageId": "961d5bdf-9e88-47c3-ba92-3d31f67f28be",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_akezVwU9ZSVmprRzhah22K",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/extensions/model-router/extension.mjs",
+              "view_range": [
+                100,
+                250
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "56f2d38b-3679-4d75-81ad-b9f3aa707c5b",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 41,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 41,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 5137,
+        "resultForLlmLength": 5137,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 44,
+      "path": "data",
+      "value": {
+        "messageId": "06d8a7f3-f423-4ba2-a1bd-fe16064c4c2b",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_d6RhM8Gfd9zfhqX3FBjoTC",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/extensions/model-router/extension.mjs",
+              "view_range": [
+                250,
+                450
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "56f2d38b-3679-4d75-81ad-b9f3aa707c5b",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 46,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 46,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 6667,
+        "resultForLlmLength": 6667,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 49,
+      "path": "data",
+      "value": {
+        "messageId": "0926e2fa-86f5-416a-a890-962facd99bf8",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_kGdSYW5Tog1Bku4BBL7PPB",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/extensions/model-router/extension.mjs",
+              "view_range": [
+                450,
+                706
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "56f2d38b-3679-4d75-81ad-b9f3aa707c5b",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 51,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 51,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 10256,
+        "resultForLlmLength": 10256,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 54,
+      "path": "data",
+      "value": {
+        "messageId": "afabdf92-fbfc-4ac8-a2bb-0ea0b3726213",
+        "content": "Now let me check the eval task spec to understand what they're testing:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_ImcjJajV1zV5qrmX4uw6Kw",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/eval/tasks/001-status-enhancement.json"
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/eval/tasks/001-status-enhancement.json."
+          }
+        ],
+        "interactionId": "56f2d38b-3679-4d75-81ad-b9f3aa707c5b",
+        "reasoningOpaque": "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",
+        "reasoningText": "Now I understand the current structure. The `model_router_status` tool returns a JSON object with:\n- `currentModel`\n- `lastImplementationModel`\n- `lastReviewModel`\n- `lastDecision`\n- `confusionMetrics` with: turnCount, recentMessageCount, errorCount, repeatedPatternCount, turnsSinceLastConfusionSwitch, isLooping\n\nThe task is to make the output **more actionable for local debugging** by adding a concise section that clearly distinguishes:\n1. The active model\n2. The last routed implementation model\n3. The most important confusion or looping counters\n\n\n4. I should add a `debug` section at the top level that explicitly surfaces the active model, the last routed implementation model, and key confusion metrics, while also flagging when the active model differs from the last implementation model and deriving insights about whether a confusion swap is likely or pending. - What model was used for implementation, whether they've diverged, and key looping indicators like error count and pattern repetitions. I'll structure this as a `summary` object at the top of the response that surfaces `activeModel`, `lastImplementationModel`, `modelDiverged`, `loopDetected`, `errorCount`, `repeatedPatternCount`, and `swapEligible` so users can quickly assess the current state and whether a confusion swap might be triggered.",
+        "outputTokens": 802
+      }
+    },
+    {
+      "line": 57,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".json\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 57,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 902,
+        "resultForLlmLength": 902,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 60,
+      "path": "data",
+      "value": {
+        "messageId": "23500f6e-6963-4dc7-af23-d3cb928d3f44",
+        "content": "Now I have a clear picture. I'll add a `summary` block at the top of the status handler output that surfaces the three key things concisely: active model, last implementation model, and the actionable confusion counters. Existing fields stay intact.",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_PE7yHVmodUJSaPRzPBTmA0",
+            "name": "report_intent",
+            "arguments": {
+              "intent": "Enhancing model_router_status output"
+            },
+            "type": "function"
+          },
+          {
+            "toolCallId": "tooluse_HpnxOeJKaPCGWP6KCQingk",
+            "name": "edit",
+            "arguments": {
+              "new_str": "      handler: async () => {\n        const current = await session.rpc.model.getCurrent().catch(() => ({ modelId: undefined }));\n        const activeModel = current.modelId || null;\n        const isLooping = detectLoopingBehavior();\n        const turnsSinceLastSwitch = confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn;\n        return JSON.stringify(\n          {\n            // Actionable at-a-glance summary for local debugging\n            summary: {\n              activeModel,\n              lastRoutedImplementationModel: lastImplementationModel,\n              // true when a confusion swap or review-diversity switch moved away from the implementation model\n              modelDiverged: lastImplementationModel != null && activeModel !== lastImplementationModel,\n              confusion: {\n                isLooping,\n                errorCount: confusionMetrics.errorCount,\n                repeatedPatternCount: confusionMetrics.repeatedPatternCount,\n                // once this reaches CONFUSION_THRESHOLDS.minTurnsSinceLastSwitch (5) a swap can fire\n                turnsSinceLastSwitch,\n              },\n            },\n            currentModel: activeModel,\n            lastImplementationModel,\n            lastReviewModel,\n            lastDecision,\n            confusionMetrics: {\n              turnCount: confusionMetrics.turnCount,\n              recentMessageCount: confusionMetrics.recentMessages.length,\n              errorCount: confusionMetrics.errorCount,\n              repeatedPatternCount: confusionMetrics.repeatedPatternCount,\n              turnsSinceLastConfusionSwitch: turnsSinceLastSwitch,\n              isLooping,\n            },\n          },\n          null,\n          2,\n        );",
+              "old_str": "      handler: async () => {\n        const current = await session.rpc.model.getCurrent().catch(() => ({ modelId: undefined }));\n        return JSON.stringify(\n          {\n            currentModel: current.modelId || null,\n            lastImplementationModel,\n            lastReviewModel,\n            lastDecision,\n            confusionMetrics: {\n              turnCount: confusionMetrics.turnCount,\n              recentMessageCount: confusionMetrics.recentMessages.length,\n              errorCount: confusionMetrics.errorCount,\n              repeatedPatternCount: confusionMetrics.repeatedPatternCount,\n              turnsSinceLastConfusionSwitch: confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn,\n              isLooping: detectLoopingBehavior(),\n            },\n          },\n          null,\n          2,\n        );",
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/extensions/model-router/extension.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "edit the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "56f2d38b-3679-4d75-81ad-b9f3aa707c5b",
+        "reasoningOpaque": "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",
+        "reasoningText": "Now I have a clear picture. The eval task wants:\n1. Change to `extension.mjs` primarily\n2. Add a focused `summary` or `debug` section to `/model_router_status` output\n3. Clearly distinguish: active model, last routed implementation model, and key confusion counters\n4. Don't break existing structure\n\nMy plan:\n- Add a `summary` block at the top of the JSON response in the `model_router_status` handler\n- This block surfaces: `activeModel`, `lastRoutedImplementationModel`, `modelDiverged`, and key confusion counters (errorCount, isLooping, repeatedPatternCount)\n\n\n- Position it before existing fields for visibility while keeping everything else intact\n\nBuilding the summary structure... I need to update the SKILL.md documentation to reflect the new `summary` section that's now part of the visible output, since this materially changes what users will see when they run the command.",
+        "outputTokens": 1457
+      }
+    },
+    {
+      "line": 65,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "edit",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"old_str\",\"new_str\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "codeBlocks": "[{\"fileExt\":\".mjs\",\"languageId\":\"javascript\",\"linesAdded\":20,\"linesRemoved\":3}]",
+        "languageId": "[\"javascript\"]"
+      }
+    },
+    {
+      "line": 65,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 177,
+        "resultForLlmLength": 177,
+        "responseTokenLimit": 42000,
+        "linesAdded": 20,
+        "linesRemoved": 3
+      }
+    },
+    {
+      "line": 68,
+      "path": "data",
+      "value": {
+        "messageId": "0ab9eb74-c68b-4e08-b010-6975848768b0",
+        "content": "Now update SKILL.md since the visible status contract materially changed (new `summary` section added):",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_LJf0M05gNiZf3GgVKHsuIQ",
+            "name": "edit",
+            "arguments": {
+              "new_str": "Check confusion metrics with:\n\n```\n/model_router_status\n```\n\nThe output begins with a concise `summary` block for quick local debugging:\n\n| Field | What it tells you |\n|---|---|\n| `summary.activeModel` | The model currently active in the session |\n| `summary.lastRoutedImplementationModel` | The model the router last chose for implementation/debugging |\n| `summary.modelDiverged` | `true` when the active model differs from the implementation model (e.g., after a confusion swap or review-diversity switch) |\n| `summary.confusion.isLooping` | Whether recent messages look repetitive |\n| `summary.confusion.errorCount` | Consecutive errors seen |\n| `summary.confusion.repeatedPatternCount` | Cumulative confusion-signal count |\n| `summary.confusion.turnsSinceLastSwitch` | Turns since last confusion-triggered swap; swap becomes eligible at 5 |\n\nFull detail (turn count, recent message count, last decision, etc.) follows in the remaining fields.",
+              "old_str": "Check confusion metrics with:\n\n```\n/model_router_status\n```\n\nThis shows turn count, error count, recent message tracking, and whether looping was detected.",
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/skills/model-router/SKILL.md"
+            },
+            "type": "function",
+            "intentionSummary": "edit the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/skills/model-router/SKILL.md."
+          }
+        ],
+        "interactionId": "56f2d38b-3679-4d75-81ad-b9f3aa707c5b",
+        "outputTokens": 434
+      }
+    },
+    {
+      "line": 70,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "edit",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"old_str\",\"new_str\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".md\"]",
+        "codeBlocks": "[{\"fileExt\":\".md\",\"languageId\":\"markdown\",\"linesAdded\":13,\"linesRemoved\":1}]",
+        "languageId": "[\"markdown\"]"
+      }
+    },
+    {
+      "line": 70,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 168,
+        "resultForLlmLength": 168,
+        "responseTokenLimit": 42000,
+        "linesAdded": 13,
+        "linesRemoved": 1
+      }
+    },
+    {
+      "line": 73,
+      "path": "data",
+      "value": {
+        "messageId": "5b43a887-24db-432f-807d-e67dd0f066f6",
+        "content": "Now verify the change looks correct:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_n6C2M2P2di5wQp6AIMukN9",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/extensions/model-router/extension.mjs",
+              "view_range": [
+                683,
+                720
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "56f2d38b-3679-4d75-81ad-b9f3aa707c5b",
+        "outputTokens": 134
+      }
+    },
+    {
+      "line": 75,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 75,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 1916,
+        "resultForLlmLength": 1916,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 78,
+      "path": "data",
+      "value": {
+        "messageId": "98a638fa-2411-477d-a0a3-1d09f87e3696",
+        "content": "Good. Let me also do a quick sanity check — the two computed values (`isLooping`, `turnsSinceLastSwitch`) are now computed once and reused in both `summary` and `confusionMetrics`, so there's no duplication drift.",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_XPBkFNQsRfTh9d1pGu8yQ2",
+            "name": "bash",
+            "arguments": {
+              "command": "cd /home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router && git --no-pager diff --stat",
+              "description": "Check diff summary"
+            },
+            "type": "function",
+            "intentionSummary": "Check diff summary"
+          }
+        ],
+        "interactionId": "56f2d38b-3679-4d75-81ad-b9f3aa707c5b",
+        "outputTokens": 178
+      }
+    },
+    {
+      "line": 85,
+      "path": "data",
+      "value": {
+        "messageId": "44825412-6c5a-4d7d-9ca8-1832fad51f40",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_qHrXFtV0bvYAQz41MoF3kT",
+            "name": "bash",
+            "arguments": {
+              "command": "cd /home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router && git --no-pager diff",
+              "description": "Full diff review"
+            },
+            "type": "function",
+            "intentionSummary": "Full diff review"
+          }
+        ],
+        "interactionId": "56f2d38b-3679-4d75-81ad-b9f3aa707c5b",
+        "outputTokens": 117
+      }
+    },
+    {
+      "line": 92,
+      "path": "data",
+      "value": {
+        "messageId": "6d8acdf7-47b1-4e10-83e8-7c9060d44dc9",
+        "content": "Clean and surgical. Let me commit:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_Wxj8ZtyMScljmVg1zQKhal",
+            "name": "bash",
+            "arguments": {
+              "command": "cd /home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router && git add .github/extensions/model-router/extension.mjs .github/skills/model-router/SKILL.md && git commit -m \"feat(status): add summary section to /model_router_status for local debugging\n\nAdd a top-level \\`summary\\` object to the model_router_status tool output\nthat surfaces the three most actionable pieces at a glance:\n\n- \\`summary.activeModel\\` – the model currently active in the session\n- \\`summary.lastRoutedImplementationModel\\` – last model chosen for\n  implementation/debugging work\n- \\`summary.modelDiverged\\` – true when the active model differs from the\n  implementation model, indicating a confusion swap or review-diversity\n  switch occurred\n- \\`summary.confusion\\` – focused subset of confusion counters: isLooping,\n  errorCount, repeatedPatternCount, and turnsSinceLastSwitch (with a note\n  that swap eligibility starts at 5 turns)\n\nAll existing fields (\\`currentModel\\`, \\`lastImplementationModel\\`,\n\\`lastReviewModel\\`, \\`lastDecision\\`, \\`confusionMetrics\\`) are preserved\nunchanged. The two computed values (isLooping, turnsSinceLastSwitch) are\nextracted to local variables and reused in both \\`summary\\` and\n\\`confusionMetrics\\` to avoid double-calling.\n\nUpdate SKILL.md to document the new summary contract with a quick-ref table.\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>\"",
+              "description": "Commit the changes"
+            },
+            "type": "function",
+            "intentionSummary": "Commit the changes"
+          }
+        ],
+        "interactionId": "56f2d38b-3679-4d75-81ad-b9f3aa707c5b",
+        "outputTokens": 494
+      }
+    },
+    {
+      "line": 99,
+      "path": "data",
+      "value": {
+        "messageId": "1aec8311-b059-4d62-bf78-df12248bfaa3",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_gcwsKWvudViU0ySNsKIDQd",
+            "name": "task_complete",
+            "arguments": {
+              "summary": "Added a focused `summary` block at the top of `/model_router_status` output in `extension.mjs`. It surfaces the three things most useful for local debugging at a glance:\n\n- **`summary.activeModel`** – the currently active model\n- **`summary.lastRoutedImplementationModel`** – what the router last chose for implementation/debugging\n- **`summary.modelDiverged`** – `true` if those two differ (flags confusion swaps or review-diversity switches)\n- **`summary.confusion`** – the four most actionable counters: `isLooping`, `errorCount`, `repeatedPatternCount`, `turnsSinceLastSwitch` (with a note that swap eligibility fires at 5 turns)\n\nAll existing fields are preserved unchanged. As a small bonus, `isLooping` and `turnsSinceLastSwitch` are now computed once and reused in both `summary` and `confusionMetrics` rather than recomputed twice. `SKILL.md` was updated with a quick-reference table since the visible status contract materially changed."
+            },
+            "type": "function",
+            "toolTitle": "Task complete",
+            "intentionSummary": "Added a focused `summary` block at the top of `/model_rou..."
+          }
+        ],
+        "interactionId": "56f2d38b-3679-4d75-81ad-b9f3aa707c5b",
+        "outputTokens": 299
+      }
+    },
+    {
+      "line": 104,
+      "path": "",
+      "value": {
+        "type": "result",
+        "timestamp": "2026-03-29T05:26:40.768Z",
+        "sessionId": "8df64dd7-42ce-4bb2-a7be-7665ffb9e1b9",
+        "exitCode": 0,
+        "usage": {
+          "premiumRequests": 1,
+          "totalApiDurationMs": 92504,
+          "sessionDurationMs": 105427,
+          "codeChanges": {
+            "linesAdded": 33,
+            "linesRemoved": 4,
+            "filesModified": [
+              "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/extensions/model-router/extension.mjs",
+              "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T052453Z/worktrees/001-status-enhancement/router/.github/skills/model-router/SKILL.md"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "textSnippetCount": 875,
+  "finalResponseSnippet": ".github/extensions/model-router/extension.mjs | 23 ++++++++++++++++++++---\n .github/skills/model-router/SKILL.md          | 14 +++++++++++++-\n 2 files changed, 33 insertions(+), 4 deletions(-)\n<exited with exit code 0>\n.github/extensions/model-router/extension.mjs | 23 ++++++++++++++++++++---\n .github/skills/model-router/SKILL.md          | 14 +++++++++++++-\n 2 files changed, 33 insertions(+), 4 deletions(-)\n<exited with exit code 0>\n44825412-6c5a-4d7d-9ca8-1832fad51f40\ndiff --git a/.github/extensions/model-router/extension.mjs b/.github/extensions/model-router/extension.mjs\nindex 598e6f6..309a2f8 100644\n--- a/.github/extensions/model-router/extension.mjs\n+++ b/.github/extensions/model-router/extension.mjs\n@@ -682,9 +682,26 @@ const session = await joinSession({\n       },\n       handler: async () => {\n         const current = await session.rpc.model.getCurrent().catch(() => ({ modelId: undefined }));\n+        const activeModel = current.modelId || null;\n+        const isLooping = detectLoopingBehavior();\n+        const turnsSinceLastSwitch = confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn;\n         return JSON.stringify(\n           {\n-            currentModel: current.modelId || null,\n+            // Actionable at-a-glance summary for local debugging\n+            summary: {\n+              activeModel,\n+              lastRoutedImplementationModel: lastImplementationModel,\n+              // true when a confusion swap or review-diversity switch moved away from the implementation model\n+              modelDiverged: lastImplementationModel != null && activeModel !== lastImplementationModel,\n+              confusion: {\n+                isLooping,\n+                errorCount: confusionMetrics.errorCount,\n+                repeatedPatternCount: confusionMetrics.repeatedPatternCount,\n+                // once this reaches CONFUSION_THRESHOLDS.minTurnsSinceLastSwitch (5) a swap can fire\n+                turnsSinceLastSwitch,\n+              },\n+            },\n+            currentModel: activeModel,\n             lastImplementationModel,\n             lastReviewModel,\n             lastDecision,\n@@ -693,8 +710,8 @@ const session = await joinSession({\n               recentMessageCount: confusionMetrics.recentMessages.length,\n               errorCount: confusionMetrics.errorCount,\n               repeatedPatternCount: confusionMetrics.repeatedPatternCount,\n-              turnsSinceLastConfusionSwitch: confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn,\n-              isLooping: detectLoopingBehavior(),\n+              turnsSinceLastConfusionSwitch: turnsSinceLastSwitch,\n+              isLooping,\n             },\n           },\n           null,\ndiff --git a/.github/skills/model-router/SKILL.md b/.github/skills/model-router/SKILL.md\nindex d6303ff..b4f037c 100644\n--- a/.github/skills/model-router/SKILL.md\n+++ b/.github/skills/model-router/SKILL.md\n@@ -81,4 +81,16 @@ Check confusion metrics with:\n /model_router_status\n ```\n \n-This shows turn count, error count, recent message tracking, and whether looping was detected.\n+The output begins with a concise `summary` block for quick local debugging:\n+\n+| Field | What it tells you |\n+|---|---|\n+| `summary.activeModel` | The model currently active in the session |\n+| `summary.lastRoutedImplementationModel` | The model the router last chose for implementation/debugging |\n+| `summary.modelDiverged` | `true` when the active model differs from the implementation model (e.g., after a confusion swap or review-diversity switch) |\n+| `summary.confusion.isLooping` | Whether recent messages look repetitive |\n+| `summary.confusion.errorCount` | Consecutive errors seen |\n+| `summary.confusion.repeatedPatternCount` | Cumulative confusion-signal count |\n+| `summary.confusion.turnsSinceLastSwitch` | Turns since last confusion-triggered swap; swap becomes eligible at 5 |\n+\n+Full detail (turn count, recent message count, last decision, etc.) follows in the remaining fields.\n<exited with exit code 0>\ndiff --git a/.github/extensions/model-router/extension.mjs b/.github/extensions/model-router/extension.mjs\nindex 598e6f6..309a2f8 100644\n--- a/.github/extensions/model-router/extension.mjs\n+++ b/.github/extensions/model-router/extension.mjs\n@@ -682,9 +682,26 @@ const session = await joinSession({\n       },\n       handler: async () => {\n         const current = await session.rpc.model.getCurrent().catch(() => ({ modelId: undefined }));\n+        const activeModel = current.modelId || null;\n+        const isLooping = detectLoopingBehavior();\n+        const turnsSinceLastSwitch = confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn;\n         return JSON.stringify(\n           {\n-            currentModel: current.modelId || null,\n+            // Actionable at-a-glance summary for local debugging\n+            summary: {\n+              activeModel,\n+              lastRoutedImplementationModel: lastImplementationModel,\n+              // true when a confusion swap or review-diversity switch moved away from the implementation model\n+              modelDiverged: lastImplementationModel != null && activeModel !== lastImplementationModel,\n+              confusion: {\n+                isLooping,\n+                errorCount: confusionMetrics.errorCount,\n+                repeatedPatternCount: confusionMetrics.repeatedPatternCount,\n+                // once this reaches CONFUSION_THRESHOLDS.minTurnsSinceLastSwitch (5) a swap can fire\n+                turnsSinceLastSwitch,\n+              },\n+            },\n+            currentModel: activeModel,\n             lastImplementationModel,\n             lastReviewModel,\n             lastDecision,\n@@ -693,8 +710,8 @@ const session = await joinSession({\n               recentMessageCount: confusionMetrics.recentMessages.length,\n               errorCount: confusionMetrics.errorCount,\n               repeatedPatternCount: confusionMetrics.repeatedPatternCount,\n-              turnsSinceLastConfusionSwitch: confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn,\n-              isLooping: detectLoopingBehavior(),\n+              turnsSinceLastConfusionSwitch: turnsSinceLastSwitch,\n+              isLooping,\n             },\n           },\n           null,\ndiff --git a/.github/skills/model-router/SKILL.md b/.github/skills/model-router/SKILL.md\nindex d6303ff..b4f037c 100644\n--- a/.github/skills/model-router/SKILL.md\n+++ b/.github/skills/model-router/SKILL.md\n@@ -81,4 +81,16 @@ Check confusion metrics with:\n /model_router_status\n ```\n \n-This shows turn count, error count, recent message tracking, and whether looping was detected.\n+The output begins with a concise `summary` block for quick local debugging:\n+\n+| Field | What it tells you |\n+|---|---|\n+| `summary.activeModel` | The model currently active in the session |\n+| `summary.lastRoutedImplementationModel` | The model the router last chose for implementation/debugging |\n+| `summary.modelDiverged` | `true` when the active model differs from the implementation model (e.g., after a confusion swap or review-diversity switch) |\n+| `summary.confusion.isLooping` | Whether recent messages look repetitive |\n+| `summary.confusion.errorCount` | Consecutive errors seen |\n+| `summary.confusion.repeatedPatternCount` | Cumulative confusion-signal count |\n+| `summary.confusion.turnsSinceLastSwitch` | Turns since last confusion-triggered swap; swap becomes eligible at 5 |\n+\n+Full detail (turn count, recent message count, last decision, etc.) follows in the remaining fields.\n<exited with exit code 0>\n6d8acdf7-47b1-4e10-83e8-7c9060d44dc9\nClean and surgical. Let me commit:\n[detached HEAD d036a42] feat(status): add summary section to /model_router_status for local debugging\n 2 files changed, 33 insertions(+), 4 deletions(-)\n<exited with exit code 0>\n[detached HEAD d036a42] feat(status): add summary section to /model_router_status for local debugging\n 2 files changed, 33 insertions(+), 4 deletions(-)\n<exited with exit code 0>\n1aec8311-b059-4d62-bf78-df12248bfaa3\nAdded a focused `summary` block at the top of `/model_router_status` output in `extension.mjs`. It surfaces the three things most useful for local debugging at a glance:\n\n- **`summary.activeModel`** – the currently active model\n- **`summary.lastRoutedImplementationModel`** – what the router last chose for implementation/debugging\n- **`summary.modelDiverged`** – `true` if those two differ (flags confusion swaps or review-diversity switches)\n- **`summary.confusion`** – the four most actionable counters: `isLooping`, `errorCount`, `repeatedPatternCount`, `turnsSinceLastSwitch` (with a note that swap eligibility fires at 5 turns)\n\nAll existing fields are preserved unchanged. As a small bonus, `isLooping` and `turnsSinceLastSwitch` are now computed once and reused in both `summary` and `confusionMetrics` rather than recomputed twice. `SKILL.md` was updated with a quick-reference table since the visible status contract materially changed.\n✓ Task completed: Added a focused `summary` block at the top of `/model_router_status` output in `extension.mjs`. It surfaces the three things most useful for local debugging at a glance:\n\n- **`summary.activeModel`** – the currently active model\n- **`summary.lastRoutedImplementationModel`** – what the router last chose for implementation/debugging\n- **`summary.modelDiverged`** – `true` if those two differ (flags confusion swaps or review-diversity switches)\n- **`summary.confusion`** – the four most actionable counters: `isLooping`, `errorCount`, `repeatedPatternCount`, `turnsSinceLastSwitch` (with a note that swap eligibility fires at 5 turns)\n\nAll existing fields are preserved unchanged. As a small bonus, `isLooping` and `turnsSinceLastSwitch` are now computed once and reused in both `summary` and `confusionMetrics` rather than recomputed twice. `SKILL.md` was updated with a quick-reference table since the visible status contract materially changed.",
+  "rawArtifactFiles": {
+    "stdoutJsonl": "copilot-output.jsonl",
+    "stderr": "copilot-stderr.txt",
+    "diff": "git-diff.patch"
+  }
+}
+
+Changed files:
+[
+  ".github/extensions/model-router/extension.mjs",
+  ".github/skills/model-router/SKILL.md"
+]
+
+Git diff (possibly truncated):
+```diff
+diff --git a/.github/extensions/model-router/extension.mjs b/.github/extensions/model-router/extension.mjs
+index 598e6f6..309a2f8 100644
+--- a/.github/extensions/model-router/extension.mjs
++++ b/.github/extensions/model-router/extension.mjs
+@@ -682,9 +682,26 @@ const session = await joinSession({
+       },
+       handler: async () => {
+         const current = await session.rpc.model.getCurrent().catch(() => ({ modelId: undefined }));
++        const activeModel = current.modelId || null;
++        const isLooping = detectLoopingBehavior();
++        const turnsSinceLastSwitch = confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn;
+         return JSON.stringify(
+           {
+-            currentModel: current.modelId || null,
++            // Actionable at-a-glance summary for local debugging
++            summary: {
++              activeModel,
++              lastRoutedImplementationModel: lastImplementationModel,
++              // true when a confusion swap or review-diversity switch moved away from the implementation model
++              modelDiverged: lastImplementationModel != null && activeModel !== lastImplementationModel,
++              confusion: {
++                isLooping,
++                errorCount: confusionMetrics.errorCount,
++                repeatedPatternCount: confusionMetrics.repeatedPatternCount,
++                // once this reaches CONFUSION_THRESHOLDS.minTurnsSinceLastSwitch (5) a swap can fire
++                turnsSinceLastSwitch,
++              },
++            },
++            currentModel: activeModel,
+             lastImplementationModel,
+             lastReviewModel,
+             lastDecision,
+@@ -693,8 +710,8 @@ const session = await joinSession({
+               recentMessageCount: confusionMetrics.recentMessages.length,
+               errorCount: confusionMetrics.errorCount,
+               repeatedPatternCount: confusionMetrics.repeatedPatternCount,
+-              turnsSinceLastConfusionSwitch: confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn,
+-              isLooping: detectLoopingBehavior(),
++              turnsSinceLastConfusionSwitch: turnsSinceLastSwitch,
++              isLooping,
+             },
+           },
+           null,
+diff --git a/.github/skills/model-router/SKILL.md b/.github/skills/model-router/SKILL.md
+index d6303ff..b4f037c 100644
+--- a/.github/skills/model-router/SKILL.md
++++ b/.github/skills/model-router/SKILL.md
+@@ -81,4 +81,16 @@ Check confusion metrics with:
+ /model_router_status
+ ```
+ 
+-This shows turn count, error count, recent message tracking, and whether looping was detected.
++The output begins with a concise `summary` block for quick local debugging:
++
++| Field | What it tells you |
++|---|---|
++| `summary.activeModel` | The model currently active in the session |
++| `summary.lastRoutedImplementationModel` | The model the router last chose for implementation/debugging |
++| `summary.modelDiverged` | `true` when the active model differs from the implementation model (e.g., after a confusion swap or review-diversity switch) |
++| `summary.confusion.isLooping` | Whether recent messages look repetitive |
++| `summary.confusion.errorCount` | Consecutive errors seen |
++| `summary.confusion.repeatedPatternCount` | Cumulative confusion-signal count |
++| `summary.confusion.turnsSinceLastSwitch` | Turns since last confusion-triggered swap; swap becomes eligible at 5 |
++
++Full detail (turn count, recent message count, last decision, etc.) follows in the remaining fields.
+
+```
+
+Assistant final response excerpt (possibly truncated):
+.github/extensions/model-router/extension.mjs | 23 ++++++++++++++++++++---
+ .github/skills/model-router/SKILL.md          | 14 +++++++++++++-
+ 2 files changed, 33 insertions(+), 4 deletions(-)
+<exited with exit code 0>
+.github/extensions/model-router/extension.mjs | 23 ++++++++++++++++++++---
+ .github/skills/model-router/SKILL.md          | 14 +++++++++++++-
+ 2 files changed, 33 insertions(+), 4 deletions(-)
+<exited with exit code 0>
+44825412-6c5a-4d7d-9ca8-1832fad51f40
+diff --git a/.github/extensions/model-router/extension.mjs b/.github/extensions/model-router/extension.mjs
+index 598e6f6..309a2f8 100644
+--- a/.github/extensions/model-router/extension.mjs
++++ b/.github/extensions/model-router/extension.mjs
+@@ -682,9 +682,26 @@ const session = await joinSession({
+       },
+       handler: async () => {
+         const current = await session.rpc.model.getCurrent().catch(() => ({ modelId: undefined }));
++        const activeModel = current.modelId || null;
++        const isLooping = detectLoopingBehavior();
++        const turnsSinceLastSwitch = confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn;
+         return JSON.stringify(
+           {
+-            currentModel: current.modelId || null,
++            // Actionable at-a-glance summary for local debugging
++            summary: {
++              activeModel,
++              lastRoutedImplementationModel: lastImplementationModel,
++              // true when a confusion swap or review-diversity switch moved away from the implementation model
++              modelDiverged: lastImplementationModel != null && activeModel !== lastImplementationModel,
++              confusion: {
++                isLooping,
++                errorCount: confusionMetrics.errorCount,
++                repeatedPatternCount: confusionMetrics.repeatedPatternCount,
++                // once this reaches CONFUSION_THRESHOLDS.minTurnsSinceLastSwitch (5) a swap can fire
++                turnsSinceLastSwitch,
++              },
++            },
++            currentModel: activeModel,
+             lastImplementationModel,
+             lastReviewModel,
+             lastDecision,
+@@ -693,8 +710,8 @@ const session = await joinSession({
+               recentMessageCount: confusionMetrics.recentMessages.length,
+               errorCount: confusionMetrics.errorCount,
+               repeatedPatternCount: confusionMetrics.repeatedPatternCount,
+-              turnsSinceLastConfusionSwitch: confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn,
+-              isLooping: detectLoopingBehavior(),
++              turnsSinceLastConfusionSwitch: turnsSinceLastSwitch,
++              isLooping,
+             },
+           },
+           null,
+diff --git a/.github/skills/model-router/SKILL.md b/.github/skills/model-router/SKILL.md
+index d6303ff..b4f037c 100644
+--- a/.github/skills/model-router/SKILL.md
++++ b/.github/skills/model-router/SKILL.md
+@@ -81,4 +81,16 @@ Check confusion metrics with:
+ /model_router_status
+ ```
+ 
+-This shows turn count, error count, recent message tracking, and whether looping was detected.
++The output begins with a concise `summary` block for quick local debugging:
++
++| Field | What it tells you |
++|---|---|
++| `summary.activeModel` | The model currently active in the session |
++| `summary.lastRoutedImplementationModel` | The model the router last chose for implementation/debugging |
++| `summary.modelDiverged` | `true` when the active model differs from the implementation model (e.g., after a confusion swap or review-diversity switch) |
++| `summary.confusion.isLooping` | Whether recent messages look repetitive |
++| `summary.confusion.errorCount` | Consecutive errors seen |
++| `summary.confusion.repeatedPatternCount` | Cumulative confusion-signal count |
++| `summary.confusion.turnsSinceLastSwitch` | Turns since last confusion-triggered swap; swap becomes eligible at 5 |
++
++Full detail (turn count, recent message count, last decision, etc.) follows in the remaining fields.
+<exited with exit code 0>
+diff --git a/.github/extensions/model-router/extension.mjs b/.github/extensions/model-router/extension.mjs
+index 598e6f6..309a2f8 100644
+--- a/.github/extensions/model-router/extension.mjs
++++ b/.github/extensions/model-router/extension.mjs
+@@ -682,9 +682,26 @@ const session = await joinSession({
+       },
+       handler: async () => {
+         const current = await session.rpc.model.getCurrent().catch(() => ({ modelId: undefined }));
++        const activeModel = current.modelId || null;
++        const isLooping = detectLoopingBehavior();
++        const turnsSinceLastSwitch = confusionMetrics.turnCount - confusionMetrics.lastSwitchTurn;
+         return JSON.stringify(
+           {
+-            currentModel: current.modelId || null,
++            // Actionable at-a-glance summary for local debugging
++            summary: {
++              activeModel,
++              lastRoutedImplementationModel: lastImplementationModel,
++              // true when a confusion swap or review-diversity switch moved away from the implementation model
++              modelDiverged: lastImplementationModel != null && activeModel !== lastImplementationModel,
++              confusion: {
++                isLooping,
++                errorCount: confusionMetrics.errorCount,
++                repeatedPatternCount: confusionMetrics.repeatedPatternCount,
++                // once this reaches CONFUSION_THRESHOLDS.minTurnsSinceLastSwitch (5) a swap can fire
++                turnsSinceLastSwitch,
++              },
++            },
++            currentModel: activeModel,
+             lastImplementationModel,
+             lastReviewModel,
+             lastDecision,
+@@ -693,8 +710,8 @@ const session = await joinSession({
+               recentMessageCount: confusionMetrics.recentMessages.length,
+               errorCount: confusionMetrics.errorCount,
+               repeatedPatternCount: confusionMetrics.repeatedPatternCount,
+-              turnsSinceLastConfusionSwitch: confusionMetrics.turnCount - confusionMet
+... [truncated 3895 chars]

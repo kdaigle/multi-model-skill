@@ -112,6 +112,7 @@ for (const task of selectedTasks) {
         '--variant', variant.id,
         '--run-dir', path.relative(ROOT_DIR, runDir),
         '--worktree', prepared.worktreeRelativePath,
+        '--base-sha', prepared.baseSha,
         '--start-model', modelsConfig.implementationStartModel.id,
         '--reasoning-effort', modelsConfig.implementationStartModel.reasoningEffort ?? 'medium',
         ...(values['dry-run'] ? ['--dry-run'] : [])

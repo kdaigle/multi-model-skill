@@ -21,6 +21,7 @@ const { values } = parseArgs({
     variant: { type: 'string' },
     'run-dir': { type: 'string' },
     worktree: { type: 'string' },
+    'base-sha': { type: 'string' },
     'start-model': { type: 'string' },
     'reasoning-effort': { type: 'string' },
     'dry-run': { type: 'boolean', default: false },
@@ -30,7 +31,7 @@ const { values } = parseArgs({
 
 if (values.help || !values.task || !values.variant || !values['run-dir'] || !values.worktree) {
   console.log(JSON.stringify({
-    usage: 'node eval/scripts/run-variant.mjs --task <task-id|path> --variant <router|fixed> --run-dir <dir> --worktree <dir> [--start-model <id>] [--reasoning-effort medium] [--dry-run]'
+    usage: 'node eval/scripts/run-variant.mjs --task <task-id|path> --variant <router|fixed> --run-dir <dir> --worktree <dir> --base-sha <sha> [--start-model <id>] [--reasoning-effort medium] [--dry-run]'
   }, null, 2));
   process.exit(values.help ? 0 : 1);
 }
@@ -120,8 +121,11 @@ const runResult = runCommand('copilot', args, { cwd: worktreePath, timeout: time
 await writeText(path.join(runDir, 'copilot-output.jsonl'), runResult.stdout);
 await writeText(path.join(runDir, 'copilot-stderr.txt'), runResult.stderr);
 
-const changedFilesResult = runCommand('git', ['diff', '--name-only'], { cwd: worktreePath });
-const diffResult = runCommand('git', ['diff', '--binary'], { cwd: worktreePath });
+// Use base-sha for diff to capture all changes since the worktree's base commit
+// This handles both staged and unstaged changes, and works even if changes were committed
+const baseSha = values['base-sha'] || 'HEAD';
+const changedFilesResult = runCommand('git', ['diff', '--name-only', `${baseSha}...HEAD`], { cwd: worktreePath });
+const diffResult = runCommand('git', ['diff', '--binary', `${baseSha}...HEAD`], { cwd: worktreePath });
 const statusResult = runCommand('git', ['status', '--short'], { cwd: worktreePath });
 
 await writeText(path.join(runDir, 'changed-files.txt'), changedFilesResult.stdout);
