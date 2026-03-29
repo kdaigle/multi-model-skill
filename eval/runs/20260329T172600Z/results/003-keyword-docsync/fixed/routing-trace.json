@@ -1,0 +1,84 @@
+{
+  "runDir": "eval/runs/20260329T172600Z/results/003-keyword-docsync/fixed",
+  "generatedAt": "2026-03-29T18:45:57.853Z",
+  "complete": true,
+  "stages": [
+    {
+      "stage": "prepareWorktree",
+      "ok": true,
+      "taskId": "003-keyword-docsync",
+      "variantId": "fixed",
+      "baseSha": "3a736b56b7f6e53f7ce6a489436021104b7a4102",
+      "worktreeRelativePath": "eval/runs/20260329T172600Z/worktrees/003-keyword-docsync/fixed",
+      "disabledPathCount": 4
+    },
+    {
+      "stage": "copilotRun",
+      "ok": true,
+      "dryRun": false,
+      "exitCode": 0,
+      "timedOut": false,
+      "runStatus": "completed",
+      "startModel": "claude-sonnet-4.6",
+      "reasoningEffort": "medium",
+      "timeoutMs": 600000,
+      "stdoutBytes": 336013,
+      "stderrBytes": 0,
+      "changedFileCount": 3,
+      "changedFiles": [
+        ".github/skills/model-router.eval-disabled/SKILL.md",
+        ".github/skills/model-router.eval-disabled/references/routing-matrix.md",
+        "README.md"
+      ]
+    },
+    {
+      "stage": "collectArtifacts",
+      "ok": true,
+      "parseableLineCount": 171,
+      "unparseableLineCount": 0,
+      "gitDiffBytes": 14163,
+      "modelMentions": [
+        "claude-sonnet-4.6"
+      ],
+      "usageCandidateCount": 37
+    },
+    {
+      "stage": "validate",
+      "ok": false,
+      "valid": false,
+      "totalChecks": 6,
+      "passedChecks": 4,
+      "failedChecks": 2,
+      "timedOut": false,
+      "failureMode": null
+    },
+    {
+      "stage": "score",
+      "ok": true,
+      "skipped": false,
+      "judgeTimedOut": false,
+      "judgeModel": "gpt-5.4",
+      "correctnessScore": 1,
+      "completenessScore": 1,
+      "minimalityScore": 2,
+      "verdict": "fail",
+      "costMode": "observed_tokens_weighted",
+      "relativeCostIndex": 40.592
+    }
+  ],
+  "chainSummary": {
+    "stagesRecorded": [
+      "prepareWorktree",
+      "copilotRun",
+      "collectArtifacts",
+      "validate",
+      "score"
+    ],
+    "anyTimedOut": false,
+    "allOk": false,
+    "startModel": "claude-sonnet-4.6",
+    "changedFileCount": 3,
+    "verdict": "fail",
+    "correctnessScore": 1
+  }
+}

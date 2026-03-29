@@ -90,7 +90,8 @@ export function runCommand(command, args = [], options = {}) {
     encoding: 'utf8',
     maxBuffer: options.maxBuffer ?? 1024 * 1024 * 100,
     shell: options.shell ?? false,
-    timeout: timeoutMs ?? undefined
+    timeout: timeoutMs ?? undefined,
+    input: options.input ?? undefined
   });
   const error = result.error ? {
     code: result.error.code ?? null,

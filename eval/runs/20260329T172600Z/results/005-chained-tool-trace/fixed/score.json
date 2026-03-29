@@ -1,0 +1,271 @@
+{
+  "judgeModel": "gpt-5.4",
+  "judgeExitCode": 0,
+  "judgeSignal": null,
+  "judgeTimedOut": false,
+  "judgeTimeoutMs": 300000,
+  "judgeErrorCode": null,
+  "judgeErrorMessage": null,
+  "parsedJudgeResponse": {
+    "verdict": "partial",
+    "correctnessScore": 3,
+    "completenessScore": 2,
+    "minimalityScore": 5,
+    "confidence": "medium",
+    "issues": [
+      "Diff shows polish, not the core end-to-end trace flow",
+      "No evidence this run added worktree/validation/scoring stage capture",
+      "Suite summary enhancement is limited to model display",
+      "Validation only checked file changes, not new trace behavior"
+    ],
+    "strengths": [
+      "All required files were changed",
+      "Changes are focused and low-risk",
+      "Documentation was updated alongside code",
+      "Summary output was improved and trace schema extended"
+    ],
+    "summary": "This run made targeted, sensible improvements to an existing routing-trace feature: it added `textSnippetCount` to collected artifacts, exposed `model=` in suite text output, fixed a bad `startModel` fallback, removed dead code, and updated the README to match output. However, based on the diff provided, it does not appear to implement the main enhancement described in the task from scratch or materially extend the end-to-end chained trace across worktree prep, Copilot invocation, artifact collection, validation, and scoring. The evidence suggests refinement of an already-present pipeline rather than full task delivery, so this is best judged as partial."
+  },
+  "cost": {
+    "mode": "observed_tokens_weighted",
+    "effectiveWeight": 3.5,
+    "routePenalty": 1,
+    "effortMultiplier": 1.15,
+    "observedUsage": [
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 261,
+        "totalTokens": 261
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 224,
+        "totalTokens": 224
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 264,
+        "totalTokens": 264
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 293,
+        "totalTokens": 293
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 129,
+        "totalTokens": 129
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 131,
+        "totalTokens": 131
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 117,
+        "totalTokens": 117
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 219,
+        "totalTokens": 219
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 237,
+        "totalTokens": 237
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 305,
+        "totalTokens": 305
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 313,
+        "totalTokens": 313
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 2482,
+        "totalTokens": 2482
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 2707,
+        "totalTokens": 2707
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 236,
+        "totalTokens": 236
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 213,
+        "totalTokens": 213
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1724,
+        "totalTokens": 1724
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 9783,
+        "totalTokens": 9783
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 797,
+        "totalTokens": 797
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 122,
+        "totalTokens": 122
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 969,
+        "totalTokens": 969
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 246,
+        "totalTokens": 246
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 238,
+        "totalTokens": 238
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 128,
+        "totalTokens": 128
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 128,
+        "totalTokens": 128
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 756,
+        "totalTokens": 756
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 238,
+        "totalTokens": 238
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 233,
+        "totalTokens": 233
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 230,
+        "totalTokens": 230
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 396,
+        "totalTokens": 396
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 445,
+        "totalTokens": 445
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 241,
+        "totalTokens": 241
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 165,
+        "totalTokens": 165
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 410,
+        "totalTokens": 410
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 448,
+        "totalTokens": 448
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 177,
+        "totalTokens": 177
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 148,
+        "totalTokens": 148
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 168,
+        "totalTokens": 168
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 482,
+        "totalTokens": 482
+      }
+    ],
+    "value": 107.882
+  },
+  "validationValid": true,
+  "taskId": "005-chained-tool-trace",
+  "variantId": "fixed",
+  "startModel": "claude-sonnet-4.6",
+  "status": "completed"
+}

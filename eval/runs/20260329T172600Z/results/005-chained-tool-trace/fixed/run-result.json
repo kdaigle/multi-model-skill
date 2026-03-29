@@ -1,0 +1,41 @@
+{
+  "cwd": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/005-chained-tool-trace/fixed",
+  "command": "copilot",
+  "args": [
+    "-p",
+    "Implement a routing-trace enhancement in the eval harness so harder router runs are easier to analyze end to end. Capture enough structured evidence to explain the chained tools involved in a run — worktree prep, Copilot invocation, artifact collection, validation, and scoring — then surface a concise summary in suite output and document the new artifacts. Keep it local-first, preserve the current run layout where practical, and avoid a broad rewrite.",
+    "--model",
+    "claude-sonnet-4.6",
+    "--reasoning-effort",
+    "medium",
+    "--output-format",
+    "json",
+    "--stream",
+    "off",
+    "--allow-all",
+    "--no-ask-user",
+    "--autopilot",
+    "--experimental"
+  ],
+  "startModel": "claude-sonnet-4.6",
+  "reasoningEffort": "medium",
+  "variantId": "fixed",
+  "taskId": "005-chained-tool-trace",
+  "timeoutMs": 1200000,
+  "dryRun": false,
+  "exitCode": 0,
+  "signal": null,
+  "timedOut": false,
+  "errorCode": null,
+  "errorMessage": null,
+  "stdoutBytes": 756583,
+  "stderrBytes": 0,
+  "changedFiles": [
+    "eval/README.md",
+    "eval/scripts/collect-artifacts.mjs",
+    "eval/scripts/summarize-suite.mjs"
+  ],
+  "diffBytes": 5192,
+  "statusPreview": " D .github/copilot-instructions.md\n D .github/extensions/model-router/extension.mjs\n D .github/extensions/model-router/extension.mjs.new\n D .github/extensions/model-router/policy.mjs\n D .github/plugin.json\n D .github/skills/model-router/SKILL.md\n D .github/skills/model-router/references/routing-matrix.md\n?? .github/copilot-instructions.md.eval-disabled\n?? .github/extensions/model-router.eval-disabled/\n?? .github/plugin.json.eval-disabled\n?? .github/skills/model-router.eval-disabled/\n",
+  "runStatus": "completed"
+}

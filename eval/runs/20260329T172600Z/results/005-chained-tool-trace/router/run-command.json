@@ -1,0 +1,28 @@
+{
+  "cwd": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/005-chained-tool-trace/router",
+  "command": "copilot",
+  "args": [
+    "-p",
+    "Implement a routing-trace enhancement in the eval harness so harder router runs are easier to analyze end to end. Capture enough structured evidence to explain the chained tools involved in a run — worktree prep, Copilot invocation, artifact collection, validation, and scoring — then surface a concise summary in suite output and document the new artifacts. Keep it local-first, preserve the current run layout where practical, and avoid a broad rewrite.",
+    "--model",
+    "claude-sonnet-4.6",
+    "--reasoning-effort",
+    "medium",
+    "--output-format",
+    "json",
+    "--stream",
+    "off",
+    "--allow-all",
+    "--no-ask-user",
+    "--autopilot",
+    "--experimental",
+    "--plugin-dir",
+    "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/005-chained-tool-trace/router"
+  ],
+  "startModel": "claude-sonnet-4.6",
+  "reasoningEffort": "medium",
+  "variantId": "router",
+  "taskId": "005-chained-tool-trace",
+  "timeoutMs": 1200000,
+  "dryRun": false
+}

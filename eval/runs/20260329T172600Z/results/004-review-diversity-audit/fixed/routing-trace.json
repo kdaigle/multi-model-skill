@@ -1,0 +1,83 @@
+{
+  "runDir": "eval/runs/20260329T172600Z/results/004-review-diversity-audit/fixed",
+  "generatedAt": "2026-03-29T18:45:57.859Z",
+  "complete": true,
+  "stages": [
+    {
+      "stage": "prepareWorktree",
+      "ok": true,
+      "taskId": "004-review-diversity-audit",
+      "variantId": "fixed",
+      "baseSha": "3a736b56b7f6e53f7ce6a489436021104b7a4102",
+      "worktreeRelativePath": "eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/fixed",
+      "disabledPathCount": 4
+    },
+    {
+      "stage": "copilotRun",
+      "ok": true,
+      "dryRun": false,
+      "exitCode": 0,
+      "timedOut": false,
+      "runStatus": "completed",
+      "startModel": "claude-sonnet-4.6",
+      "reasoningEffort": "medium",
+      "timeoutMs": 1200000,
+      "stdoutBytes": 717911,
+      "stderrBytes": 0,
+      "changedFileCount": 2,
+      "changedFiles": [
+        ".github/extensions/model-router/policy.mjs",
+        "eval/routing-policy.test.mjs"
+      ]
+    },
+    {
+      "stage": "collectArtifacts",
+      "ok": true,
+      "parseableLineCount": 292,
+      "unparseableLineCount": 0,
+      "gitDiffBytes": 8261,
+      "modelMentions": [
+        "claude-sonnet-4.6"
+      ],
+      "usageCandidateCount": 69
+    },
+    {
+      "stage": "validate",
+      "ok": false,
+      "valid": false,
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "failedChecks": 2,
+      "timedOut": false,
+      "failureMode": null
+    },
+    {
+      "stage": "score",
+      "ok": true,
+      "skipped": false,
+      "judgeTimedOut": false,
+      "judgeModel": "gpt-5.4",
+      "correctnessScore": 3,
+      "completenessScore": 2,
+      "minimalityScore": 4,
+      "verdict": "partial",
+      "costMode": "observed_tokens_weighted",
+      "relativeCostIndex": 130.04
+    }
+  ],
+  "chainSummary": {
+    "stagesRecorded": [
+      "prepareWorktree",
+      "copilotRun",
+      "collectArtifacts",
+      "validate",
+      "score"
+    ],
+    "anyTimedOut": false,
+    "allOk": false,
+    "startModel": "claude-sonnet-4.6",
+    "changedFileCount": 2,
+    "verdict": "partial",
+    "correctnessScore": 3
+  }
+}

@@ -1,0 +1,76 @@
+diff --git a/.github/extensions/model-router/policy.mjs b/.github/extensions/model-router/policy.mjs
+index 380a250..c0e4b4d 100644
+--- a/.github/extensions/model-router/policy.mjs
++++ b/.github/extensions/model-router/policy.mjs
+@@ -161,6 +161,7 @@ export const ORCHESTRATION_KEYWORDS = [
+   "parallel tools",
+   "tool chain",
+   "chained tools",
++  "agentic workflow",
+ ];
+ 
+ // ---------------------------------------------------------------------------
+diff --git a/.github/skills/model-router/SKILL.md b/.github/skills/model-router/SKILL.md
+index c5b75a2..de817d2 100644
+--- a/.github/skills/model-router/SKILL.md
++++ b/.github/skills/model-router/SKILL.md
+@@ -50,7 +50,9 @@ When tasks involve tool calls or agentic workflows:
+ - **Tool-heavy implementation**: Escalate to Standard Builder tier
+ - **Planning, debugging, or explicit review with additional complexity**: Reasoning tier may be appropriate
+ 
+-The current extension detects tool keywords like "bash", "curl", "API", "execute", and "agent" and uses them as one input to complexity scoring. In practice, this mainly moves tool-heavy implementation from economy candidates to builder candidates.
++The current extension detects tool keywords like "bash", "curl", "execute", "run", "script", "command", "shell", "api", "http", "endpoint", "request", "function", "call", "invoke", "tool", and "agent" and uses them as one input to complexity scoring. In practice, this mainly moves tool-heavy implementation from economy candidates to builder candidates.
++
++The extension separately detects orchestration patterns — "parallel agents", "multiple agents", "multi-agent", "parallel tools", "tool chain", "chained tools", "agentic workflow" — which escalate implementation and general prompts to the reasoning tier when complexity is already elevated.
+ 
+ ## Review diversity rule
+ 
+diff --git a/.github/skills/model-router/references/routing-matrix.md b/.github/skills/model-router/references/routing-matrix.md
+index bc108c9..1d9a40e 100644
+--- a/.github/skills/model-router/references/routing-matrix.md
++++ b/.github/skills/model-router/references/routing-matrix.md
+@@ -76,12 +76,12 @@ When a task involves tool calls or agentic workflows, follow the current classif
+ **Complex orchestration escalation:**
+ - For prompts classified as **implementation** or **general**, orchestration keywords escalate directly to **Reasoning-Tools**
+ - This rule is keyword-based, not a generic "3+ tools" threshold
+-- Current orchestration keywords: `"parallel agents"`, `"multiple agents"`, `"multi-agent"`, `"parallel tools"`, `"tool chain"`, `"chained tools"`
++- Current orchestration keywords: `"parallel agents"`, `"multiple agents"`, `"multi-agent"`, `"parallel tools"`, `"tool chain"`, `"chained tools"`, `"agentic workflow"`
+ 
+ **Planning, debugging, and explicit review:**
+ - These can reach **Reasoning-Tools** when the classifier marks them as higher complexity
+ 
+-The extension also considers tool keywords like `"bash"`, `"curl"`, `"execute"`, `"run"`, `"tool"`, `"API"`, `"function"`, and `"agent"` during complexity scoring. That complexity bump mainly moves tool-heavy implementation from economy candidates to builder candidates. The separate orchestration rule above is what promotes implementation or general prompts to the reasoning tier.
++The extension considers all of the following tool keywords during complexity scoring: `"bash"`, `"curl"`, `"execute"`, `"run"`, `"script"`, `"command"`, `"shell"`, `"api"`, `"http"`, `"endpoint"`, `"request"`, `"function"`, `"call"`, `"invoke"`, `"tool"`, `"agent"`. That complexity bump mainly moves tool-heavy implementation from economy candidates to builder candidates. The separate orchestration rule above is what promotes implementation or general prompts to the reasoning tier.
+ 
+ ## Diversity-of-thought rule
+ 
+diff --git a/README.md b/README.md
+index 05a2137..aec29d0 100644
+--- a/README.md
++++ b/README.md
+@@ -128,10 +128,13 @@ After copying the skill:
+ 
+ The extension detects tool keywords and adds complexity for implementation prompts:
+ 
+-**Keywords detected:**
++**Keywords detected (TOOL_KEYWORDS):**
+ - Execution: `bash`, `curl`, `execute`, `run`, `script`, `command`, `shell`
+-- Integration: `api`, `http`, `endpoint`, `request`, `function`
+-- Orchestration: `tool`, `call`, `invoke`, `agent`
++- Integration: `api`, `http`, `endpoint`, `request`, `function`, `call`, `invoke`
++- Agentic: `tool`, `agent`
++
++**Orchestration patterns (ORCHESTRATION_KEYWORDS — escalate to reasoning when complexity ≥ 2):**
++`parallel agents`, `multiple agents`, `multi-agent`, `parallel tools`, `tool chain`, `chained tools`, `agentic workflow`
+ 
+ **Current routing behavior:**
+ - **Lightweight or non-implementation work** → usually stays in economy unless other complexity signals apply
+@@ -228,7 +231,7 @@ Factors that increase complexity score:
+ - Prompt length (>40 words +1, >100 words +1)
+ - Keywords: multi-file, end-to-end, carefully, thorough, complex, large, entire codebase (+2)
+ - Task type: planning, debugging (+1)
+-- Tool keywords: bash, curl, api, execute (+1)
++- Tool keywords: `bash`, `curl`, `execute`, `run`, `script`, `command`, `shell`, `api`, `http`, `endpoint`, `request`, `function`, `call`, `invoke`, `tool`, `agent` (+1)
+ 
+ Higher scores escalate from economy → builder → reasoning tiers.
+ 

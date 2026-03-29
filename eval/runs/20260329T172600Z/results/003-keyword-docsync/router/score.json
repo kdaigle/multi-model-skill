@@ -1,0 +1,132 @@
+{
+  "judgeModel": "gpt-5.4",
+  "judgeExitCode": 0,
+  "judgeSignal": null,
+  "judgeTimedOut": false,
+  "judgeTimeoutMs": 300000,
+  "judgeErrorCode": null,
+  "judgeErrorMessage": null,
+  "parsedJudgeResponse": {
+    "verdict": "partial",
+    "correctnessScore": 3,
+    "completenessScore": 3,
+    "minimalityScore": 4,
+    "confidence": "high",
+    "issues": [
+      "Required file `.github/extensions/model-router/extension.mjs` was not changed",
+      "Validation failed on required changed files",
+      "It is unclear from the provided evidence whether `policy.mjs` alone is the authoritative runtime surface"
+    ],
+    "strengths": [
+      "Docs were updated in targeted files",
+      "Runtime keyword behavior appears covered by passing tests",
+      "README and routing matrix were brought into closer sync with the changed keyword lists",
+      "Changes were focused and small"
+    ],
+    "summary": "The run made focused, likely sensible changes: it added `\"agentic workflow\"` to the runtime keyword list in `policy.mjs`, updated `README.md`, and synced `.github/skills/model-router/references/routing-matrix.md`, with all reported tests passing. However, the harness validation explicitly failed because `.github/extensions/model-router/extension.mjs`—a required changed file—was not modified, and the prompt specifically asked to keep runtime keyword lists and docs aligned. Based on the evidence provided, this looks close but not fully complete, so the safest judgment is partial rather than pass."
+  },
+  "cost": {
+    "mode": "observed_tokens_weighted",
+    "effectiveWeight": 3.5,
+    "routePenalty": 1,
+    "effortMultiplier": 1.15,
+    "observedUsage": [
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 352,
+        "totalTokens": 352
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 368,
+        "totalTokens": 368
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1847,
+        "totalTokens": 1847
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 5971,
+        "totalTokens": 5971
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 370,
+        "totalTokens": 370
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 237,
+        "totalTokens": 237
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 346,
+        "totalTokens": 346
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 391,
+        "totalTokens": 391
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 198,
+        "totalTokens": 198
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 188,
+        "totalTokens": 188
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 159,
+        "totalTokens": 159
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 263,
+        "totalTokens": 263
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 135,
+        "totalTokens": 135
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 362,
+        "totalTokens": 362
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 346,
+        "totalTokens": 346
+      }
+    ],
+    "value": 46.42
+  },
+  "validationValid": false,
+  "taskId": "003-keyword-docsync",
+  "variantId": "router",
+  "startModel": "claude-sonnet-4.6",
+  "status": "completed"
+}

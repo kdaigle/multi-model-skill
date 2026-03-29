@@ -1,0 +1,998 @@
+{
+  "parseableLineCount": 151,
+  "unparseableLineCount": 0,
+  "rawStdoutBytes": 455404,
+  "rawStderrBytes": 0,
+  "gitDiffBytes": 6112,
+  "changedFiles": [
+    ".github/extensions/model-router/policy.mjs",
+    "eval/routing-policy.test.mjs"
+  ],
+  "changedFileCount": 2,
+  "modelMentions": [
+    "claude-sonnet-4.6"
+  ],
+  "usageCandidates": [
+    {
+      "line": 11,
+      "path": "data",
+      "value": {
+        "messageId": "b6e2a105-891f-4571-9abc-d32cc722c9fd",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_9l8IYuinA5G53ez6O8NXkB",
+            "name": "report_intent",
+            "arguments": {
+              "intent": "Auditing model-router review routing"
+            },
+            "type": "function"
+          },
+          {
+            "toolCallId": "tooluse_0mn9l3uaGQVGDPOK04Pqg0",
+            "name": "skill",
+            "arguments": {
+              "skill": "model-router"
+            },
+            "type": "function",
+            "intentionSummary": "model-router"
+          }
+        ],
+        "interactionId": "5357c67a-9fde-444c-b2d5-72cce35c5690",
+        "reasoningOpaque": "NLpRenAl/NpVGFY/bcclfeUK6um30eznbKpnqP5eRrT5eosdCE+XVcvTJUR9hIGn7NE7pjFW+ZZGwbKOYRonjrgEqBxnnRBPa+aa2/4THC9NmQsp4a1dBjmbWLfbt3a/c370Tl581tHCZXCUBUCb4RPsqlMgY2xyG3wbfz52h//Zrdq9/QX4Rp/T+SvgCErV3XKc4X1nPx3ZJoMJvtHW5jYnTcd0fI0KXEDUtRU0tPz7lzcOySj0CVEI0u6tGkAGaxA+3yaQSF4p79NmSzWm+OZSig5wTiWVeUfjsq36UM3jSFYLC7TMiuBPHx/fBb2h0e1LN5OL6Oz2YqeIOAM+a/OQqQEnslhrzY0BmgUwOOUy3npmUb8MvxX2iJXU3mUf/img5yvPqvh2+3QZCDeWCHPI+VA4KqSiznKpRQXJCkGaxkC92ML1g4tjCC4OtY09MwWXW5H/CFZjyR4/+wzfldpW9M4K4VYbjwL5q+L/8EebfkfHYxsi2bXP94XNi/lu6/d+afot09h428g8rZBTwSRWSvFvDO3S8SkFT/TFYC5dActG3E50RIZyB79gNsRJEl2c8gGHG3GSfjmhRPxb8XZ0m/AbkU7FZXTZXkHY4103war55zYht4OZ1PhqsRRIM6SIhl+wUWA7rhzeS1e0PfeoxoHtWIK71oKGk1X3Klk8fOHDgren2FOOwNzcgrPwSZEyiwMpQPpup6poOQ3AgorBzw1Ehyuc0inC1HpxyHxMtOYPmoN5iYjrHQCKmSoa5Vw4fjsOuRsOqMFD8Bx2UOYTlGwitZPJ+59lm5xULT4AjMU3LxKXGJiO3D50Vw3PAxK6fueMq7Uy2fMAwHJdR9er9F+p3F8NFcrAKOmz9rlMCYvajEjGOXcYkW/C6Fg8Fg==",
+        "reasoningText": "Let me start by exploring the model-router skill to understand its structure and the explicit-review routing path.",
+        "outputTokens": 133
+      }
+    },
+    {
+      "line": 19,
+      "path": "data",
+      "value": {
+        "messageId": "de7489f4-efd2-4977-bb49-8dfe12dfe07f",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_XEwBuxEGlJ0oE6KKE5VvhY",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/.github/skills/model-router"
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/.github/skills/model-router."
+          },
+          {
+            "toolCallId": "tooluse_CX7DeSpzXRmndBcG7CTShI",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/.github/skills/model-router/references/routing-matrix.md"
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/.github/skills/model-router/references/routing-matrix.md."
+          }
+        ],
+        "interactionId": "5357c67a-9fde-444c-b2d5-72cce35c5690",
+        "reasoningOpaque": "J9cpSuyTB2Le4Drfyg4pcKOuAxj3ZyIAPAQ1LQXVQ0cd2WdznBLs3zi8YifQBUmtHTrNxH2SXBo8+yW0eQBJt8+TDQzBfnsCmxY5cXlkfNWmeiuZ0yOSjMcTUpeanAOmokYDyRGs7oaMonsV0XWp/+XWXF1q5VhT7xHErywEn+ax7GRSL/PsMf2y/HOSQe1rL1F7uPG5WiAKYkgaifLRcX9r6B9YIqEyx/p4oZzStNxXe0vEBjSbWC7BSPThHXY6G7nigB6hB806fZEDJYSTkNRILhsp3J5kli75zix5hRqz2BCjvbnsly+y6NxgmM9cbpJIHiyWwcKhv7UakjZ8uAgQbylcotJ7JcbB5JCgx63ad390vb/0Nu5IKeYizoTPGobC2rnpm1x4OfSxdQyI727u1cQ5P6Xf7+erL9+v6b+RGGxRnbG/a4ihanh/47bG6efiPvCsBUE2t+Sa+qqDRUMzVgjUNMWog9BPBKfRnXH9s39E7F8Te1p7YVC6vmEPPGfSvg6mB5z+m7+wxG4fY2LbUxajPDAFiUaKNj+RzqnJ2Wfw4NqXj648Wpejg9Z1/GcMZwWuKr16MJg478/jGZOoLosF9nYAcwJplifnoV3Pv7XRYpjH+i1I99LSx9fn77LEdb1lQC29a0HWXjw5QKIauDARfTrAbwp/eZR3BSxq2mlO1svJHh7gt46CsQ9DfwfhHcGV4CbMiNTdsJPJjdxq3UxMiec6g8gEyYkXpChS1CwOlpXZRHLBHPIYv0Vdp9rxuMYYLdblWwgdIqENe639ZeojzxqHkc8AHwcgkAyT9i8bLpBT/cAKbIC0N0Gb7ZzxtWymMY8wbC/UPgRgYzOhnW3ZbLIRm2Vvoto+Gw/3Jd/PHnK0S2iU6hFEq+BGhVaVFiNt1Uh8Mz6IHxX7fqt9G4OEYRPsQUie8u5+hESJOdJNaKY7MDbmPvwtndk4Nol++/H0DC3Brk1tASA56C0=",
+        "reasoningText": "Let me explore the model-router extension to understand the explicit-review routing path. I need to look at the routing matrix and the actual implementation files.",
+        "outputTokens": 235
+      }
+    },
+    {
+      "line": 23,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\"directory\"]",
+        "viewType": "directory"
+      }
+    },
+    {
+      "line": 23,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 19,
+        "resultForLlmLength": 19,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 24,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".md\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 24,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 6656,
+        "resultForLlmLength": 6656,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 27,
+      "path": "data",
+      "value": {
+        "messageId": "d4d16893-4b23-4510-998c-9ecc55602a6d",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_q47CqjYfE5hqAfLiULfHtv",
+            "name": "glob",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router",
+              "pattern": "**/*.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router"
+          },
+          {
+            "toolCallId": "tooluse_VZ3kMcOeWr0Q8Ui42TJorC",
+            "name": "glob",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router",
+              "pattern": "**/*.js"
+            },
+            "type": "function",
+            "intentionSummary": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router"
+          }
+        ],
+        "interactionId": "5357c67a-9fde-444c-b2d5-72cce35c5690",
+        "reasoningOpaque": "GXehrRcr0+mLZniVm8mHnkXEnznFYb50VH76CDU+5Ja+girqf70CnmKVmqlizN6QKPXqcKlR0t5wMwGKh2Y/TLstpMLETK2Ka/rSk3lr+l/dczBECVwIqXYchaz+b/VZ6OdLtTxhMcLsY7dPjGLmMvOix4on4dLxk0lmWbfMTCl0gzx+AMpJoN9CESwYM2Qj0v3vJ7vCx5mStDrp9pH7FrQTrDnBubOn3aaa/VLrREQlavmiZ6zcNYNDfhXAmqqelP+nz37vXGmbmmllOwX2/P2TexR3nR3qAQYUS9vMJYzlp9eiHDjEW8JimYaN8jZdeWY5Z8q3j88Mpo5kagzy+OVFWYEYTRjenEk5pmdfaay1evKwZfMamHzjA3kEnBQi3NLjazPhQ/QEtHclDRH55lyqGD69Ej6pDKRvPJJ7XullTOoYoUR+ODmqnJygknzARcg0Rbkpbn5wjhuHot6LyYVHZzseMxyCZYQm3qjvCAgifu4oLvWuEGFuz1OBj8csBItyxB8PvsLaupGGKCDQkenspq35LPxfqsNEQV9l6zejuexvTYWpl1907ZLJ5UER3UEq95JsODAzaxiV3/O1L4iGhOMbt3yFbQWulldHRleK3UQ2Yh5o2zP3Zyh/gB1NfLul5Nys0rwoyS25l6A1Bjk2gjwX047lE1Dv8dWFQ127a/LL7lXVgraTmFgEe87mxtcrY6TWvnQKGQuUUNVOoUb87g5Jq9Tdi633Y8YMP10Za2gw+3cjq967BOggQmSjfiwgmBtiHybFjMLiwG+JhQ36jEygBhVqsC4NKGCwlHZZ496pJ3tgqzD60tPX5fM8rE9unH6/IR0vsKIyNhJi2j6F0/0G4ZlPrff1LMaKblBuT5/tVtXic7rR2SXnQtRQmA==",
+        "reasoningText": "Now let me find the actual implementation files for the model-router extension. Let me look for the extension code.",
+        "outputTokens": 242
+      }
+    },
+    {
+      "line": 35,
+      "path": "data",
+      "value": {
+        "messageId": "cf17f8b2-72a5-44ac-a2e4-1460dd0a70e5",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_1upr5fGqeunqhhQf1QpHfg",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/.github/extensions/model-router/policy.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/.github/extensions/model-router/policy.mjs."
+          },
+          {
+            "toolCallId": "tooluse_dmXHhmu0d516WRuwbHukZb",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/.github/extensions/model-router/extension.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/.github/extensions/model-router/extension.mjs."
+          }
+        ],
+        "interactionId": "5357c67a-9fde-444c-b2d5-72cce35c5690",
+        "outputTokens": 191
+      }
+    },
+    {
+      "line": 38,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 38,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 14111,
+        "resultForLlmLength": 14111,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 39,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 39,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 13280,
+        "resultForLlmLength": 13280,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 42,
+      "path": "data",
+      "value": {
+        "messageId": "0cca374b-2f18-4bf9-8987-640f233f6122",
+        "content": "Now let me read the test file and understand what's already covered:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_moezhj5oKQAfhhRVwAl8l9",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs."
+          }
+        ],
+        "interactionId": "5357c67a-9fde-444c-b2d5-72cce35c5690",
+        "reasoningOpaque": "MnIV/GCsT2PZ33ovbb46w+/YoVTW6apjGpjcQikfkr7TObx3zg0zD7HlZ3IQ/hhnbUdUrzT48n/4Fh2HIchk8HIlozBkY5vvZXJ+FdsaBys4mkF6UMkfD6btsRz6t5C2eqviy+X00AgjVIgtWtyg5l8K1x2JqH3PTIgC/b2CU4NJV82OvV9hx7IrdxZsjut7GW+VqyB/ilQ0JBaclN0u9rZ5PkK9Ig5KRwTynxrb07cd7xp4Mq0HZg4L8QnPJE2AidHuE3Kvzz8HHxG2ap2R4pCK4VzSjgA8XC5/QcBIB8TlNVabX25kze2aPlaK/PL443cEZ2FkdaqfHccrVYTa/OpCIkDDpCceRxjppCWS0/576n5wTFdrc92ct089NJZOPyUmftx4Qe4dpqHTVyTrWXeW9oqnRUm6OfsFqJk0vpYlQG3Pz/107SCaXhULRqsAVXDMPu0mh2whT7XDmZwM8ALMza8QoNS1ZFO6ly2EcWh6QhBGJ57IRy5fN+HPTro72izdzrr2vzucxe0ZhIBituDQHun8GS4zpI/a8eZjnXK+5TgaG75EO0cT1JpNz/PRgsNuyyoW1+BnciS0hQFMN5h1t/95tZzjj5QgTOM7aVtWa+QMpKE0BYzZa2tEtboM1oVUrdP39FWyVVSna/GvoeNoMjKm7M2GOrxpuG4OUrygTYrmmeOmP+1u4HYBnYRyOGpmxHte8NA/Wc32tfF1HIK6P6rlYS9IQqu9M7P2PhnY96z2efBBFGKZ9UICNqzdMicqh1fgxq0gtlPloRo1caQseBpYlUo6CPAcFlIfVyjlzQV6JnE1AxNChZ+YRR9vEg==",
+        "reasoningText": "Now let me look at the existing test suite to understand what's already covered.",
+        "outputTokens": 148
+      }
+    },
+    {
+      "line": 45,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file",
+        "largeOutputAvoided": "true",
+        "largeOutputOriginalSizeBytes": "24835"
+      }
+    },
+    {
+      "line": 45,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 220,
+        "resultForLlmLength": 220,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 48,
+      "path": "data",
+      "value": {
+        "messageId": "d8f01f5e-db91-4ed7-8b62-852522d036bf",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_zuFND9QLnvRhrIvnAxU8wt",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs",
+              "view_range": [
+                1,
+                100
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs."
+          }
+        ],
+        "interactionId": "5357c67a-9fde-444c-b2d5-72cce35c5690",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 50,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 50,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 3758,
+        "resultForLlmLength": 3758,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 53,
+      "path": "data",
+      "value": {
+        "messageId": "9dfd0907-110b-4950-843d-1b1e289abf5d",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_d0Yb7muC41i9JkNd07RFRw",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs",
+              "view_range": [
+                100,
+                300
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs."
+          }
+        ],
+        "interactionId": "5357c67a-9fde-444c-b2d5-72cce35c5690",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 55,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 55,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 8089,
+        "resultForLlmLength": 8089,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 58,
+      "path": "data",
+      "value": {
+        "messageId": "f36c42da-7ad8-41f0-9b7d-719ef1025930",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_BlMrXqm46f7RxVjzvtFqYR",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs",
+              "view_range": [
+                300,
+                500
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs."
+          }
+        ],
+        "interactionId": "5357c67a-9fde-444c-b2d5-72cce35c5690",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 60,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 60,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 9966,
+        "resultForLlmLength": 9966,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 63,
+      "path": "data",
+      "value": {
+        "messageId": "77868e72-9715-499a-a2e5-4ffe291dcd2b",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_XqO7zEDB6VjDmBVwy4SjBT",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs",
+              "view_range": [
+                500,
+                700
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs."
+          }
+        ],
+        "interactionId": "5357c67a-9fde-444c-b2d5-72cce35c5690",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 65,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 65,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 6010,
+        "resultForLlmLength": 6010,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 68,
+      "path": "data",
+      "value": {
+        "messageId": "03a2de1a-f072-4745-ab50-9f027415558c",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_4s046V1PCWqMQO4mjD2is5",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs",
+              "view_range": [
+                620,
+                800
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs."
+          }
+        ],
+        "interactionId": "5357c67a-9fde-444c-b2d5-72cce35c5690",
+        "outputTokens": 126
+      }
+    },
+    {
+      "line": 70,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 70,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 5,
+        "resultForLlmLength": 5,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 73,
+      "path": "data",
+      "value": {
+        "messageId": "88f52b80-6e01-4161-9809-8acded962a90",
+        "content": "",
+        "toolRequests": [],
+        "interactionId": "5357c67a-9fde-444c-b2d5-72cce35c5690",
+        "outputTokens": 16000
+      }
+    },
+    {
+      "line": 80,
+      "path": "data",
+      "value": {
+        "messageId": "9f7652c7-28d0-4ff6-ab4f-4dd4dc9f3a32",
+        "content": "Let me run the existing tests to establish a baseline, then audit the code:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_CW7KaXt4DfxUw2Ah91o47v",
+            "name": "bash",
+            "arguments": {
+              "command": "cd /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router && node --test eval/routing-policy.test.mjs 2>&1 | tail -30",
+              "description": "Run existing tests",
+              "initial_wait": 30,
+              "mode": "sync"
+            },
+            "type": "function",
+            "intentionSummary": "Run existing tests"
+          }
+        ],
+        "interactionId": "252cb12f-85a2-4712-b6b9-9f0b21f5e452",
+        "reasoningOpaque": "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",
+        "reasoningText": "Let me analyze the code thoroughly to identify the edge cases in the review diversity/fallback path, then implement fixes and add regression tests.\n\nLet me review the key issues I need to audit:\n\n1. **Could a review request accidentally reuse the last implementation model?**\n\nIn `trySwitchModel` (extension.mjs, lines 182-228):\n```javascript\n// Review diversity: exclude last implementation model even when getCurrent() fails\nif (route.kind === \"review\" && lastImplementationModel) {\n  candidates = candidates.filter((c) => c.id !== lastImplementationModel);\n}\n```\n\nBut before this, there's:\n```javascript\nif (currentModelId) {\n  candidates = candidates.filter((c) => c.id !== currentModelId);\n}\n```\n\nSo the current model is filtered out, then the last impl model is also filtered out. But what happens if all candidates fail? The fallback returns `currentModelId`, which could actually be the last implementation model if there's been no implementation turn between sessions or if the tracking got out of sync.\n\nThe filter removes both the current model and the last implementation model from candidates, but the fallback can still return `currentModelId` if everything else fails. If those two happen to be the same, we end up reusing the implementation model anyway—which is acceptable since there's no better alternative. I should check whether this fallback behavior gets surfaced in the additional context.\n\nLooking at `buildAdditionalContext`, there's logic that detects when the selected model matches the last implementation model and adds a note about falling back to the current best option. But there's a gap: if `selectedModelId` is null, neither the equality check nor the family check would trigger, so the fallback note wouldn't appear. I need to trace how `selectedModelId` actually gets set...\n\nStill examining the decision object... I'm tracing through the edge case where `getCurrent()` fails and all candidates fail too — in that scenario, `trySwitchModel` returns an object with `id: null`, which means `selectedModelId` ends up null in the decision. When checking if the fallback note should surface, comparing `null === lastImplModel` returns false, and `isSameModelFamily(null, lastImplModel)` also returns false, so the note doesn't get surfaced even though we couldn't confirm diversity was achieved. It's a marginal edge case since if we can't determine the current model, we can't really validate whether diversity succeeded anyway, though the note might still be helpful. Now I'm looking at whether the review could stay in the same model family when a distinct one is available.\n\nDefining the candidate ordering function...\n\nI'm tracing through how candidates get filtered in `trySwitchModel` — the ordering happens first via `orderCandidates`, then the filters remove specific models while preserving that sorted order. Now I need to verify that `isSameModelFamily` is actually defined somewhere.\n\nLooking at the function, it extracts a family identifier from each model name by checking prefixes and patterns, then compares whether two models belong to the same family. There's something off with how it handles the model matching logic...\n\nThe issue is that `isSameModelFamily` groups models into sub-families like claude-sonnet or gpt-5, which works correctly for fallback detection. But when `orderCandidates` uses this function to sort candidates, all claude-sonnet variants get the same score, and all gpt models get grouped together too. This means different model families should be prioritized differently, yet the function treats all variants within a sub-family as equivalent.\n\nMeanwhile, there's a separate `getModelFamily` function that appears to use a different definition of what constitutes a family...\n\nChecking what happens...\n\nI'm realizing there's a potential issue: if `lastImplModel` is \"gpt-5.1\" and a candidate is \"gpt-5.1-codex\", the family check would return different values (\"gpt-5\" vs \"codex\"), so they'd be treated as different families even though they're closely related variants.\n\nBut re-reading the policy, \"family\" seems to mean the broader claude vs gpt distinction, not these fine-grained subdivisions. So the function might be grouping things too narrowly—it should probably treat \"gpt-5.1\" and \"gpt-5.1-codex\" as the same family for the purposes of this review diversity logic. -codex\", \"gpt-5.1\")` returns false (different sub-families: codex vs gpt-5), so codex models get sorted BEFORE claude models when they should come AFTER.\n\nThis IS a real bug. The diversity ordering should prefer crossing the claude/gpt boundary, but `isSameModelFamily` for codex models makes them appear as different families from plain gpt-5 models, causing them to be incorrectly prioritized.\n\nLet me trace through this more carefully. When the implementation is \"gpt-5.1\", comparing it against other models shows that both codex and claude models end up with the same score of 0, meaning they all float to the top before any gpt-5 variants. Since the sort is stable, their relative order depends on what came first originally, so claude models might end up before or after codex models unpredictably. after. The original getTierCandidates for review would put reasoning first: gpt-5, gpt-5.4, claude-sonnet-4.6 (high), claude-opus-4.5, and so on. The sort is working because codex and claude models both have the same score, so their relative order depends on which list they came from initially. The reasoning list has gpt-5 first, then gpt-5.4, then claude-sonnet-4.6 (high effort), which determines the final ordering after deduplication. Following that are the builder tier models like claude-sonnet-4.6 medium and gpt-5.2 medium, then the economy tier with claude-haiku-4.5 and gpt-5-mini low. Now I'm checking what happens when orderCandidates runs with lastImplModel set to gpt-5.\n\n1 — it's comparing each model's family against gpt-5 to see which ones should be prioritized, giving a score of 1 to models in the same family like gpt-5.2 and gpt-5.1 medium, while codex variants and claude models get a score of 0 since they're treated as different families.\n\nActually, I see the issue now — gpt-5.1 is the implementation model, so it gets an exact match score of 2, while other gpt-5 variants only get a score of 1 for being in the same family. After filtering out the implementation model itself, the sorting puts lower-scoring models first, which means claude and codex variants end up before the other gpt-5 options in the final order.\n\nBut if the implementation were \"gpt-5.3-codex\" instead, codex models would score 1 for matching the sub-family, while both regular gpt-5 models and claude models would score 0, creating a different ordering dynamic.\n\nThe real problem is that `isSameModelFamily` uses fine-grained sub-families, but the diversity policy actually cares about the broader claude versus gpt distinction. Codex models are creating a third category that doesn't align with what the policy intends—the documentation explicitly states that cross-family diversity means claude versus gpt, not these granular sub-family breakdowns.\n\nThis causes two concrete issues: when the implementation uses gpt-5.1-codex, non-codex gpt-5 models get treated as a different family and bubble up in priority even ahead of claude models, and the fallback note logic also uses the same fine-grained check, so it won't fire when switching from gpt-5.1-codex to gpt-5.4 even though we haven't actually crossed into the claude family. The fix is to use the coarser claude versus gpt distinction for the diversity check instead of the sub-family logic. The sorting logic assigns codex models a higher score, pushing non-codex gpt and claude models to the same tier—so when the implementation model is filtered out, a non-codex gpt model gets selected for review instead of claude, even though they should be treated as different families. The family check then fails because it's comparing \"gpt-5\" against \"gpt-5.3-codex\" at the sub-family level, returning false and suppressing the fallback note that should alert us to this cross-family reuse.\n\nIn scenario 2, when `getCurrent()` fails and `currentModelId` is undefined, the filter in `trySwitchModel` doesn't actually exclude any candidates since no model has an undefined id—so all models remain available for selection, but if all switches fail and `selectedModelId` ends up null, the fallback note won't trigger because the condition checking for model reuse won't match. I'm realizing that when all candidates fail and we can't determine the current model, we're in a degraded state where the fallback note about diversity not being achieved would actually be most helpful. Looking at the `buildAdditionalContext` logic more carefully, when `selectedModelId` is null, the condition checking if it matches `lastImplModel` or the same family would evaluate to false, so the fallback note wouldn't surface even though it should in this scenario.\n\nThe core issue is that `isSameModelFamily` uses fine-grained distinctions like codex versus non-codex within the gpt family, which doesn't align with the policy's intent of comparing coarse claude versus gpt families. This causes gpt-5 non-codex models to incorrectly appear as \"different family\" from codex implementations and bubble up ahead of claude options, while simultaneously preventing the fallback note from firing when review actually ends up on a gpt-5 non-codex model.\n\nThe second bug is simpler: when `selectedModelId` is null due to both the switch and getCurrent failing, the fallback note never triggers even though we have no confirmation that diversity was achieved.\n\nFor the smallest fix, I need to reconsider what `isSameModelFamily` is actually checking and whether the coarse family logic should be applied consistently across `orderCandidates` and `buildAdditionalContext`.\n\nExamining the function more closely...\n\nChecking the existing test cases...\n\nSo `isSameModelFamily` currently groups models by their sub-family (like claude-sonnet variants together), but I'm realizing the scoring system needs to be more nuanced. For ordering candidates by diversity, I want to distinguish between crossing the top-level family boundary versus staying within the same family but switching sub-families. And for fallback detection, the logic might need to be different—I need to think through what \"same family\" actually means in that context.\n\nThe simpler approach might be to have `orderCandidates` use the coarse family grouping instead, which would naturally prefer cross-family diversity. But then I need to figure out whether `buildAdditionalContext` should also shift to coarse family logic, or if it needs something different based on what the policy actually requires for fallback scenarios.\n\nRe-reading the policy more carefully: the fallback note should only fire when we're forced to reuse the exact same model. Using a different model from the same family is an acceptable compromise that still achieves partial diversity, so it shouldn't trigger the fallback warning. But the current implementation fires the warning in both cases—when we reuse the exact model AND when we pick a different model from the same family—which doesn't align with the policy.\n\nLooking at the test, it seems the existing behavior expects the fallback note to fire for same-family models too, which contradicts what the policy actually says.\n\nThe real issue is that CODEX models break the family detection logic — when the implementation is `gpt-5.3-codex` and the review is `gpt-5.4`, the family check incorrectly returns false because it's comparing \"gpt-5\" against \"codex\" instead of recognizing both as GPT variants. The real issue is that `isSameModelFamily` needs to check for the broader gpt/claude boundary first, before worrying about sub-families like codex. If I reorder the checks so that gpt-5 variants get caught by a general gpt pattern before the codex-specific logic runs, both gpt-5 and gpt-5-codex would correctly be recognized as the same family. wait: `model.includes(\"codex\")` is checked BEFORE `model.startsWith(\"gpt-5\")`. If we swap the order:\n\nChecking gpt-5 variants first...\n\nThen gpt-5.3-codex would match \"gpt-5\" and return \"gpt-5\". But gpt-5.1-codex-max also starts with \"gpt-5\" and would also return \"gpt-5\". And gpt-5.1-codex would return \"gpt-5\". All gpt-5 variants (including codex) would be in the same \"gpt-5\" sub-family. This makes sense! Both gpt-5.1-codex-max and gpt-5.1-codex would resolve to \"gpt-5\", so they'd be treated as the same family for diversity purposes. And gpt-4.1 would correctly match the \"gpt-4.1\" family since it doesn't start with \"gpt-5\". This reordering would fix the grouping so that `isSameModelFamily(\"gpt-5.3-codex\", \"gpt-5.1\")` returns true, `isSameModelFamily(\"gpt-5.1-codex\", \"gpt-5.2\")` returns true, and similar comparisons work correctly across the gpt-5 variants.\n\nThe existing tests would still pass unchanged. Now for the second issue: when `selectedModelId` is null but we have a `lastImplModel`, the router can't verify diversity. Should we show a fallback note in this case?\n\nCurrently both checks fail—`null === \"x\"` is false, and `isSameModelFamily(null, \"x\")` returns false due to the null guard—so no note appears. I could add a condition to surface the fallback note when `selectedModelId` is null or missing, treating it as an unknown selected model. But this is an edge case that only happens when `getCurrent()` fails and all model switches fail, and the existing tests don't cover it, so I'm not sure if it's actually necessary.\n\nLooking back at the task, the goal is to surface the fallback explanation in status/debug output when we can't confirm model diversity. If `selectedModelId` is null and we can't verify diversity, the note should definitely appear. There's another path where this could happen: if `trySwitchModel` returns null (all switches failed) and `getCurrent` also failed (returning null), then `chosen.id` ends up null, which then gets assigned to `lastDecision.selectedModelId`.\n\nWhen building the additional context, if both `selectedModelId` and `currentModelId` are undefined, the fallback text would read \"unchanged-current-model\", which is the safe default when we've lost track of what model is actually running.\n\nFor the null `selectedModelId` case, I should fire the fallback note since we can't confirm diversity was achieved and we do have a previous implementation model to compare against—the message \"A distinct review model was not available\" would be accurate.\n\nSo I need two concrete fixes: reorder the `isSameModelFamily` checks to handle gpt-5 variants before codex variants, and add a condition to surface the fallback note when `selectedModelId` is null.\n\nFor tests, I need to cover the codex family logic in `isSameModelFamily`, verify that same-family models don't get reordered ahead of different families in `orderCandidates`, confirm the fallback note triggers when `selectedModelId` is null, and check the integration behavior through `trySwitchModel`. Let me trace through what happens after the `isSameModelFamily` fix when the implementation was gpt-5.1-codex... 4.6\" → score=0 (different family)\n- \"gpt-5.3-codex\" → score=2 (exact match)\n\nSo both gpt-5 and claude score 0, and the stable sort preserves the original order where gpt-5 comes first. That's the bug—the router would pick gpt-5 before even trying claude models, even though they should be prioritized.\n\nAfter the fix, gpt-5 gets score=1 (same family as the impl model) while claude stays at 0, so claude models bubble up to the front as intended.\n\nNow I need to review the `trySwitchModel` filter for the review route...\n\nFiltering out the exact implementation model...\n\nThis only removes the specific model that was used for implementation, so if the impl was \"gpt-5.3-codex\", gpt-5 itself wouldn't be filtered. But combined with the ordering fix, gpt-5 would shift down in priority anyway, letting claude models get tried first for diversity.\n\nThe filter doesn't exclude other same-family models beyond the exact one, but that's actually fine now because the ordering ensures different-family models come first.\n\nLet me also check what happens if the current model is already from a different family than the implementation model. In that case, the current model gets filtered out first...\n\nFiltering out the current model...\n\nThen the implementation model is also filtered, and we try the first remaining candidate, which should be a different-family model after the ordering fix. This seems right.\n\nThough if the current model is already from a different family than implementation, filtering it out means we'd switch to another different-family model instead of staying put. That's a bit wasteful since we're already on a good model, but at least diversity is maintained. If getCurrent returns \"gpt-5.4\" and impl was \"claude-sonnet-4.6\", we'd filter out gpt-5.4 and switch to another gpt model, even though gpt-5.4 is already...\n\nActually, this is pre-existing behavior and not related to what I'm auditing. Let me focus on the two bugs I found.\n\nI need to fix `policy.mjs` by moving the `gpt-5` check before `codex` in `isSameModelFamily`, and add `!decision.selectedModelId` to the fallback note condition in `buildAdditionalContext`. Then I'll add regression tests.\n\nLet me run the existing tests first to establish a baseline, then implement the fixes. Actually, let me verify my analysis of the `isSameModelFamily` bug by checking if any existing test catches it. Looking at the tests, the only `isSameModelFamily` tests check cases like two claude-sonnet models...\n\nNone of the existing tests cover the `gpt-5.1-codex` vs `gpt-5.1` scenario, so my fix needs to add that. The `orderCandidates` tests also don't cover the codex case, and the `buildAdditionalContext` tests don't check for null `selectedModelId` either.\n\nI'll add three new test cases: one for `isSameModelFamily` testing codex and gpt-5 variants, one for `orderCandidates` with a codex implementation model, and one for `buildAdditionalContext` with null `selectedModelId` triggering the fallback note. Since the existing tests only compare claude vs gpt families and don't test codex against gpt-5, my changes shouldn't break anything.",
+        "outputTokens": 10742
+      }
+    },
+    {
+      "line": 88,
+      "path": "data",
+      "value": {
+        "messageId": "afdbdac1-8ddf-4d88-a7d5-a5c7f3c66d90",
+        "content": "All 105 tests pass. I've identified two real bugs:\n\n1. **`isSameModelFamily` splits gpt-5 codex models into a \"codex\" sub-family**: `gpt-5.3-codex` checks `model.includes(\"codex\")` before `model.startsWith(\"gpt-5\")`, so it's classified as `\"codex\"` not `\"gpt-5\"`. This means when impl was a codex model, plain gpt-5 non-codex models score as \"different family\" (score=0) — the same as claude models — and can float to the front of review candidates ahead of claude. The fallback note also never fires when review lands on gpt-5 after impl on gpt-5-codex, because `isSameModelFamily` returns false even though we're still in the gpt family.\n\n2. **Null `selectedModelId` silently drops the fallback note**: When `getCurrent()` fails AND all model switches fail, `selectedModelId` is null. `buildAdditionalContext` checks `decision.selectedModelId === lastImplModel` (false) and `isSameModelFamily(null, lastImplModel)` (false by null guard), so the fallback note is never surfaced even though diversity couldn't be confirmed.",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_6cZ0M6AeUWBqPnoMp0RyqA",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/.github/extensions/model-router/policy.mjs",
+              "view_range": [
+                340,
+                405
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/.github/extensions/model-router/policy.mjs."
+          }
+        ],
+        "interactionId": "252cb12f-85a2-4712-b6b9-9f0b21f5e452",
+        "reasoningOpaque": "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",
+        "reasoningText": "Good, all 105 tests pass. Now let me implement the fixes.\n\n**Issue 1: `isSameModelFamily` codex bug**\n\nIn `policy.mjs`, the `family()` helper inside `isSameModelFamily` checks `model.includes(\"codex\")` BEFORE `model.startsWith(\"gpt-5\")`. This means models like `gpt-5.3-codex` and `gpt-5.1-codex` are categorized as \"codex\" rather than \"gpt-5\", making them appear as a different family from `gpt-5.1` or `gpt-5.4`. This causes:\n\n\n- `orderCandidates` to score gpt-5 non-codex models at 0 (different sub-family) just like claude models, potentially prioritizing gpt-5 over claude for review when diversity matters\n- `buildAdditionalContext` to skip the fallback note when impl is gpt-5-codex and review lands on gpt-5 non-codex, since `isSameModelFamily` incorrectly treats them as separate families despite both being in the gpt family\n\nThe fix is to reorder the checks so gpt-5 is evaluated before codex.\n\nThere's also a second issue: when `selectedModelId` is null (because both getCurrent and all fallback switches fail), the fallback note never surfaces since neither the exact match nor the family match condition triggers. I need to add a check for null `selectedModelId` to catch this case and surface the note even when diversity couldn't be confirmed.\n\nNow I'm ready to implement both fixes.",
+        "outputTokens": 935
+      }
+    },
+    {
+      "line": 91,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 91,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 2881,
+        "resultForLlmLength": 2881,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 94,
+      "path": "data",
+      "value": {
+        "messageId": "e9b5f8e3-35be-489e-8f4d-41253063b850",
+        "content": "Now applying both fixes:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_Te5tmK1ahVQTXVavfmrfse",
+            "name": "edit",
+            "arguments": {
+              "new_str": "    if (model.startsWith(\"claude-haiku\")) return \"claude-haiku\";\n    if (model.startsWith(\"claude-sonnet\")) return \"claude-sonnet\";\n    if (model.startsWith(\"claude-opus\")) return \"claude-opus\";\n    if (model.startsWith(\"gpt-5\")) return \"gpt-5\"; // covers gpt-5.x-codex variants too\n    if (model.startsWith(\"gpt-4.1\")) return \"gpt-4.1\";\n    if (model.includes(\"codex\")) return \"codex\"; // non-gpt-5 codex models (future-proofing)",
+              "old_str": "    if (model.startsWith(\"claude-haiku\")) return \"claude-haiku\";\n    if (model.startsWith(\"claude-sonnet\")) return \"claude-sonnet\";\n    if (model.startsWith(\"claude-opus\")) return \"claude-opus\";\n    if (model.includes(\"codex\")) return \"codex\";\n    if (model.startsWith(\"gpt-5\")) return \"gpt-5\";\n    if (model.startsWith(\"gpt-4.1\")) return \"gpt-4.1\";",
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/.github/extensions/model-router/policy.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "edit the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/.github/extensions/model-router/policy.mjs."
+          }
+        ],
+        "interactionId": "252cb12f-85a2-4712-b6b9-9f0b21f5e452",
+        "outputTokens": 420
+      }
+    },
+    {
+      "line": 96,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "edit",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"old_str\",\"new_str\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "codeBlocks": "[{\"fileExt\":\".mjs\",\"languageId\":\"javascript\",\"linesAdded\":2,\"linesRemoved\":2}]",
+        "languageId": "[\"javascript\"]"
+      }
+    },
+    {
+      "line": 96,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 178,
+        "resultForLlmLength": 178,
+        "responseTokenLimit": 42000,
+        "linesAdded": 2,
+        "linesRemoved": 2
+      }
+    },
+    {
+      "line": 99,
+      "path": "data",
+      "value": {
+        "messageId": "2c5eb390-6706-4a86-bbf6-c6269c04ee12",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_ydyMOAuBOAMAtahjwHwXkT",
+            "name": "edit",
+            "arguments": {
+              "new_str": "    // Surface a fallback note whenever diversity could not be achieved: either\n    // the router landed on the exact same model, on one from the same family\n    // (e.g. claude-sonnet-4.5 when impl was claude-sonnet-4.6), or when the\n    // selected model is unknown (all switches failed and getCurrent() is unavailable).\n    if (\n      !decision.selectedModelId ||\n      decision.selectedModelId === lastImplModel ||\n      isSameModelFamily(decision.selectedModelId, lastImplModel)\n    ) {",
+              "old_str": "    // Surface a fallback note whenever diversity could not be achieved: either\n    // the router landed on the exact same model or on one from the same family\n    // (e.g. claude-sonnet-4.5 when impl was claude-sonnet-4.6).\n    if (\n      decision.selectedModelId === lastImplModel ||\n      isSameModelFamily(decision.selectedModelId, lastImplModel)\n    ) {",
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/.github/extensions/model-router/policy.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "edit the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/.github/extensions/model-router/policy.mjs."
+          }
+        ],
+        "interactionId": "252cb12f-85a2-4712-b6b9-9f0b21f5e452",
+        "outputTokens": 375
+      }
+    },
+    {
+      "line": 101,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "edit",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"old_str\",\"new_str\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "codeBlocks": "[{\"fileExt\":\".mjs\",\"languageId\":\"javascript\",\"linesAdded\":4,\"linesRemoved\":2}]",
+        "languageId": "[\"javascript\"]"
+      }
+    },
+    {
+      "line": 101,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 178,
+        "resultForLlmLength": 178,
+        "responseTokenLimit": 42000,
+        "linesAdded": 4,
+        "linesRemoved": 2
+      }
+    },
+    {
+      "line": 104,
+      "path": "data",
+      "value": {
+        "messageId": "6ecc8ee2-2242-48ce-90a3-ff3e1f9e0e21",
+        "content": "Now add regression tests covering the three new cases:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_aeavqQNbPGImqlGZASOhn1",
+            "name": "view",
+            "arguments": {
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs",
+              "view_range": [
+                312,
+                412
+              ]
+            },
+            "type": "function",
+            "intentionSummary": "view the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs."
+          }
+        ],
+        "interactionId": "252cb12f-85a2-4712-b6b9-9f0b21f5e452",
+        "outputTokens": 137
+      }
+    },
+    {
+      "line": 106,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "view",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"view_range\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "viewType": "file"
+      }
+    },
+    {
+      "line": 106,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 5511,
+        "resultForLlmLength": 5511,
+        "responseTokenLimit": 42000
+      }
+    },
+    {
+      "line": 109,
+      "path": "data",
+      "value": {
+        "messageId": "97dfd6ac-f0b0-4250-8648-53b6ef09f452",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_WX4bF6KMtoUshwyrlC0Xes",
+            "name": "edit",
+            "arguments": {
+              "new_str": "  it(\"returns false for null first arg\", () => {\n    assert.ok(!isSameModelFamily(null, \"gpt-5.1\"));\n  });\n\n  // Regression: gpt-5.x-codex variants must be in the same \"gpt-5\" family as\n  // plain gpt-5.x models. The old code checked model.includes(\"codex\") first,\n  // making gpt-5.3-codex appear as a separate \"codex\" family, so gpt-5 would\n  // incorrectly score 0 (different-family) when impl was a codex model.\n  it(\"treats gpt-5.x-codex and plain gpt-5.x as the same family\", () => {\n    assert.ok(isSameModelFamily(\"gpt-5.3-codex\", \"gpt-5.1\"), \"codex vs plain gpt-5\");\n    assert.ok(isSameModelFamily(\"gpt-5.1-codex\", \"gpt-5.4\"), \"codex vs gpt-5.4\");\n    assert.ok(isSameModelFamily(\"gpt-5.1-codex-max\", \"gpt-5.2\"), \"codex-max vs gpt-5.2\");\n  });\n\n  it(\"treats two gpt-5-codex variants as the same family\", () => {\n    assert.ok(isSameModelFamily(\"gpt-5.3-codex\", \"gpt-5.1-codex\"));\n  });\n\n  it(\"still returns false for codex vs claude\", () => {\n    assert.ok(!isSameModelFamily(\"gpt-5.3-codex\", \"claude-sonnet-4.6\"));\n  });\n});",
+              "old_str": "  it(\"returns false for null first arg\", () => {\n    assert.ok(!isSameModelFamily(null, \"gpt-5.1\"));\n  });\n});",
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "edit the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs."
+          }
+        ],
+        "interactionId": "252cb12f-85a2-4712-b6b9-9f0b21f5e452",
+        "outputTokens": 593
+      }
+    },
+    {
+      "line": 111,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "edit",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"old_str\",\"new_str\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "codeBlocks": "[{\"fileExt\":\".mjs\",\"languageId\":\"javascript\",\"linesAdded\":18,\"linesRemoved\":0}]",
+        "languageId": "[\"javascript\"]"
+      }
+    },
+    {
+      "line": 111,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 164,
+        "resultForLlmLength": 164,
+        "responseTokenLimit": 42000,
+        "linesAdded": 18,
+        "linesRemoved": 0
+      }
+    },
+    {
+      "line": 114,
+      "path": "data",
+      "value": {
+        "messageId": "fa41e81b-d340-461c-a5e4-1aee378c76e2",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_KOBvGzMFWQyfaJBW9Hf6Km",
+            "name": "edit",
+            "arguments": {
+              "new_str": "  it(\"prefers same-family last for review when lastImplModel given\", () => {\n    const candidates = [\n      { id: \"claude-sonnet-4.6\", reasoningEffort: \"high\" },\n      { id: \"gpt-5.1\", reasoningEffort: null },\n      { id: \"claude-haiku-4.5\", reasoningEffort: null },\n    ];\n    // If last impl was claude-sonnet-4.6, the sorted order should put gpt first\n    const result = orderCandidates(candidates, { kind: \"review\" }, \"claude-sonnet-4.6\");\n    assert.equal(result[0].id, \"gpt-5.1\");\n  });\n\n  // Regression: when impl was a gpt-5-codex model, plain gpt-5 models must NOT\n  // float to the front ahead of claude models. Before the fix, gpt-5.4 scored 0\n  // (treated as \"different family\" from \"codex\") same as claude, causing gpt-5\n  // to be tried before claude.\n  it(\"when impl was a gpt-5-codex model, claude models precede plain gpt-5 models\", () => {\n    const candidates = [\n      { id: \"gpt-5.4\", reasoningEffort: \"high\" },\n      { id: \"claude-sonnet-4.6\", reasoningEffort: \"high\" },\n      { id: \"gpt-5.2\", reasoningEffort: \"medium\" },\n    ];\n    const result = orderCandidates(candidates, { kind: \"review\" }, \"gpt-5.3-codex\");\n    assert.equal(result[0].id, \"claude-sonnet-4.6\", `expected claude first; got: ${result.map((c) => c.id)}`);\n  });\n});",
+              "old_str": "  it(\"prefers same-family last for review when lastImplModel given\", () => {\n    const candidates = [\n      { id: \"claude-sonnet-4.6\", reasoningEffort: \"high\" },\n      { id: \"gpt-5.1\", reasoningEffort: null },\n      { id: \"claude-haiku-4.5\", reasoningEffort: null },\n    ];\n    // If last impl was claude-sonnet-4.6, the sorted order should put gpt first\n    const result = orderCandidates(candidates, { kind: \"review\" }, \"claude-sonnet-4.6\");\n    assert.equal(result[0].id, \"gpt-5.1\");\n  });\n});",
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "edit the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs."
+          }
+        ],
+        "interactionId": "252cb12f-85a2-4712-b6b9-9f0b21f5e452",
+        "outputTokens": 761
+      }
+    },
+    {
+      "line": 116,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "edit",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"old_str\",\"new_str\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "codeBlocks": "[{\"fileExt\":\".mjs\",\"languageId\":\"javascript\",\"linesAdded\":14,\"linesRemoved\":0}]",
+        "languageId": "[\"javascript\"]"
+      }
+    },
+    {
+      "line": 116,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 164,
+        "resultForLlmLength": 164,
+        "responseTokenLimit": 42000,
+        "linesAdded": 14,
+        "linesRemoved": 0
+      }
+    },
+    {
+      "line": 119,
+      "path": "data",
+      "value": {
+        "messageId": "8ddcfd68-f0ce-4970-85c4-0fa7e4287260",
+        "content": "Now add the `buildAdditionalContext` regression tests for the null selectedModelId and for the codex fallback note:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_IP1kWj5hfmhrKp78qY0Xn4",
+            "name": "edit",
+            "arguments": {
+              "new_str": "  // Verify diversity IS silently achieved when review uses a different family\n  it(\"does not surface fallback note when review uses a distinct family\", () => {\n    const decision = { kind: \"review\", complexity: 1, selectedModelId: \"gpt-5.4\", reasoningEffort: \"high\" };\n    const ctx = buildAdditionalContext(decision, \"gpt-5.4\", \"claude-sonnet-4.6\");\n    assert.ok(!ctx.includes(\"fell back\"), `unexpected fallback note; got: ${ctx}`);\n  });\n\n  // Regression: when impl was a gpt-5-codex model, landing on a plain gpt-5 model\n  // must surface the fallback note. Before the fix, isSameModelFamily returned false\n  // for \"gpt-5\" vs \"codex\", so the note was silently dropped.\n  it(\"surfaces fallback note when review lands on plain gpt-5 after gpt-5-codex impl\", () => {\n    const decision = { kind: \"review\", complexity: 1, selectedModelId: \"gpt-5.4\", reasoningEffort: \"high\" };\n    const ctx = buildAdditionalContext(decision, \"gpt-5.4\", \"gpt-5.3-codex\");\n    assert.ok(ctx.includes(\"fell back\"), `expected fallback note; got: ${ctx}`);\n  });\n\n  it(\"surfaces fallback note when review lands on gpt-5-codex after plain gpt-5 impl\", () => {\n    const decision = { kind: \"review\", complexity: 1, selectedModelId: \"gpt-5.1-codex\", reasoningEffort: \"medium\" };\n    const ctx = buildAdditionalContext(decision, \"gpt-5.1-codex\", \"gpt-5.2\");\n    assert.ok(ctx.includes(\"fell back\"), `expected fallback note; got: ${ctx}`);\n  });\n\n  // Regression: when selectedModelId is null (all switches failed + getCurrent unavailable),\n  // the fallback note must still fire — the router could not confirm diversity was achieved.\n  it(\"surfaces fallback note when selectedModelId is null (total switch failure)\", () => {\n    const decision = { kind: \"review\", complexity: 1, selectedModelId: null, reasoningEffort: null };\n    const ctx = buildAdditionalContext(decision, null, \"claude-sonnet-4.6\");\n    assert.ok(ctx.includes(\"fell back\"), `expected fallback note; got: ${ctx}`);\n  });\n});",
+              "old_str": "  // Verify diversity IS silently achieved when review uses a different family\n  it(\"does not surface fallback note when review uses a distinct family\", () => {\n    const decision = { kind: \"review\", complexity: 1, selectedModelId: \"gpt-5.4\", reasoningEffort: \"high\" };\n    const ctx = buildAdditionalContext(decision, \"gpt-5.4\", \"claude-sonnet-4.6\");\n    assert.ok(!ctx.includes(\"fell back\"), `unexpected fallback note; got: ${ctx}`);\n  });\n});",
+              "path": "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs"
+            },
+            "type": "function",
+            "intentionSummary": "edit the file at /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs."
+          }
+        ],
+        "interactionId": "252cb12f-85a2-4712-b6b9-9f0b21f5e452",
+        "outputTokens": 910
+      }
+    },
+    {
+      "line": 121,
+      "path": "data.toolTelemetry.properties",
+      "value": {
+        "command": "edit",
+        "options": "{\"truncateBasedOn\":\"tokenCount\",\"truncateStyle\":\"middle\"}",
+        "inputs": "[\"path\",\"old_str\",\"new_str\",\"command\"]",
+        "resolvedPathAgainstCwd": "false",
+        "fileExtension": "[\".mjs\"]",
+        "codeBlocks": "[{\"fileExt\":\".mjs\",\"languageId\":\"javascript\",\"linesAdded\":23,\"linesRemoved\":0}]",
+        "languageId": "[\"javascript\"]"
+      }
+    },
+    {
+      "line": 121,
+      "path": "data.toolTelemetry.metrics",
+      "value": {
+        "resultLength": 164,
+        "resultForLlmLength": 164,
+        "responseTokenLimit": 42000,
+        "linesAdded": 23,
+        "linesRemoved": 0
+      }
+    },
+    {
+      "line": 124,
+      "path": "data",
+      "value": {
+        "messageId": "30ff22a8-e3cc-4c12-b3a8-08a9e1e8e0e6",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_WYcWDoci5i7fSPICU1jxmQ",
+            "name": "bash",
+            "arguments": {
+              "command": "cd /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router && node --test eval/routing-policy.test.mjs 2>&1 | tail -20",
+              "description": "Run tests to verify fixes",
+              "initial_wait": 30,
+              "mode": "sync"
+            },
+            "type": "function",
+            "intentionSummary": "Run tests to verify fixes"
+          }
+        ],
+        "interactionId": "252cb12f-85a2-4712-b6b9-9f0b21f5e452",
+        "outputTokens": 172
+      }
+    },
+    {
+      "line": 131,
+      "path": "data",
+      "value": {
+        "messageId": "f0675b00-76c2-4c9f-864a-1d3c433b8d69",
+        "content": "All 112 tests pass (105 original + 7 new). Let me commit:",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_imuXfutbJ5smZiH6VAXeHy",
+            "name": "bash",
+            "arguments": {
+              "command": "cd /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router && git add .github/extensions/model-router/policy.mjs eval/routing-policy.test.mjs && git diff --staged --stat",
+              "description": "Stage changes and check diff"
+            },
+            "type": "function",
+            "intentionSummary": "Stage changes and check diff"
+          }
+        ],
+        "interactionId": "252cb12f-85a2-4712-b6b9-9f0b21f5e452",
+        "outputTokens": 167
+      }
+    },
+    {
+      "line": 134,
+      "path": "data",
+      "value": {
+        "toolCallId": "tooluse_imuXfutbJ5smZiH6VAXeHy",
+        "partialOutput": " .github/extensions/model-router/policy.mjs | 10 ++++++----\n eval/routing-policy.test.mjs               | 55 +++++++++++++++++++++++++++++++++++++++++++++++++++++++\n 2 files changed, 61 insertions(+), 4 deletions(-)\n"
+      }
+    },
+    {
+      "line": 139,
+      "path": "data",
+      "value": {
+        "messageId": "42e4d953-0a32-4916-a213-5799c86e2f30",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_b2dTxZrHrAdlDKDOkLOW8E",
+            "name": "bash",
+            "arguments": {
+              "command": "cd /home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router && git commit -m \"fix(review-diversity): codex sub-family and null-selectedModelId edge cases\n\nisSameModelFamily checked model.includes('codex') before model.startsWith('gpt-5'),\ncausing gpt-5.3-codex and similar variants to land in a synthetic 'codex' sub-family\ninstead of 'gpt-5'. Two visible consequences:\n\n1. orderCandidates diversity sort: when impl was a gpt-5-codex model, plain gpt-5\n   models scored 0 (treated as 'different family'), floating them to the front of\n   review candidates alongside claude models instead of behind them.\n\n2. buildAdditionalContext fallback note: isSameModelFamily('gpt-5.4', 'gpt-5.3-codex')\n   returned false, so the 'fell back' note was silently dropped even though the\n   router stayed within the gpt family.\n\nFix 1: Move the gpt-5 prefix check before the codex includes check so all gpt-5.x\nvariants (including -codex and -codex-max) land in the same 'gpt-5' sub-family.\n\nFix 2: Add !decision.selectedModelId to the fallback-note condition in\nbuildAdditionalContext. When getCurrent() fails and all switches fail,\nselectedModelId is null — neither === nor isSameModelFamily would fire, so the\nfallback explanation was silently lost even though diversity was unconfirmable.\n\n7 new regression tests cover: codex/gpt-5 cross-variant family matching,\norderCandidates ordering with a codex impl model, and the null-selectedModelId\nfallback note case.\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>\"",
+              "description": "Commit the fix"
+            },
+            "type": "function",
+            "intentionSummary": "Commit the fix"
+          }
+        ],
+        "interactionId": "252cb12f-85a2-4712-b6b9-9f0b21f5e452",
+        "outputTokens": 543
+      }
+    },
+    {
+      "line": 146,
+      "path": "data",
+      "value": {
+        "messageId": "a0af041e-cab7-46c9-9888-b24efce21c91",
+        "content": "",
+        "toolRequests": [
+          {
+            "toolCallId": "tooluse_AZ8TGrNovLoiPCllDBI8OA",
+            "name": "task_complete",
+            "arguments": {
+              "summary": "## Audit findings and fixes\n\n### Two real bugs found and fixed in `policy.mjs`\n\n**Bug 1 — `isSameModelFamily` codex sub-family split** (`policy.mjs:346`)\n\n`model.includes(\"codex\")` was checked *before* `model.startsWith(\"gpt-5\")`, so models like `gpt-5.3-codex` and `gpt-5.1-codex-max` landed in a synthetic `\"codex\"` sub-family instead of `\"gpt-5\"`. This caused two failures:\n\n- **`orderCandidates` diversity sort**: when impl was a codex model, plain `gpt-5.x` models scored 0 (\"different family\") — the same as claude — so they could float to the *front* of review candidates instead of staying behind claude. A review request could try `gpt-5` before ever reaching a claude model.\n- **`buildAdditionalContext` fallback note**: `isSameModelFamily(\"gpt-5.4\", \"gpt-5.3-codex\")` returned `false`, so the `\"fell back\"` note was silently dropped even though the router stayed within the gpt family.\n\n**Fix**: moved the `gpt-5` prefix check *before* the `codex` includes check. All `gpt-5.x` variants (including `-codex` and `-codex-max`) now land in the `\"gpt-5\"` sub-family.\n\n---\n\n**Bug 2 — null `selectedModelId` silently drops fallback note** (`policy.mjs:395`)\n\nWhen `getCurrent()` fails and all model switches fail, `selectedModelId` is `null`. The fallback-note condition only tested `=== lastImplModel` and `isSameModelFamily(null, ...)` — both `false` — so the note was never surfaced even though diversity was completely unconfirmable.\n\n**Fix**: added `!decision.selectedModelId` as the first branch of the fallback-note condition.\n\n---\n\n### Regression tests added (7 new, 112 total — all pass)\n\n| Test | Covers |\n|---|---|\n| `isSameModelFamily`: codex vs plain gpt-5 | Bug 1 family detection |\n| `isSameModelFamily`: two codex variants | Bug 1 |\n| `isSameModelFamily`: codex vs claude (still false) | No regression |\n| `orderCandidates`: claude precedes gpt-5 when impl was codex | Bug 1 ordering |\n| `buildAdditionalContext`: fallback note after gpt-5-codex → plain gpt-5 | Bug 1 note |\n| `buildAdditionalContext`: fallback note after plain gpt-5 → gpt-5-codex | Bug 1 note |\n| `buildAdditionalContext`: fallback note when `selectedModelId` is null | Bug 2 |\n\nNo doc changes needed — the user-visible routing contract (\"different family is best\") is unchanged; both fixes make the implementation *comply* with that contract rather than changing it."
+            },
+            "type": "function",
+            "toolTitle": "Task complete",
+            "intentionSummary": "## Audit findings and fixes\n\n### Two real bugs found and ..."
+          }
+        ],
+        "interactionId": "252cb12f-85a2-4712-b6b9-9f0b21f5e452",
+        "outputTokens": 785
+      }
+    },
+    {
+      "line": 151,
+      "path": "",
+      "value": {
+        "type": "result",
+        "timestamp": "2026-03-29T18:03:07.583Z",
+        "sessionId": "cec15d7d-2855-48cf-a1c5-50d61bd73305",
+        "exitCode": 0,
+        "usage": {
+          "premiumRequests": 2,
+          "totalApiDurationMs": 530105,
+          "sessionDurationMs": 551113,
+          "codeChanges": {
+            "linesAdded": 61,
+            "linesRemoved": 4,
+            "filesModified": [
+              "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/.github/extensions/model-router/policy.mjs",
+              "/home/kydaigle/code/multi-model-skill/eval/runs/20260329T172600Z/worktrees/004-review-diversity-audit/router/eval/routing-policy.test.mjs"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "textSnippetCount": 1319,
+  "finalResponseSnippet": "✔ detects orchestration phrase: parallel tools (0.02508ms)\n  ✔ detects orchestration phrase: tool chain (0.02233ms)\n  ✔ detects orchestration phrase: chained tools (0.04818ms)\n  ✔ bare 'orchestrate' does not trigger (false-positive guard) (0.06138ms)\n  ✔ bare 'orchestration' does not trigger (false-positive guard) (0.06127ms)\n✔ isComplexOrchestration — regression coverage (0.49137ms)\n▶ classifyPrompt — orchestration escalation regression\n  ✔ escalates implementation to reasoning when multi-agent phrase and complexity >= 2 (0.88968ms)\n  ✔ does NOT escalate to reasoning when orchestration phrase appears but complexity < 2 (0.06941ms)\n  ✔ escalates general route to reasoning with orchestration phrase + complexity >= 2 (0.06622ms)\n  ✔ tool chain phrase escalates implementation to reasoning when complexity >= 2 (0.05412ms)\n✔ classifyPrompt — orchestration escalation regression (1.12178ms)\nℹ tests 112\nℹ suites 22\nℹ pass 112\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 94.53213\n<exited with exit code 0>\nf0675b00-76c2-4c9f-864a-1d3c433b8d69\nAll 112 tests pass (105 original + 7 new). Let me commit:\n .github/extensions/model-router/policy.mjs | 10 ++++++----\n eval/routing-policy.test.mjs               | 55 +++++++++++++++++++++++++++++++++++++++++++++++++++++++\n 2 files changed, 61 insertions(+), 4 deletions(-)\n\n.github/extensions/model-router/policy.mjs | 10 ++++++----\n eval/routing-policy.test.mjs               | 55 +++++++++++++++++++++++++++++++++++++++++++++++++++++++\n 2 files changed, 61 insertions(+), 4 deletions(-)\n<exited with exit code 0>\n.github/extensions/model-router/policy.mjs | 10 ++++++----\n eval/routing-policy.test.mjs               | 55 +++++++++++++++++++++++++++++++++++++++++++++++++++++++\n 2 files changed, 61 insertions(+), 4 deletions(-)\n<exited with exit code 0>\n42e4d953-0a32-4916-a213-5799c86e2f30\n[detached HEAD 5c86744] fix(review-diversity): codex sub-family and null-selectedModelId edge cases\n 2 files changed, 61 insertions(+), 4 deletions(-)\n<exited with exit code 0>\n[detached HEAD 5c86744] fix(review-diversity): codex sub-family and null-selectedModelId edge cases\n 2 files changed, 61 insertions(+), 4 deletions(-)\n<exited with exit code 0>\na0af041e-cab7-46c9-9888-b24efce21c91\n## Audit findings and fixes\n\n### Two real bugs found and fixed in `policy.mjs`\n\n**Bug 1 — `isSameModelFamily` codex sub-family split** (`policy.mjs:346`)\n\n`model.includes(\"codex\")` was checked *before* `model.startsWith(\"gpt-5\")`, so models like `gpt-5.3-codex` and `gpt-5.1-codex-max` landed in a synthetic `\"codex\"` sub-family instead of `\"gpt-5\"`. This caused two failures:\n\n- **`orderCandidates` diversity sort**: when impl was a codex model, plain `gpt-5.x` models scored 0 (\"different family\") — the same as claude — so they could float to the *front* of review candidates instead of staying behind claude. A review request could try `gpt-5` before ever reaching a claude model.\n- **`buildAdditionalContext` fallback note**: `isSameModelFamily(\"gpt-5.4\", \"gpt-5.3-codex\")` returned `false`, so the `\"fell back\"` note was silently dropped even though the router stayed within the gpt family.\n\n**Fix**: moved the `gpt-5` prefix check *before* the `codex` includes check. All `gpt-5.x` variants (including `-codex` and `-codex-max`) now land in the `\"gpt-5\"` sub-family.\n\n---\n\n**Bug 2 — null `selectedModelId` silently drops fallback note** (`policy.mjs:395`)\n\nWhen `getCurrent()` fails and all model switches fail, `selectedModelId` is `null`. The fallback-note condition only tested `=== lastImplModel` and `isSameModelFamily(null, ...)` — both `false` — so the note was never surfaced even though diversity was completely unconfirmable.\n\n**Fix**: added `!decision.selectedModelId` as the first branch of the fallback-note condition.\n\n---\n\n### Regression tests added (7 new, 112 total — all pass)\n\n| Test | Covers |\n|---|---|\n| `isSameModelFamily`: codex vs plain gpt-5 | Bug 1 family detection |\n| `isSameModelFamily`: two codex variants | Bug 1 |\n| `isSameModelFamily`: codex vs claude (still false) | No regression |\n| `orderCandidates`: claude precedes gpt-5 when impl was codex | Bug 1 ordering |\n| `buildAdditionalContext`: fallback note after gpt-5-codex → plain gpt-5 | Bug 1 note |\n| `buildAdditionalContext`: fallback note after plain gpt-5 → gpt-5-codex | Bug 1 note |\n| `buildAdditionalContext`: fallback note when `selectedModelId` is null | Bug 2 |\n\nNo doc changes needed — the user-visible routing contract (\"different family is best\") is unchanged; both fixes make the implementation *comply* with that contract rather than changing it.\n✓ Task completed: ## Audit findings and fixes\n\n### Two real bugs found and fixed in `policy.mjs`\n\n**Bug 1 — `isSameModelFamily` codex sub-family split** (`policy.mjs:346`)\n\n`model.includes(\"codex\")` was checked *before* `model.startsWith(\"gpt-5\")`, so models like `gpt-5.3-codex` and `gpt-5.1-codex-max` landed in a synthetic `\"codex\"` sub-family instead of `\"gpt-5\"`. This caused two failures:\n\n- **`orderCandidates` diversity sort**: when impl was a codex model, plain `gpt-5.x` models scored 0 (\"different family\") — the same as claude — so they could float to the *front* of review candidates instead of staying behind claude. A review request could try `gpt-5` before ever reaching a claude model.\n- **`buildAdditionalContext` fallback note**: `isSameModelFamily(\"gpt-5.4\", \"gpt-5.3-codex\")` returned `false`, so the `\"fell back\"` note was silently dropped even though the router stayed within the gpt family.\n\n**Fix**: moved the `gpt-5` prefix check *before* the `codex` includes check. All `gpt-5.x` variants (including `-codex` and `-codex-max`) now land in the `\"gpt-5\"` sub-family.\n\n---\n\n**Bug 2 — null `selectedModelId` silently drops fallback note** (`policy.mjs:395`)\n\nWhen `getCurrent()` fails and all model switches fail, `selectedModelId` is `null`. The fallback-note condition only tested `=== lastImplModel` and `isSameModelFamily(null, ...)` — both `false` — so the note was never surfaced even though diversity was completely unconfirmable.\n\n**Fix**: added `!decision.selectedModelId` as the first branch of the fallback-note condition.\n\n---\n\n### Regression tests added (7 new, 112 total — all pass)\n\n| Test | Covers |\n|---|---|\n| `isSameModelFamily`: codex vs plain gpt-5 | Bug 1 family detection |\n| `isSameModelFamily`: two codex variants | Bug 1 |\n| `isSameModelFamily`: codex vs claude (still false) | No regression |\n| `orderCandidates`: claude precedes gpt-5 when impl was codex | Bug 1 ordering |\n| `buildAdditionalContext`: fallback note after gpt-5-codex → plain gpt-5 | Bug 1 note |\n| `buildAdditionalContext`: fallback note after plain gpt-5 → gpt-5-codex | Bug 1 note |\n| `buildAdditionalContext`: fallback note when `selectedModelId` is null | Bug 2 |\n\nNo doc changes needed — the user-visible routing contract (\"different family is best\") is unchanged; both fixes make the implementation *comply* with that contract rather than changing it.",
+  "rawArtifactFiles": {
+    "stdoutJsonl": "copilot-output.jsonl",
+    "stderr": "copilot-stderr.txt",
+    "diff": "git-diff.patch"
+  }
+}

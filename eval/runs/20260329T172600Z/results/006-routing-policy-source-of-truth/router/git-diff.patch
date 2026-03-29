@@ -1,0 +1,311 @@
+diff --git a/.github/extensions/model-router/policy.mjs b/.github/extensions/model-router/policy.mjs
+index 380a250..22419a3 100644
+--- a/.github/extensions/model-router/policy.mjs
++++ b/.github/extensions/model-router/policy.mjs
+@@ -43,6 +43,37 @@ export const MODEL_CANDIDATES = {
+   ],
+ };
+ 
++// ---------------------------------------------------------------------------
++// Per-model descriptions — single source of truth for routing-matrix.md tables.
++//
++// When you add or change a model in MODEL_CANDIDATES above, add or update its
++// description here. The doc-sync tests in eval/routing-policy.test.mjs verify
++// that routing-matrix.md lists every model id that appears in MODEL_CANDIDATES.
++// ---------------------------------------------------------------------------
++
++export const MODEL_DESCRIPTIONS = {
++  // Economy tier
++  "claude-haiku-4.5": "Fast lightweight classification, short answers, quick summaries, simple repo exploration",
++  "gpt-4.1": "Low-cost general coding help, concise explanations, small focused edits",
++  "gpt-5-mini": "Small implementation tasks, lightweight reasoning, low-cost follow-up work",
++  "gpt-5.4-mini": "Similar to gpt-5-mini; use when available for cheap routing and concise execution",
++  // Builder tier
++  "claude-sonnet-4": "Solid default coding model for moderate implementation and codebase understanding",
++  "claude-sonnet-4.5": "Strong default for implementation, refactors, and balanced coding tasks",
++  "claude-sonnet-4.6": "Strong candidate for medium-to-hard implementation; also available as a reasoning-tier fallback with higher effort",
++  "gpt-5.1": "General implementation, deeper reasoning than economy tier, useful alternate builder",
++  "gpt-5.2": "Similar to gpt-5.1, suitable for medium-to-hard implementation",
++  "gpt-5.3-codex": "Code-heavy implementation and targeted code transformation when available",
++  "gpt-5.1-codex": "Alternate code-specialized builder for implementation and refactoring",
++  // Reasoning tier
++  "gpt-5": "Complex planning, hard debugging, and explicit review",
++  "gpt-5.4": "Strong high-reasoning generalist for planning and careful review",
++  "gpt-5.1-codex-max": "Code-focused review or hard implementation when available",
++  "claude-opus-4.5": "Deep review, architecture reasoning, and difficult debugging",
++  "claude-opus-4.6": "Deep reasoning, high-signal review, and difficult planning",
++  "claude-opus-4.6-1m": "Same general role as claude-opus-4.6, especially when large context is useful",
++};
++
+ // Derived automatically from MODEL_CANDIDATES so it never drifts.
+ // When you add or remove a model above, this stays correct for free.
+ export const MODEL_FAMILIES = (() => {
+diff --git a/.github/skills/model-router/references/routing-matrix.md b/.github/skills/model-router/references/routing-matrix.md
+index bc108c9..58c16e3 100644
+--- a/.github/skills/model-router/references/routing-matrix.md
++++ b/.github/skills/model-router/references/routing-matrix.md
+@@ -2,7 +2,7 @@
+ 
+ This file is the routing reference for the `model-router` skill.
+ 
+-The extension uses runtime heuristics and tries models in priority order. This matrix is derived from `policy.mjs` — edit that file to change model lists or routing logic.
++The extension uses runtime heuristics and tries models in priority order. This matrix is **derived from `policy.mjs`** — edit that file to change model lists, reasoning efforts, or routing logic. The doc-sync tests in `eval/routing-policy.test.mjs` assert that every model listed here matches `MODEL_CANDIDATES` in `policy.mjs`.
+ 
+ ## Tool Calling Tier Legend
+ 
+@@ -17,40 +17,40 @@ Models are grouped by their tool-calling capability tier:
+ 
+ Use these first for low-risk, low-complexity work.
+ 
+-| Model | Best use | Tool Calling |
+-| --- | --- | --- |
+-| `claude-haiku-4.5` | Fast lightweight classification, short answers, quick summaries, simple repo exploration | Economy-Tools: Good first choice for simple tool use |
+-| `gpt-4.1` | Low-cost general coding help, concise explanations, small focused edits | Economy-Tools: Suitable for simple tool use |
+-| `gpt-5-mini` | Small implementation tasks, lightweight reasoning, low-cost follow-up work | Economy-Tools: Suitable for simple tool use |
+-| `gpt-5.4-mini` | Similar to `gpt-5-mini`; use when available for cheap routing and concise execution | Economy-Tools: Suitable for simple tool use |
++| Model | Reasoning effort | Best use | Tool Calling |
++| --- | --- | --- | --- |
++| `claude-haiku-4.5` | none | Fast lightweight classification, short answers, quick summaries, simple repo exploration | Economy-Tools: Good first choice for simple tool use |
++| `gpt-4.1` | none | Low-cost general coding help, concise explanations, small focused edits | Economy-Tools: Suitable for simple tool use |
++| `gpt-5-mini` | low | Small implementation tasks, lightweight reasoning, low-cost follow-up work | Economy-Tools: Suitable for simple tool use |
++| `gpt-5.4-mini` | low | Similar to `gpt-5-mini`; use when available for cheap routing and concise execution | Economy-Tools: Suitable for simple tool use |
+ 
+ ### Standard builder tier
+ 
+ Use for normal implementation and medium-complexity work.
+ 
+-| Model | Best use | Tool Calling |
+-| --- | --- | --- |
+-| `claude-sonnet-4` | Solid default coding model for moderate implementation and codebase understanding | Standard-Tools: Builder-tier option |
+-| `claude-sonnet-4.5` | Strong default for implementation, refactors, and balanced coding tasks | Standard-Tools: Builder-tier option |
+-| `claude-sonnet-4.6` | Strong builder candidate for medium-to-hard implementation; also available later as a reasoning-tier fallback with higher effort | Standard-Tools: Builder-tier option |
+-| `gpt-5.1` | General implementation, deeper reasoning than economy tier, useful alternate builder | Standard-Tools: Builder-tier option |
+-| `gpt-5.2` | Similar to `gpt-5.1`, suitable for medium-to-hard implementation | Standard-Tools: Builder-tier option |
+-| `gpt-5.3-codex` | Code-heavy implementation and targeted code transformation when available | Standard-Tools: Builder-tier option |
+-| `gpt-5.1-codex` | Alternate code-specialized builder for implementation and refactoring | Standard-Tools: Builder-tier option |
++| Model | Reasoning effort | Best use | Tool Calling |
++| --- | --- | --- | --- |
++| `claude-sonnet-4.6` | medium | Strong builder candidate for medium-to-hard implementation; also available as a reasoning-tier fallback with higher effort | Standard-Tools: Builder-tier option |
++| `gpt-5.2` | medium | Similar to `gpt-5.1`, suitable for medium-to-hard implementation | Standard-Tools: Builder-tier option |
++| `gpt-5.3-codex` | medium | Code-heavy implementation and targeted code transformation when available | Standard-Tools: Builder-tier option |
++| `gpt-5.1-codex` | medium | Alternate code-specialized builder for implementation and refactoring | Standard-Tools: Builder-tier option |
++| `gpt-5.1` | medium | General implementation, deeper reasoning than economy tier, useful alternate builder | Standard-Tools: Builder-tier option |
++| `claude-sonnet-4` | none | Solid default coding model for moderate implementation and codebase understanding | Standard-Tools: Builder-tier option |
++| `claude-sonnet-4.5` | none | Strong default for implementation, refactors, and balanced coding tasks | Standard-Tools: Builder-tier option |
+ 
+ ### Reasoning tier
+ 
+ Use when the classifier escalates planning, debugging, or explicit review.
+ 
+-| Model | Best use | Tool Calling |
+-| --- | --- | --- |
+-| `gpt-5` | Complex planning, hard debugging, and explicit review | Reasoning-Tools: Reasoning-tier option |
+-| `gpt-5.4` | Strong high-reasoning generalist for planning and careful review | Reasoning-Tools: Reasoning-tier option |
+-| `claude-sonnet-4.6` | High-reasoning fallback for planning, debugging, or review; the extension can select it with `high` reasoning effort | Reasoning-Tools: Reasoning-tier option |
+-| `gpt-5.1-codex-max` | Code-focused review or hard implementation when available | Reasoning-Tools: Reasoning-tier option |
+-| `claude-opus-4.5` | Deep review, architecture reasoning, and difficult debugging | Reasoning-Tools: Reasoning-tier option |
+-| `claude-opus-4.6` | Deep reasoning, high-signal review, and difficult planning | Reasoning-Tools: Reasoning-tier option |
+-| `claude-opus-4.6-1m` | Same general role as `claude-opus-4.6`, especially when large context is useful | Reasoning-Tools: Reasoning-tier option |
++| Model | Reasoning effort | Best use | Tool Calling |
++| --- | --- | --- | --- |
++| `gpt-5` | high | Complex planning, hard debugging, and explicit review | Reasoning-Tools: Reasoning-tier option |
++| `gpt-5.4` | high | Strong high-reasoning generalist for planning and careful review | Reasoning-Tools: Reasoning-tier option |
++| `claude-sonnet-4.6` | high | High-reasoning fallback for planning, debugging, or review; the extension can select it with `high` reasoning effort | Reasoning-Tools: Reasoning-tier option |
++| `gpt-5.1-codex-max` | high | Code-focused review or hard implementation when available | Reasoning-Tools: Reasoning-tier option |
++| `claude-opus-4.5` | none | Deep review, architecture reasoning, and difficult debugging | Reasoning-Tools: Reasoning-tier option |
++| `claude-opus-4.6` | none | Deep reasoning, high-signal review, and difficult planning | Reasoning-Tools: Reasoning-tier option |
++| `claude-opus-4.6-1m` | none | Same general role as `claude-opus-4.6`, especially when large context is useful | Reasoning-Tools: Reasoning-tier option |
+ 
+ ## Task routing policy
+ 
+diff --git a/README.md b/README.md
+index 05a2137..77938bf 100644
+--- a/README.md
++++ b/README.md
+@@ -199,7 +199,7 @@ The `eval/` directory contains a local-first harness for comparing router-enable
+ │       ├── policy.mjs                        # Source-of-truth: model lists, keywords, pure functions
+ │       └── extension.mjs                     # Runtime extension (imports from policy.mjs)
+ └── copilot-instructions.md                   # Instructions for skill activation
+-tests/
++eval/
+ └── routing-policy.test.mjs                   # Regression tests for shared routing helpers
+ ```
+ 
+@@ -237,7 +237,9 @@ Higher scores escalate from economy → builder → reasoning tiers.
+ **Important:** This router does NOT automatically review code after implementation.
+ 
+ Review mode triggers only on explicit phrases such as:
+-- "review", "code review", "review this", "review my code", "audit", "approval readiness", "approve this", "PR review"
++- "review", "code review", "review this", "review the code", "review my code"
++- "audit", "approval readiness", "approval readiness checks", "approve this", "PR review"
++- "find bugs", "bug finding", "regression hunting", "regression hunt", "find regressions"
+ 
+ Generic mentions of "bug" or "security" do not trigger review mode by themselves.
+ 
+diff --git a/eval/routing-policy.test.mjs b/eval/routing-policy.test.mjs
+index 1f264f9..8a48dea 100644
+--- a/eval/routing-policy.test.mjs
++++ b/eval/routing-policy.test.mjs
+@@ -1,8 +1,14 @@
+ import { strict as assert } from "node:assert";
++import { readFileSync } from "node:fs";
++import { dirname, join } from "node:path";
++import { fileURLToPath } from "node:url";
+ import { describe, it } from "node:test";
+ import {
+   MODEL_CANDIDATES,
++  MODEL_DESCRIPTIONS,
+   MODEL_FAMILIES,
++  EXPLICIT_REVIEW_KEYWORDS,
++  ORCHESTRATION_KEYWORDS,
+   getModelFamily,
+   normalizePrompt,
+   matchesPattern,
+@@ -617,3 +623,147 @@ describe("classifyPrompt — orchestration escalation regression", () => {
+     assert.equal(r.tier, "reasoning");
+   });
+ });
++
++// ---------------------------------------------------------------------------
++// DOC SYNC: routing-matrix.md must mirror MODEL_CANDIDATES
++//
++// These tests parse routing-matrix.md and assert that every model id in
++// MODEL_CANDIDATES appears in the correct tier section of the doc. They also
++// verify the orchestration keyword list is complete. If a test here fails it
++// means policy.mjs was updated without updating the doc — fix the doc to
++// match, then re-run.
++// ---------------------------------------------------------------------------
++
++const __dir = dirname(fileURLToPath(import.meta.url));
++
++/** Split routing-matrix.md into tier sections keyed by "economy" | "builder" | "reasoning". */
++function parseMatrixTierSections(content) {
++  const tiers = { economy: "", builder: "", reasoning: "" };
++  let current = null;
++  for (const line of content.split("\n")) {
++    const h3 = line.match(/^### (.+)/);
++    const h2 = line.match(/^## /);
++    if (h3) {
++      const heading = h3[1].toLowerCase();
++      if (heading.includes("economy")) current = "economy";
++      else if (heading.includes("builder")) current = "builder";
++      else if (heading.includes("reasoning")) current = "reasoning";
++      else current = null;
++    } else if (h2) {
++      current = null;
++    } else if (current) {
++      tiers[current] += line + "\n";
++    }
++  }
++  return tiers;
++}
++
++/** Collect all backtick-quoted tokens that look like model ids from a text block. */
++function extractDocModelIds(text) {
++  const ids = [];
++  const re = /`([^`]+)`/g;
++  let m;
++  while ((m = re.exec(text)) !== null) {
++    const token = m[1];
++    if ((token.startsWith("claude-") || token.startsWith("gpt-")) && token.length > 4) {
++      ids.push(token);
++    }
++  }
++  return ids;
++}
++
++describe("doc-sync: routing-matrix.md tier tables mirror MODEL_CANDIDATES", () => {
++  const matrixPath = join(__dir, "../.github/skills/model-router/references/routing-matrix.md");
++  const matrixContent = readFileSync(matrixPath, "utf8");
++  const sections = parseMatrixTierSections(matrixContent);
++
++  for (const tier of ["economy", "builder", "reasoning"]) {
++    const policyModels = MODEL_CANDIDATES[tier];
++    const docSection = sections[tier];
++
++    it(`lists every ${tier} tier model from MODEL_CANDIDATES`, () => {
++      for (const { id } of policyModels) {
++        assert.ok(
++          docSection.includes(`\`${id}\``),
++          `routing-matrix.md ${tier} section is missing model: \`${id}\``,
++        );
++      }
++    });
++
++    it(`has no extra ${tier} models not present in MODEL_CANDIDATES`, () => {
++      const policyIds = new Set(policyModels.map((m) => m.id));
++      for (const id of extractDocModelIds(docSection)) {
++        // Skip the `gpt-5-mini` reference inside the gpt-5.4-mini description
++        assert.ok(
++          policyIds.has(id),
++          `routing-matrix.md ${tier} section references model \`${id}\` which is not in MODEL_CANDIDATES.${tier}`,
++        );
++      }
++    });
++  }
++
++  it("documents all ORCHESTRATION_KEYWORDS", () => {
++    for (const kw of ORCHESTRATION_KEYWORDS) {
++      assert.ok(
++        matrixContent.includes(kw),
++        `routing-matrix.md is missing orchestration keyword: "${kw}"`,
++      );
++    }
++  });
++});
++
++// ---------------------------------------------------------------------------
++// DOC SYNC: MODEL_DESCRIPTIONS covers every model in MODEL_CANDIDATES
++// ---------------------------------------------------------------------------
++
++describe("doc-sync: MODEL_DESCRIPTIONS covers every MODEL_CANDIDATES entry", () => {
++  it("every model in MODEL_CANDIDATES has a description", () => {
++    for (const [tier, models] of Object.entries(MODEL_CANDIDATES)) {
++      for (const { id } of models) {
++        assert.ok(
++          typeof MODEL_DESCRIPTIONS[id] === "string" && MODEL_DESCRIPTIONS[id].length > 0,
++          `MODEL_DESCRIPTIONS is missing an entry for ${tier} model: ${id}`,
++        );
++      }
++    }
++  });
++
++  it("MODEL_DESCRIPTIONS has no entries for models not in MODEL_CANDIDATES", () => {
++    const allPolicyIds = new Set(
++      Object.values(MODEL_CANDIDATES).flatMap((tier) => tier.map((m) => m.id)),
++    );
++    for (const id of Object.keys(MODEL_DESCRIPTIONS)) {
++      assert.ok(
++        allPolicyIds.has(id),
++        `MODEL_DESCRIPTIONS has entry for "${id}" which is not in MODEL_CANDIDATES`,
++      );
++    }
++  });
++});
++
++// ---------------------------------------------------------------------------
++// DOC SYNC: README.md Explicit Review Only section lists all review keywords
++// ---------------------------------------------------------------------------
++
++describe("doc-sync: README.md Explicit Review section lists all EXPLICIT_REVIEW_KEYWORDS", () => {
++  const readmePath = join(__dir, "../README.md");
++  const readmeContent = readFileSync(readmePath, "utf8");
++
++  // Isolate the "Explicit Review Only" section so we don't match keywords that
++  // happen to appear elsewhere in the README for other reasons.
++  const sectionStart = readmeContent.indexOf("## Explicit Review Only");
++  const sectionEnd = readmeContent.indexOf("\n## ", sectionStart + 1);
++  const reviewSection =
++    sectionStart >= 0
++      ? readmeContent.slice(sectionStart, sectionEnd >= 0 ? sectionEnd : undefined)
++      : readmeContent;
++
++  for (const kw of EXPLICIT_REVIEW_KEYWORDS) {
++    it(`lists keyword: "${kw}"`, () => {
++      assert.ok(
++        reviewSection.toLowerCase().includes(kw),
++        `README.md "Explicit Review Only" section is missing keyword: "${kw}"`,
++      );
++    });
++  }
++});

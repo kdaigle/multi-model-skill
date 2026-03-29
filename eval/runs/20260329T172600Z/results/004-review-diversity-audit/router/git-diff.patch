@@ -1,0 +1,110 @@
+diff --git a/.github/extensions/model-router/policy.mjs b/.github/extensions/model-router/policy.mjs
+index 380a250..9685ca1 100644
+--- a/.github/extensions/model-router/policy.mjs
++++ b/.github/extensions/model-router/policy.mjs
+@@ -343,9 +343,9 @@ export function isSameModelFamily(first, second) {
+     if (model.startsWith("claude-haiku")) return "claude-haiku";
+     if (model.startsWith("claude-sonnet")) return "claude-sonnet";
+     if (model.startsWith("claude-opus")) return "claude-opus";
+-    if (model.includes("codex")) return "codex";
+-    if (model.startsWith("gpt-5")) return "gpt-5";
++    if (model.startsWith("gpt-5")) return "gpt-5"; // covers gpt-5.x-codex variants too
+     if (model.startsWith("gpt-4.1")) return "gpt-4.1";
++    if (model.includes("codex")) return "codex"; // non-gpt-5 codex models (future-proofing)
+     return model;
+   };
+   return family(first) === family(second);
+@@ -390,9 +390,11 @@ export function buildAdditionalContext(decision, currentModelId, lastImplModel =
+   if (decision.kind === "review" && lastImplModel) {
+     lines.push(`Prefer review diversity versus implementation model ${lastImplModel}.`);
+     // Surface a fallback note whenever diversity could not be achieved: either
+-    // the router landed on the exact same model or on one from the same family
+-    // (e.g. claude-sonnet-4.5 when impl was claude-sonnet-4.6).
++    // the router landed on the exact same model, on one from the same family
++    // (e.g. claude-sonnet-4.5 when impl was claude-sonnet-4.6), or when the
++    // selected model is unknown (all switches failed and getCurrent() is unavailable).
+     if (
++      !decision.selectedModelId ||
+       decision.selectedModelId === lastImplModel ||
+       isSameModelFamily(decision.selectedModelId, lastImplModel)
+     ) {
+diff --git a/eval/routing-policy.test.mjs b/eval/routing-policy.test.mjs
+index 1f264f9..1f80fe8 100644
+--- a/eval/routing-policy.test.mjs
++++ b/eval/routing-policy.test.mjs
+@@ -323,6 +323,24 @@ describe("isSameModelFamily", () => {
+   it("returns false for null first arg", () => {
+     assert.ok(!isSameModelFamily(null, "gpt-5.1"));
+   });
++
++  // Regression: gpt-5.x-codex variants must be in the same "gpt-5" family as
++  // plain gpt-5.x models. The old code checked model.includes("codex") first,
++  // making gpt-5.3-codex appear as a separate "codex" family, so gpt-5 would
++  // incorrectly score 0 (different-family) when impl was a codex model.
++  it("treats gpt-5.x-codex and plain gpt-5.x as the same family", () => {
++    assert.ok(isSameModelFamily("gpt-5.3-codex", "gpt-5.1"), "codex vs plain gpt-5");
++    assert.ok(isSameModelFamily("gpt-5.1-codex", "gpt-5.4"), "codex vs gpt-5.4");
++    assert.ok(isSameModelFamily("gpt-5.1-codex-max", "gpt-5.2"), "codex-max vs gpt-5.2");
++  });
++
++  it("treats two gpt-5-codex variants as the same family", () => {
++    assert.ok(isSameModelFamily("gpt-5.3-codex", "gpt-5.1-codex"));
++  });
++
++  it("still returns false for codex vs claude", () => {
++    assert.ok(!isSameModelFamily("gpt-5.3-codex", "claude-sonnet-4.6"));
++  });
+ });
+ 
+ // ---------------------------------------------------------------------------
+@@ -348,6 +366,20 @@ describe("orderCandidates", () => {
+     const result = orderCandidates(candidates, { kind: "review" }, "claude-sonnet-4.6");
+     assert.equal(result[0].id, "gpt-5.1");
+   });
++
++  // Regression: when impl was a gpt-5-codex model, plain gpt-5 models must NOT
++  // float to the front ahead of claude models. Before the fix, gpt-5.4 scored 0
++  // (treated as "different family" from "codex") same as claude, causing gpt-5
++  // to be tried before claude.
++  it("when impl was a gpt-5-codex model, claude models precede plain gpt-5 models", () => {
++    const candidates = [
++      { id: "gpt-5.4", reasoningEffort: "high" },
++      { id: "claude-sonnet-4.6", reasoningEffort: "high" },
++      { id: "gpt-5.2", reasoningEffort: "medium" },
++    ];
++    const result = orderCandidates(candidates, { kind: "review" }, "gpt-5.3-codex");
++    assert.equal(result[0].id, "claude-sonnet-4.6", `expected claude first; got: ${result.map((c) => c.id)}`);
++  });
+ });
+ 
+ // ---------------------------------------------------------------------------
+@@ -406,6 +438,29 @@ describe("buildAdditionalContext", () => {
+     const ctx = buildAdditionalContext(decision, "gpt-5.4", "claude-sonnet-4.6");
+     assert.ok(!ctx.includes("fell back"), `unexpected fallback note; got: ${ctx}`);
+   });
++
++  // Regression: when impl was a gpt-5-codex model, landing on a plain gpt-5 model
++  // must surface the fallback note. Before the fix, isSameModelFamily returned false
++  // for "gpt-5" vs "codex", so the note was silently dropped.
++  it("surfaces fallback note when review lands on plain gpt-5 after gpt-5-codex impl", () => {
++    const decision = { kind: "review", complexity: 1, selectedModelId: "gpt-5.4", reasoningEffort: "high" };
++    const ctx = buildAdditionalContext(decision, "gpt-5.4", "gpt-5.3-codex");
++    assert.ok(ctx.includes("fell back"), `expected fallback note; got: ${ctx}`);
++  });
++
++  it("surfaces fallback note when review lands on gpt-5-codex after plain gpt-5 impl", () => {
++    const decision = { kind: "review", complexity: 1, selectedModelId: "gpt-5.1-codex", reasoningEffort: "medium" };
++    const ctx = buildAdditionalContext(decision, "gpt-5.1-codex", "gpt-5.2");
++    assert.ok(ctx.includes("fell back"), `expected fallback note; got: ${ctx}`);
++  });
++
++  // Regression: when selectedModelId is null (all switches failed + getCurrent unavailable),
++  // the fallback note must still fire — the router could not confirm diversity was achieved.
++  it("surfaces fallback note when selectedModelId is null (total switch failure)", () => {
++    const decision = { kind: "review", complexity: 1, selectedModelId: null, reasoningEffort: null };
++    const ctx = buildAdditionalContext(decision, null, "claude-sonnet-4.6");
++    assert.ok(ctx.includes("fell back"), `expected fallback note; got: ${ctx}`);
++  });
+ });
+ 
+ // ---------------------------------------------------------------------------

@@ -1,0 +1,306 @@
+{
+  "judgeModel": "gpt-5.4",
+  "judgeExitCode": 0,
+  "judgeSignal": null,
+  "judgeTimedOut": false,
+  "judgeTimeoutMs": 300000,
+  "judgeErrorCode": null,
+  "judgeErrorMessage": null,
+  "parsedJudgeResponse": {
+    "verdict": "pass",
+    "correctnessScore": 4,
+    "completenessScore": 4,
+    "minimalityScore": 5,
+    "confidence": "medium",
+    "issues": [
+      "Smoke-test evidence is partly indirect/truncated",
+      "New telemetry focuses on Copilot tool-call events more than deeper per-stage harness internals"
+    ],
+    "strengths": [
+      "All required files were changed",
+      "Routing trace data flow spans collection, suite summarization, and docs",
+      "Suite output now surfaces concise `tools=N` summary",
+      "Documentation explains new fields and artifact interpretation",
+      "Changes are focused and localized"
+    ],
+    "summary": "The implementation appears to satisfy the task with a coherent multi-file enhancement: `collect-artifacts.mjs` now extracts structured tool-call and timing evidence from `copilot-output.jsonl`, `summarize-suite.mjs` propagates that evidence into `chainSummary`, `traceHighlight`, and text suite summaries, and `eval/README.md` documents the new artifacts and fields. Validation confirms the required files changed and the diff is focused. The main uncertainty is that the verification evidence for end-to-end output is somewhat indirect and truncated, and the enhancement emphasizes Copilot tool-call telemetry rather than adding much new structure to non-Copilot stages, but based on the provided diff and reported smoke tests this is strong enough for a pass."
+  },
+  "cost": {
+    "mode": "observed_tokens_weighted",
+    "effectiveWeight": 3.5,
+    "routePenalty": 1,
+    "effortMultiplier": 1.15,
+    "observedUsage": [
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 296,
+        "totalTokens": 296
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 173,
+        "totalTokens": 173
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 322,
+        "totalTokens": 322
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 240,
+        "totalTokens": 240
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 415,
+        "totalTokens": 415
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 319,
+        "totalTokens": 319
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 416,
+        "totalTokens": 416
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1389,
+        "totalTokens": 1389
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1651,
+        "totalTokens": 1651
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 2893,
+        "totalTokens": 2893
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 330,
+        "totalTokens": 330
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 595,
+        "totalTokens": 595
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1629,
+        "totalTokens": 1629
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 128,
+        "totalTokens": 128
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 128,
+        "totalTokens": 128
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 128,
+        "totalTokens": 128
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1783,
+        "totalTokens": 1783
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 646,
+        "totalTokens": 646
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 900,
+        "totalTokens": 900
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 799,
+        "totalTokens": 799
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 455,
+        "totalTokens": 455
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 403,
+        "totalTokens": 403
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1357,
+        "totalTokens": 1357
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 280,
+        "totalTokens": 280
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 135,
+        "totalTokens": 135
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 225,
+        "totalTokens": 225
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 234,
+        "totalTokens": 234
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 153,
+        "totalTokens": 153
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 206,
+        "totalTokens": 206
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 193,
+        "totalTokens": 193
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 158,
+        "totalTokens": 158
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 153,
+        "totalTokens": 153
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 422,
+        "totalTokens": 422
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1042,
+        "totalTokens": 1042
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 371,
+        "totalTokens": 371
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 488,
+        "totalTokens": 488
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 316,
+        "totalTokens": 316
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 282,
+        "totalTokens": 282
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 492,
+        "totalTokens": 492
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 200,
+        "totalTokens": 200
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 139,
+        "totalTokens": 139
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 510,
+        "totalTokens": 510
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 142,
+        "totalTokens": 142
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 592,
+        "totalTokens": 592
+      }
+    ],
+    "value": 97.115
+  },
+  "validationValid": true,
+  "taskId": "005-chained-tool-trace",
+  "variantId": "router",
+  "startModel": "claude-sonnet-4.6",
+  "status": "completed"
+}

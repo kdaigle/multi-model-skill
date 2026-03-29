@@ -1,0 +1,3 @@
+.github/skills/model-router.eval-disabled/SKILL.md
+.github/skills/model-router.eval-disabled/references/routing-matrix.md
+README.md

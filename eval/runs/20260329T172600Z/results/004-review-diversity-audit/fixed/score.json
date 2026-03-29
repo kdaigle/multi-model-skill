@@ -1,0 +1,271 @@
+{
+  "judgeModel": "gpt-5.4",
+  "judgeExitCode": 0,
+  "judgeSignal": null,
+  "judgeTimedOut": false,
+  "judgeTimeoutMs": 300000,
+  "judgeErrorCode": null,
+  "judgeErrorMessage": null,
+  "parsedJudgeResponse": {
+    "verdict": "partial",
+    "correctnessScore": 3,
+    "completenessScore": 2,
+    "minimalityScore": 4,
+    "confidence": "medium",
+    "issues": [
+      "Validation failed required changed file `extension.mjs`",
+      "Validation failed required test path prefix `tests/`",
+      "Fix was applied in `policy.mjs`, not the required extension entrypoint",
+      "Regression coverage landed in `eval/` rather than the requested test area"
+    ],
+    "strengths": [
+      "Found a concrete broad-family review-diversity bug",
+      "Patch is focused and small",
+      "Added relevant regression tests for ordering and fallback note",
+      "Reported passing test execution with 110/110"
+    ],
+    "summary": "The implementation appears technically plausible and well targeted: it changes review candidate ordering and fallback-note detection from sub-family matching to broad-family matching, and the added tests directly exercise the cited edge cases. However, task completion evidence is incomplete because validation explicitly failed: the required changed file `.github/extensions/model-router/extension.mjs` was not modified, and regression coverage was added under `eval/` instead of the required `tests/` path. So this looks like a solid partial fix, but not a fully compliant completion of the requested task."
+  },
+  "cost": {
+    "mode": "observed_tokens_weighted",
+    "effectiveWeight": 3.5,
+    "routePenalty": 1,
+    "effortMultiplier": 1.15,
+    "observedUsage": [
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 175,
+        "totalTokens": 175
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 125,
+        "totalTokens": 125
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 199,
+        "totalTokens": 199
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 240,
+        "totalTokens": 240
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 126,
+        "totalTokens": 126
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 15266,
+        "totalTokens": 15266
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 137,
+        "totalTokens": 137
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 545,
+        "totalTokens": 545
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 199,
+        "totalTokens": 199
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 460,
+        "totalTokens": 460
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 574,
+        "totalTokens": 574
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 763,
+        "totalTokens": 763
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 327,
+        "totalTokens": 327
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1129,
+        "totalTokens": 1129
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 325,
+        "totalTokens": 325
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 2201,
+        "totalTokens": 2201
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 802,
+        "totalTokens": 802
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 809,
+        "totalTokens": 809
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 612,
+        "totalTokens": 612
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 339,
+        "totalTokens": 339
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 153,
+        "totalTokens": 153
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 139,
+        "totalTokens": 139
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1258,
+        "totalTokens": 1258
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 967,
+        "totalTokens": 967
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 265,
+        "totalTokens": 265
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 165,
+        "totalTokens": 165
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 1142,
+        "totalTokens": 1142
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 176,
+        "totalTokens": 176
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 118,
+        "totalTokens": 118
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 317,
+        "totalTokens": 317
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 134,
+        "totalTokens": 134
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 465,
+        "totalTokens": 465
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 145,
+        "totalTokens": 145
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 440,
+        "totalTokens": 440
+      },
+      {
+        "path": "data",
+        "promptTokens": null,
+        "completionTokens": 693,
+        "totalTokens": 693
+      }
+    ],
+    "value": 130.04
+  },
+  "validationValid": false,
+  "taskId": "004-review-diversity-audit",
+  "variantId": "fixed",
+  "startModel": "claude-sonnet-4.6",
+  "status": "completed"
+}
