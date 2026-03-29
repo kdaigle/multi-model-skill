@@ -1,0 +1,20 @@
+{
+  "id": "004-review-diversity-audit",
+  "title": "Review diversity audit and hardening",
+  "category": "review-and-hardening",
+  "prompt": "Audit the explicit-review routing path in the model-router extension for edge cases around review diversity and fallback behavior. Focus on cases where a review request could accidentally reuse the last implementation model, stay in the same model family when a distinct family is available, or lose the fallback explanation surfaced in status/debug output. If you find a real issue, implement the smallest robust fix, add lightweight regression coverage without new dependencies, and keep the visible status contract coherent. Update docs only if the user-visible routing contract changes.",
+  "judgeHints": [
+    "The strongest solution finds a concrete review-diversity or fallback bug instead of rewriting large parts of the router speculatively.",
+    "Regression coverage should exercise explicit review routing and same-family or same-model fallback behavior.",
+    "Keep the fix focused; documentation updates are only needed if visible review-routing behavior changes."
+  ],
+  "validation": {
+    "requireDiff": true,
+    "requiredChangedFiles": [
+      ".github/extensions/model-router/extension.mjs"
+    ],
+    "requiredPathPrefixes": [
+      "tests/"
+    ]
+  }
+}

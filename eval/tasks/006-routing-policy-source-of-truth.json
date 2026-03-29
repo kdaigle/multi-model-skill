@@ -1,0 +1,22 @@
+{
+  "id": "006-routing-policy-source-of-truth",
+  "title": "Routing policy source-of-truth refactor",
+  "category": "architecture-refactor",
+  "prompt": "Design and implement a maintainable source-of-truth refactor for model routing policy so candidate tiers, reasoning-effort defaults, and the public routing guidance do not drift. Keep runtime behavior compatible unless you uncover a clear bug, but reduce duplication across the extension, the routing matrix, and contributor-facing docs. Add lightweight regression coverage for the shared mapping or exported helpers, and prefer a small architecture plan followed by focused edits instead of a broad rewrite.",
+  "judgeHints": [
+    "Favor a small shared source of truth over copying the same model metadata into more places.",
+    "The best answer keeps runtime behavior stable while making drift between docs and code less likely.",
+    "Regression coverage should verify the shared mapping or helper behavior without adding dependencies."
+  ],
+  "validation": {
+    "requireDiff": true,
+    "requiredChangedFiles": [
+      ".github/extensions/model-router/extension.mjs",
+      "README.md",
+      ".github/skills/model-router/references/routing-matrix.md"
+    ],
+    "requiredPathPrefixes": [
+      "tests/"
+    ]
+  }
+}

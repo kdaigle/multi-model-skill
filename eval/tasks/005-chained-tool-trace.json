@@ -1,0 +1,19 @@
+{
+  "id": "005-chained-tool-trace",
+  "title": "Chained tool trace for eval runs",
+  "category": "eval-harness",
+  "prompt": "Implement a routing-trace enhancement in the eval harness so harder router runs are easier to analyze end to end. Capture enough structured evidence to explain the chained tools involved in a run — worktree prep, Copilot invocation, artifact collection, validation, and scoring — then surface a concise summary in suite output and document the new artifacts. Keep it local-first, preserve the current run layout where practical, and avoid a broad rewrite.",
+  "judgeHints": [
+    "Look for a coherent multi-file data flow across the harness, not just an extra log line in one script.",
+    "The new trace should be visible in retained artifacts or suite summaries and should remain compatible with the existing harness style.",
+    "Documentation should explain where the new trace data lives and how to read it."
+  ],
+  "validation": {
+    "requireDiff": true,
+    "requiredChangedFiles": [
+      "eval/scripts/collect-artifacts.mjs",
+      "eval/scripts/summarize-suite.mjs",
+      "eval/README.md"
+    ]
+  }
+}
