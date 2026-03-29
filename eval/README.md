@@ -58,6 +58,19 @@ Override the judge model without editing config:
 EVAL_JUDGE_MODEL=gpt-5 node eval/scripts/run-suite.mjs
 ```
 
+Override harness timeouts with environment variables:
+
+```bash
+# Global override for all timed subprocesses
+EVAL_TIMEOUT_MS=900000 node eval/scripts/run-suite.mjs
+
+# Or tune stages independently (0 disables that stage timeout)
+EVAL_COPILOT_TIMEOUT_MS=900000 \
+EVAL_JUDGE_TIMEOUT_MS=420000 \
+EVAL_VALIDATION_TIMEOUT_MS=180000 \
+node eval/scripts/run-suite.mjs
+```
+
 ## Result Layout
 
 A suite run creates a timestamped directory under `eval/runs/` (or the directory you pass to `--suite-dir`).
@@ -74,7 +87,7 @@ eval/runs/20260329T010203Z/
       router/
         prepare-worktree.json    # worktree path and which files were disabled
         run-command.json         # exact copilot invocation args
-        run-result.json          # exit code, changed files, stdout/stderr sizes
+        run-result.json          # exit code, timeout/error metadata, changed files, stdout/stderr sizes
         copilot-output.jsonl     # raw copilot CLI output (JSONL)
         copilot-stderr.txt
         git-diff.patch           # diff of all changes made in the worktree
@@ -111,12 +124,15 @@ Defines:
 
 - `implementationStartModel` — the model used as the starting point for **both** variants. Change this to re-pin the entire suite.
 - `judgeCandidates` — judge model preference order; `choose-judge-model.mjs` picks the first candidate from a different family than the start model.
+- `timeouts` — default timeout limits in milliseconds for main Copilot runs, judge runs, and validation commands.
 - `models` — per-model metadata: family, tier, and `relativeWeight` used in cost index calculations.
 - `relativeCostIndex` — tuning parameters for the cost index: `visibleUnitBytes`, `effortMultipliers`, `routeSwitchPenalty`, `fallbackModelWeight`.
 
+Environment variables take precedence over config defaults and any per-variant/per-command timeout overrides. Use `EVAL_TIMEOUT_MS` to set one global limit, or `EVAL_COPILOT_TIMEOUT_MS`, `EVAL_JUDGE_TIMEOUT_MS`, and `EVAL_VALIDATION_TIMEOUT_MS` to override individual stages. Set a timeout variable to `0` to disable that stage timeout.
+
 ### Variants (`eval/config/variants.json`)
 
-Each variant specifies whether to load the plugin dir (`includePluginDir`), enable `--autopilot` and `--experimental`, and which paths to rename inside the worktree when disabling the router.
+Each variant specifies whether to load the plugin dir (`includePluginDir`), enable `--autopilot` and `--experimental`, and which paths to rename inside the worktree when disabling the router. Variants may also set an optional `timeoutMs` override for the main `copilot` run.
 
 ### Tasks (`eval/tasks/`)
 
@@ -165,6 +181,15 @@ The judge model is asked to score each run on a 0–5 scale across three dimensi
 | `confidence` | `low` / `medium` / `high` — how much evidence the judge had to work with |
 
 Scores and verdicts appear in `score.json` per run and are aggregated in `suite-summary.json`.
+
+### Timeouts
+
+When a subprocess exceeds its timeout, the harness keeps partial artifacts and records the timeout explicitly:
+
+- `run-result.json` includes `timedOut`, `timeoutMs`, `signal`, `errorCode`, `errorMessage`, and `runStatus`.
+- `validation.json` includes `timedOut`, `runTimedOut`, `timedOutCommands`, and `failureMode`.
+- `score.json` includes `judgeTimedOut`, `judgeTimeoutMs`, and top-level judge status metadata.
+- `suite-summary.json` / `suite-summary.txt` list per-variant timeout stages (`run`, `validation`, `judge`) so timeouts are not mistaken for generic failures.
 
 ### Comparison delta
 

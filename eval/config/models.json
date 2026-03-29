@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "implementationStartModel": {
+    "id": "claude-sonnet-4.6",
+    "reasoningEffort": "medium"
+  },
+  "judgeCandidates": [
+    "gpt-5.4",
+    "claude-opus-4.6",
+    "gpt-5",
+    "claude-opus-4.5"
+  ],
+  "timeouts": {
+    "copilotMs": 600000,
+    "judgeMs": 300000,
+    "validationMs": 120000
+  },
+  "relativeCostIndex": {
+    "description": "Relative-only weighting for local comparisons. These weights are intentionally approximate and are not billing multipliers.",
+    "visibleUnitBytes": 1024,
+    "effortMultipliers": {
+      "low": 1.0,
+      "medium": 1.15,
+      "high": 1.35,
+      "xhigh": 1.6
+    },
+    "routeSwitchPenalty": 0.1,
+    "fallbackModelWeight": 3.5
+  },
+  "models": {
+    "claude-haiku-4.5": { "family": "claude", "tier": "economy", "relativeWeight": 1.0 },
+    "gpt-4.1": { "family": "gpt", "tier": "economy", "relativeWeight": 1.0 },
+    "gpt-5-mini": { "family": "gpt", "tier": "economy", "relativeWeight": 1.1 },
+    "gpt-5.4-mini": { "family": "gpt", "tier": "economy", "relativeWeight": 1.2 },
+    "claude-sonnet-4": { "family": "claude", "tier": "builder", "relativeWeight": 2.8 },
+    "claude-sonnet-4.5": { "family": "claude", "tier": "builder", "relativeWeight": 3.1 },
+    "claude-sonnet-4.6": { "family": "claude", "tier": "builder", "relativeWeight": 3.5 },
+    "gpt-5.1": { "family": "gpt", "tier": "builder", "relativeWeight": 3.2 },
+    "gpt-5.2": { "family": "gpt", "tier": "builder", "relativeWeight": 3.5 },
+    "gpt-5.3-codex": { "family": "gpt", "tier": "builder", "relativeWeight": 3.8 },
+    "gpt-5.1-codex": { "family": "gpt", "tier": "builder", "relativeWeight": 3.6 },
+    "gpt-5": { "family": "gpt", "tier": "reasoning", "relativeWeight": 5.0 },
+    "gpt-5.4": { "family": "gpt", "tier": "reasoning", "relativeWeight": 5.8 },
+    "gpt-5.1-codex-max": { "family": "gpt", "tier": "reasoning", "relativeWeight": 6.2 },
+    "claude-opus-4.5": { "family": "claude", "tier": "reasoning", "relativeWeight": 6.5 },
+    "claude-opus-4.6": { "family": "claude", "tier": "reasoning", "relativeWeight": 7.0 },
+    "claude-opus-4.6-1m": { "family": "claude", "tier": "reasoning", "relativeWeight": 8.0 }
+  }
+}

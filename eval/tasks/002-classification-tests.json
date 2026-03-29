@@ -1,0 +1,20 @@
+{
+  "id": "002-classification-tests",
+  "title": "Classification regression tests",
+  "category": "tests",
+  "prompt": "Add lightweight regression coverage for the prompt-classification heuristics in the model-router extension without adding dependencies. Prefer Node built-ins if you introduce tests or fixtures. Focus on explicit review detection, tool-heavy implementation routing, and orchestration escalation. Keep the production extension behavior intact unless you need a small refactor to make the logic testable.",
+  "judgeHints": [
+    "Favor no-dependency tests or fixtures.",
+    "Small refactors for testability are acceptable.",
+    "The best solution adds meaningful coverage for the named routing cases."
+  ],
+  "validation": {
+    "requireDiff": true,
+    "requiredChangedFiles": [
+      ".github/extensions/model-router/extension.mjs"
+    ],
+    "requiredPathPrefixes": [
+      "tests/"
+    ]
+  }
+}

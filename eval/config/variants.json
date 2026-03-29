@@ -1,0 +1,26 @@
+[
+  {
+    "id": "router",
+    "label": "Router-enabled run",
+    "description": "Starts from the pinned strong implementation model and explicitly loads the local plugin so the model-router extension may switch away when it decides to.",
+    "autopilot": true,
+    "experimental": true,
+    "includePluginDir": true,
+    "disableRouterInWorktree": false
+  },
+  {
+    "id": "fixed",
+    "label": "Fixed-model baseline",
+    "description": "Starts from the same pinned strong implementation model, but disables the router plugin, skill, and repo instructions inside a disposable worktree.",
+    "autopilot": true,
+    "experimental": true,
+    "includePluginDir": false,
+    "disableRouterInWorktree": true,
+    "disablePaths": [
+      ".github/plugin.json",
+      ".github/extensions/model-router",
+      ".github/skills/model-router",
+      ".github/copilot-instructions.md"
+    ]
+  }
+]

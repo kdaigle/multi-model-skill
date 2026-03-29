@@ -1,0 +1,19 @@
+{
+  "id": "003-keyword-docsync",
+  "title": "Keyword documentation sync",
+  "category": "docs-and-runtime-sync",
+  "prompt": "Refine the keyword coverage for tool-heavy implementation versus orchestration routing, then make the repository documentation match the runtime behavior. Keep the runtime keyword lists and the README plus routing matrix aligned, and avoid broad unrelated copy edits.",
+  "judgeHints": [
+    "Runtime and docs should agree after the change.",
+    "Prefer targeted edits over broad rewrites.",
+    "Keep the distinction between tool-heavy implementation and orchestration escalation clear."
+  ],
+  "validation": {
+    "requireDiff": true,
+    "requiredChangedFiles": [
+      ".github/extensions/model-router/extension.mjs",
+      "README.md",
+      ".github/skills/model-router/references/routing-matrix.md"
+    ]
+  }
+}

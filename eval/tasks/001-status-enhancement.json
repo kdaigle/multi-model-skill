@@ -1,0 +1,17 @@
+{
+  "id": "001-status-enhancement",
+  "title": "Status output enhancement",
+  "category": "behavioral-change",
+  "prompt": "Enhance the /model_router_status output so it is more actionable for local debugging. Keep the change focused: add a concise section that clearly distinguishes the active model, the last routed implementation model, and the most important confusion or looping counters. Preserve existing behavior otherwise, and only update docs if the visible status contract materially changes.",
+  "judgeHints": [
+    "Prefer a small targeted change.",
+    "Do not break existing status reporting.",
+    "Documentation updates are optional unless the command output contract changes."
+  ],
+  "validation": {
+    "requireDiff": true,
+    "requiredChangedFiles": [
+      ".github/extensions/model-router/extension.mjs"
+    ]
+  }
+}
