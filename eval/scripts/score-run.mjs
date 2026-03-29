@@ -131,8 +131,6 @@ if (values['dry-run']) {
 }
 
 const judgeArgs = [
-  '-p',
-  judgePrompt,
   '--model',
   values['judge-model'],
   '--output-format',
@@ -144,14 +142,14 @@ const judgeArgs = [
   '--no-custom-instructions'
 ];
 
-async function invokeJudgeWithRetry(args, options, maxRetries = 2) {
+async function invokeJudgeWithRetry(prompt, args, options, maxRetries = 2) {
   let lastResult = null;
   let lastError = null;
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     console.error(`[Judge] Attempt ${attempt + 1}/${maxRetries + 1}...`);
     try {
-      const result = runCommand('copilot', args, options);
+      const result = runCommand('copilot', args, { ...options, input: prompt });
       const stdout = result.stdout?.trim() ?? '';
       const hasOutput = stdout.length > 0;
       const isTimeout = result.timedOut || result.signal === 'SIGTERM';
@@ -182,7 +180,7 @@ async function invokeJudgeWithRetry(args, options, maxRetries = 2) {
   return lastResult ?? { stdout: '', stderr: lastError?.message ?? '', status: null, signal: null, timedOut: false, error: lastError };
 }
 
-const judgeResult = await invokeJudgeWithRetry(judgeArgs, {
+const judgeResult = await invokeJudgeWithRetry(judgePrompt, judgeArgs, {
   cwd: runDir,
   timeout: judgeTimeoutMs
 });

@@ -1,0 +1,673 @@
+{
+  "suite": {
+    "suiteDir": "eval/runs/20260329T153138Z",
+    "createdAt": "2026-03-29T15:31:38.457Z",
+    "baseRef": "HEAD",
+    "dryRun": false,
+    "startModel": {
+      "id": "claude-sonnet-4.6",
+      "reasoningEffort": "medium"
+    },
+    "judgeSelection": {
+      "startModel": "claude-sonnet-4.6",
+      "judgeModel": "gpt-5.4",
+      "startFamily": "claude",
+      "judgeFamily": "gpt",
+      "source": "config",
+      "differentFamily": true
+    },
+    "initialWorktreeCleanup": {
+      "cleanedWorktrees": [],
+      "pruned": true,
+      "pruneStdout": "",
+      "pruneStderr": ""
+    },
+    "tasks": [
+      "001-status-enhancement",
+      "002-classification-tests",
+      "003-keyword-docsync",
+      "004-review-diversity-audit",
+      "005-chained-tool-trace",
+      "006-routing-policy-source-of-truth"
+    ],
+    "variants": [
+      "router",
+      "fixed"
+    ]
+  },
+  "summary": {
+    "suiteDir": "eval/runs/20260329T153138Z",
+    "generatedAt": "2026-03-29T16:54:08.359Z",
+    "taskCount": 6,
+    "timedOutVariantCount": 1,
+    "tasks": [
+      {
+        "taskId": "001-status-enhancement",
+        "variants": [
+          {
+            "variantId": "fixed",
+            "runDir": "eval/runs/20260329T153138Z/results/001-status-enhancement/fixed",
+            "status": "run_timed_out",
+            "timedOut": true,
+            "timeoutStages": [
+              "run"
+            ],
+            "exitCode": null,
+            "signal": "SIGTERM",
+            "changedFiles": [
+              ".github/extensions/model-router.eval-disabled/extension.mjs",
+              ".github/extensions/model-router/extension.mjs",
+              ".github/skills/model-router.eval-disabled/SKILL.md"
+            ],
+            "validationValid": false,
+            "validationFailureMode": "run-timed-out",
+            "correctnessScore": null,
+            "completenessScore": null,
+            "minimalityScore": null,
+            "verdict": null,
+            "relativeCostIndex": 117.003,
+            "costMode": "observed_tokens_weighted",
+            "judgeModel": "gpt-5.4",
+            "startModel": "claude-sonnet-4.6",
+            "judgeTimedOut": false,
+            "traceHighlight": {
+              "stages": [
+                "prepareWorktree",
+                "copilotRun",
+                "collectArtifacts",
+                "validate",
+                "score"
+              ],
+              "stagesOk": {
+                "prepareWorktree": true,
+                "copilotRun": false,
+                "collectArtifacts": true,
+                "validate": false,
+                "score": false
+              },
+              "anyTimedOut": true,
+              "allOk": false,
+              "startModel": "claude-sonnet-4.6",
+              "changedFileCount": 3
+            }
+          },
+          {
+            "variantId": "router",
+            "runDir": "eval/runs/20260329T153138Z/results/001-status-enhancement/router",
+            "status": "completed",
+            "timedOut": false,
+            "timeoutStages": [],
+            "exitCode": 0,
+            "signal": null,
+            "changedFiles": [
+              ".github/extensions/model-router/extension.mjs",
+              ".github/skills/model-router/SKILL.md"
+            ],
+            "validationValid": true,
+            "validationFailureMode": null,
+            "correctnessScore": 3,
+            "completenessScore": 3,
+            "minimalityScore": 2,
+            "verdict": "partial",
+            "relativeCostIndex": 31.339,
+            "costMode": "observed_tokens_weighted",
+            "judgeModel": "gpt-5.4",
+            "startModel": "claude-sonnet-4.6",
+            "judgeTimedOut": false,
+            "traceHighlight": {
+              "stages": [
+                "prepareWorktree",
+                "copilotRun",
+                "collectArtifacts",
+                "validate",
+                "score"
+              ],
+              "stagesOk": {
+                "prepareWorktree": true,
+                "copilotRun": true,
+                "collectArtifacts": true,
+                "validate": true,
+                "score": true
+              },
+              "anyTimedOut": false,
+              "allOk": true,
+              "startModel": "claude-sonnet-4.6",
+              "changedFileCount": 2
+            }
+          }
+        ],
+        "comparison": {
+          "correctnessDelta": null,
+          "costDelta": -85.664,
+          "routerVerdict": "partial",
+          "fixedVerdict": null,
+          "routerStatus": "completed",
+          "fixedStatus": "run_timed_out",
+          "routerTimedOut": false,
+          "fixedTimedOut": true
+        }
+      },
+      {
+        "taskId": "002-classification-tests",
+        "variants": [
+          {
+            "variantId": "fixed",
+            "runDir": "eval/runs/20260329T153138Z/results/002-classification-tests/fixed",
+            "status": "failed",
+            "timedOut": false,
+            "timeoutStages": [],
+            "exitCode": 0,
+            "signal": null,
+            "changedFiles": [
+              "tests/routing-policy.test.mjs"
+            ],
+            "validationValid": false,
+            "validationFailureMode": null,
+            "correctnessScore": null,
+            "completenessScore": null,
+            "minimalityScore": null,
+            "verdict": null,
+            "relativeCostIndex": 79.103,
+            "costMode": "observed_tokens_weighted",
+            "judgeModel": "gpt-5.4",
+            "startModel": "claude-sonnet-4.6",
+            "judgeTimedOut": false,
+            "traceHighlight": {
+              "stages": [
+                "prepareWorktree",
+                "copilotRun",
+                "collectArtifacts",
+                "validate",
+                "score"
+              ],
+              "stagesOk": {
+                "prepareWorktree": true,
+                "copilotRun": true,
+                "collectArtifacts": true,
+                "validate": false,
+                "score": false
+              },
+              "anyTimedOut": false,
+              "allOk": false,
+              "startModel": "claude-sonnet-4.6",
+              "changedFileCount": 1
+            }
+          },
+          {
+            "variantId": "router",
+            "runDir": "eval/runs/20260329T153138Z/results/002-classification-tests/router",
+            "status": "failed",
+            "timedOut": false,
+            "timeoutStages": [],
+            "exitCode": 0,
+            "signal": null,
+            "changedFiles": [
+              "eval/classification-regression.test.mjs"
+            ],
+            "validationValid": false,
+            "validationFailureMode": null,
+            "correctnessScore": null,
+            "completenessScore": null,
+            "minimalityScore": null,
+            "verdict": null,
+            "relativeCostIndex": 81.957,
+            "costMode": "observed_tokens_weighted",
+            "judgeModel": "gpt-5.4",
+            "startModel": "claude-sonnet-4.6",
+            "judgeTimedOut": false,
+            "traceHighlight": {
+              "stages": [
+                "prepareWorktree",
+                "copilotRun",
+                "collectArtifacts",
+                "validate",
+                "score"
+              ],
+              "stagesOk": {
+                "prepareWorktree": true,
+                "copilotRun": true,
+                "collectArtifacts": true,
+                "validate": false,
+                "score": false
+              },
+              "anyTimedOut": false,
+              "allOk": false,
+              "startModel": "claude-sonnet-4.6",
+              "changedFileCount": 1
+            }
+          }
+        ],
+        "comparison": {
+          "correctnessDelta": null,
+          "costDelta": 2.853999999999999,
+          "routerVerdict": null,
+          "fixedVerdict": null,
+          "routerStatus": "failed",
+          "fixedStatus": "failed",
+          "routerTimedOut": false,
+          "fixedTimedOut": false
+        }
+      },
+      {
+        "taskId": "003-keyword-docsync",
+        "variants": [
+          {
+            "variantId": "fixed",
+            "runDir": "eval/runs/20260329T153138Z/results/003-keyword-docsync/fixed",
+            "status": "failed",
+            "timedOut": false,
+            "timeoutStages": [],
+            "exitCode": 0,
+            "signal": null,
+            "changedFiles": [
+              ".github/extensions/model-router.eval-disabled/policy.mjs",
+              ".github/skills/model-router.eval-disabled/SKILL.md",
+              ".github/skills/model-router.eval-disabled/references/routing-matrix.md",
+              "README.md"
+            ],
+            "validationValid": false,
+            "validationFailureMode": null,
+            "correctnessScore": null,
+            "completenessScore": null,
+            "minimalityScore": null,
+            "verdict": null,
+            "relativeCostIndex": 58.177,
+            "costMode": "observed_tokens_weighted",
+            "judgeModel": "gpt-5.4",
+            "startModel": "claude-sonnet-4.6",
+            "judgeTimedOut": false,
+            "traceHighlight": {
+              "stages": [
+                "prepareWorktree",
+                "copilotRun",
+                "collectArtifacts",
+                "validate",
+                "score"
+              ],
+              "stagesOk": {
+                "prepareWorktree": true,
+                "copilotRun": true,
+                "collectArtifacts": true,
+                "validate": false,
+                "score": false
+              },
+              "anyTimedOut": false,
+              "allOk": false,
+              "startModel": "claude-sonnet-4.6",
+              "changedFileCount": 4
+            }
+          },
+          {
+            "variantId": "router",
+            "runDir": "eval/runs/20260329T153138Z/results/003-keyword-docsync/router",
+            "status": "failed",
+            "timedOut": false,
+            "timeoutStages": [],
+            "exitCode": 0,
+            "signal": null,
+            "changedFiles": [
+              ".github/skills/model-router/SKILL.md",
+              ".github/skills/model-router/references/routing-matrix.md",
+              "README.md"
+            ],
+            "validationValid": false,
+            "validationFailureMode": null,
+            "correctnessScore": 2,
+            "completenessScore": 2,
+            "minimalityScore": 3,
+            "verdict": "partial",
+            "relativeCostIndex": 44.834,
+            "costMode": "observed_tokens_weighted",
+            "judgeModel": "gpt-5.4",
+            "startModel": "claude-sonnet-4.6",
+            "judgeTimedOut": false,
+            "traceHighlight": {
+              "stages": [
+                "prepareWorktree",
+                "copilotRun",
+                "collectArtifacts",
+                "validate",
+                "score"
+              ],
+              "stagesOk": {
+                "prepareWorktree": true,
+                "copilotRun": true,
+                "collectArtifacts": true,
+                "validate": false,
+                "score": true
+              },
+              "anyTimedOut": false,
+              "allOk": false,
+              "startModel": "claude-sonnet-4.6",
+              "changedFileCount": 3
+            }
+          }
+        ],
+        "comparison": {
+          "correctnessDelta": null,
+          "costDelta": -13.342999999999996,
+          "routerVerdict": "partial",
+          "fixedVerdict": null,
+          "routerStatus": "failed",
+          "fixedStatus": "failed",
+          "routerTimedOut": false,
+          "fixedTimedOut": false
+        }
+      },
+      {
+        "taskId": "004-review-diversity-audit",
+        "variants": [
+          {
+            "variantId": "fixed",
+            "runDir": "eval/runs/20260329T153138Z/results/004-review-diversity-audit/fixed",
+            "status": "failed",
+            "timedOut": false,
+            "timeoutStages": [],
+            "exitCode": 0,
+            "signal": null,
+            "changedFiles": [],
+            "validationValid": false,
+            "validationFailureMode": null,
+            "correctnessScore": null,
+            "completenessScore": null,
+            "minimalityScore": null,
+            "verdict": null,
+            "relativeCostIndex": 57.34,
+            "costMode": "observed_tokens_weighted",
+            "judgeModel": "gpt-5.4",
+            "startModel": "claude-sonnet-4.6",
+            "judgeTimedOut": false,
+            "traceHighlight": {
+              "stages": [
+                "prepareWorktree",
+                "copilotRun",
+                "collectArtifacts",
+                "validate",
+                "score"
+              ],
+              "stagesOk": {
+                "prepareWorktree": true,
+                "copilotRun": true,
+                "collectArtifacts": true,
+                "validate": false,
+                "score": false
+              },
+              "anyTimedOut": false,
+              "allOk": false,
+              "startModel": "claude-sonnet-4.6",
+              "changedFileCount": 0
+            }
+          },
+          {
+            "variantId": "router",
+            "runDir": "eval/runs/20260329T153138Z/results/004-review-diversity-audit/router",
+            "status": "failed",
+            "timedOut": false,
+            "timeoutStages": [],
+            "exitCode": 0,
+            "signal": null,
+            "changedFiles": [
+              ".github/extensions/model-router/policy.mjs",
+              "eval/routing-policy.test.mjs"
+            ],
+            "validationValid": false,
+            "validationFailureMode": null,
+            "correctnessScore": null,
+            "completenessScore": null,
+            "minimalityScore": null,
+            "verdict": null,
+            "relativeCostIndex": 121.293,
+            "costMode": "observed_tokens_weighted",
+            "judgeModel": "gpt-5.4",
+            "startModel": "claude-sonnet-4.6",
+            "judgeTimedOut": false,
+            "traceHighlight": {
+              "stages": [
+                "prepareWorktree",
+                "copilotRun",
+                "collectArtifacts",
+                "validate",
+                "score"
+              ],
+              "stagesOk": {
+                "prepareWorktree": true,
+                "copilotRun": true,
+                "collectArtifacts": true,
+                "validate": false,
+                "score": false
+              },
+              "anyTimedOut": false,
+              "allOk": false,
+              "startModel": "claude-sonnet-4.6",
+              "changedFileCount": 2
+            }
+          }
+        ],
+        "comparison": {
+          "correctnessDelta": null,
+          "costDelta": 63.953,
+          "routerVerdict": null,
+          "fixedVerdict": null,
+          "routerStatus": "failed",
+          "fixedStatus": "failed",
+          "routerTimedOut": false,
+          "fixedTimedOut": false
+        }
+      },
+      {
+        "taskId": "005-chained-tool-trace",
+        "variants": [
+          {
+            "variantId": "fixed",
+            "runDir": "eval/runs/20260329T153138Z/results/005-chained-tool-trace/fixed",
+            "status": "completed",
+            "timedOut": false,
+            "timeoutStages": [],
+            "exitCode": 0,
+            "signal": null,
+            "changedFiles": [
+              "eval/README.md",
+              "eval/scripts/collect-artifacts.mjs",
+              "eval/scripts/summarize-suite.mjs"
+            ],
+            "validationValid": true,
+            "validationFailureMode": null,
+            "correctnessScore": null,
+            "completenessScore": null,
+            "minimalityScore": null,
+            "verdict": null,
+            "relativeCostIndex": 162.336,
+            "costMode": "observed_tokens_weighted",
+            "judgeModel": "gpt-5.4",
+            "startModel": "claude-sonnet-4.6",
+            "judgeTimedOut": false,
+            "traceHighlight": {
+              "stages": [
+                "prepareWorktree",
+                "copilotRun",
+                "collectArtifacts",
+                "validate",
+                "score"
+              ],
+              "stagesOk": {
+                "prepareWorktree": true,
+                "copilotRun": true,
+                "collectArtifacts": true,
+                "validate": true,
+                "score": false
+              },
+              "anyTimedOut": false,
+              "allOk": false,
+              "startModel": "claude-sonnet-4.6",
+              "changedFileCount": 3
+            }
+          },
+          {
+            "variantId": "router",
+            "runDir": "eval/runs/20260329T153138Z/results/005-chained-tool-trace/router",
+            "status": "completed",
+            "timedOut": false,
+            "timeoutStages": [],
+            "exitCode": 0,
+            "signal": null,
+            "changedFiles": [
+              "eval/README.md",
+              "eval/scripts/collect-artifacts.mjs",
+              "eval/scripts/summarize-suite.mjs"
+            ],
+            "validationValid": true,
+            "validationFailureMode": null,
+            "correctnessScore": null,
+            "completenessScore": null,
+            "minimalityScore": null,
+            "verdict": null,
+            "relativeCostIndex": 92.185,
+            "costMode": "observed_tokens_weighted",
+            "judgeModel": "gpt-5.4",
+            "startModel": "claude-sonnet-4.6",
+            "judgeTimedOut": false,
+            "traceHighlight": {
+              "stages": [
+                "prepareWorktree",
+                "copilotRun",
+                "collectArtifacts",
+                "validate",
+                "score"
+              ],
+              "stagesOk": {
+                "prepareWorktree": true,
+                "copilotRun": true,
+                "collectArtifacts": true,
+                "validate": true,
+                "score": false
+              },
+              "anyTimedOut": false,
+              "allOk": false,
+              "startModel": "claude-sonnet-4.6",
+              "changedFileCount": 3
+            }
+          }
+        ],
+        "comparison": {
+          "correctnessDelta": null,
+          "costDelta": -70.15100000000001,
+          "routerVerdict": null,
+          "fixedVerdict": null,
+          "routerStatus": "completed",
+          "fixedStatus": "completed",
+          "routerTimedOut": false,
+          "fixedTimedOut": false
+        }
+      },
+      {
+        "taskId": "006-routing-policy-source-of-truth",
+        "variants": [
+          {
+            "variantId": "fixed",
+            "runDir": "eval/runs/20260329T153138Z/results/006-routing-policy-source-of-truth/fixed",
+            "status": "completed",
+            "timedOut": false,
+            "timeoutStages": [],
+            "exitCode": 0,
+            "signal": null,
+            "changedFiles": [
+              ".github/extensions/model-router/extension.mjs",
+              ".github/extensions/model-router/policy.mjs",
+              ".github/lib/routing-policy.mjs",
+              ".github/skills/model-router/references/routing-matrix.md",
+              "README.md",
+              "tests/routing-policy.test.mjs"
+            ],
+            "validationValid": true,
+            "validationFailureMode": null,
+            "correctnessScore": null,
+            "completenessScore": null,
+            "minimalityScore": null,
+            "verdict": null,
+            "relativeCostIndex": 134.041,
+            "costMode": "observed_tokens_weighted",
+            "judgeModel": "gpt-5.4",
+            "startModel": "claude-sonnet-4.6",
+            "judgeTimedOut": false,
+            "traceHighlight": {
+              "stages": [
+                "prepareWorktree",
+                "copilotRun",
+                "collectArtifacts",
+                "validate",
+                "score"
+              ],
+              "stagesOk": {
+                "prepareWorktree": true,
+                "copilotRun": true,
+                "collectArtifacts": true,
+                "validate": true,
+                "score": false
+              },
+              "anyTimedOut": false,
+              "allOk": false,
+              "startModel": "claude-sonnet-4.6",
+              "changedFileCount": 6
+            }
+          },
+          {
+            "variantId": "router",
+            "runDir": "eval/runs/20260329T153138Z/results/006-routing-policy-source-of-truth/router",
+            "status": "failed",
+            "timedOut": false,
+            "timeoutStages": [],
+            "exitCode": 0,
+            "signal": null,
+            "changedFiles": [
+              ".github/extensions/model-router/extension.mjs.new",
+              ".github/skills/model-router/references/routing-matrix.md",
+              "README.md",
+              "eval/routing-policy.test.mjs"
+            ],
+            "validationValid": false,
+            "validationFailureMode": null,
+            "correctnessScore": null,
+            "completenessScore": null,
+            "minimalityScore": null,
+            "verdict": null,
+            "relativeCostIndex": 60.403,
+            "costMode": "observed_tokens_weighted",
+            "judgeModel": "gpt-5.4",
+            "startModel": "claude-sonnet-4.6",
+            "judgeTimedOut": false,
+            "traceHighlight": {
+              "stages": [
+                "prepareWorktree",
+                "copilotRun",
+                "collectArtifacts",
+                "validate",
+                "score"
+              ],
+              "stagesOk": {
+                "prepareWorktree": true,
+                "copilotRun": true,
+                "collectArtifacts": true,
+                "validate": false,
+                "score": false
+              },
+              "anyTimedOut": false,
+              "allOk": false,
+              "startModel": "claude-sonnet-4.6",
+              "changedFileCount": 4
+            }
+          }
+        ],
+        "comparison": {
+          "correctnessDelta": null,
+          "costDelta": -73.638,
+          "routerVerdict": null,
+          "fixedVerdict": null,
+          "routerStatus": "failed",
+          "fixedStatus": "completed",
+          "routerTimedOut": false,
+          "fixedTimedOut": false
+        }
+      }
+    ]
+  }
+}
