@@ -407,3 +407,213 @@ describe("buildAdditionalContext", () => {
     assert.ok(!ctx.includes("fell back"), `unexpected fallback note; got: ${ctx}`);
   });
 });
+
+// ---------------------------------------------------------------------------
+// REGRESSION: Explicit review detection — keyword coverage and word boundaries
+// ---------------------------------------------------------------------------
+
+describe("isExplicitReviewRequest — regression coverage", () => {
+  // Every entry in EXPLICIT_REVIEW_KEYWORDS must fire.
+  const positiveCases = [
+    ["bare 'review'", "review"],
+    ["code review phrase", "code review for the auth changes"],
+    ["review this phrase", "review this module"],
+    ["review the code phrase", "review the code in this file"],
+    ["review my code phrase", "review my code for the feature"],
+    ["audit keyword", "audit this function for security issues"],
+    ["approval readiness", "check approval readiness for this PR"],
+    ["approval readiness checks", "run approval readiness checks on the diff"],
+    ["approve this", "approve this pull request"],
+    ["pr review", "do a pr review on this branch"],
+    ["find bugs multi-word", "find bugs in the payment service"],
+    ["bug finding", "bug finding pass on the new service"],
+    ["regression hunting", "regression hunting before release"],
+    ["regression hunt", "do a regression hunt across the diff"],
+    ["find regressions", "find regressions introduced in this change"],
+  ];
+  for (const [label, prompt] of positiveCases) {
+    it(`detects: ${label}`, () => {
+      assert.ok(
+        isExplicitReviewRequest(normalizePrompt(prompt)),
+        `expected true for: "${prompt}"`,
+      );
+    });
+  }
+
+  // Word-boundary and false-positive guards.
+  const negativeCases = [
+    // "preview" contains "review" as a substring but not at a word boundary
+    ["preview is not review", "preview the dashboard layout"],
+    // "reviewed" is a different word token
+    ["reviewed is not review", "I reviewed the changes already"],
+    // pure implementation requests should not route to review
+    ["implement has no review keyword", "implement a new login page"],
+  ];
+  for (const [label, prompt] of negativeCases) {
+    it(`does not trigger: ${label}`, () => {
+      assert.ok(
+        !isExplicitReviewRequest(normalizePrompt(prompt)),
+        `expected false for: "${prompt}"`,
+      );
+    });
+  }
+});
+
+describe("classifyPrompt — explicit review routing regression", () => {
+  it("routes 'audit' prompt to review/reasoning", () => {
+    const r = classifyPrompt("audit this authentication module");
+    assert.equal(r.kind, "review");
+    assert.equal(r.tier, "reasoning");
+  });
+
+  it("routes 'find bugs' to review/reasoning", () => {
+    const r = classifyPrompt("find bugs in the payment service");
+    assert.equal(r.kind, "review");
+    assert.equal(r.tier, "reasoning");
+  });
+
+  it("routes 'regression hunt' to review/reasoning", () => {
+    const r = classifyPrompt("do a regression hunt across the diff");
+    assert.equal(r.kind, "review");
+    assert.equal(r.tier, "reasoning");
+  });
+
+  it("review always gets reasoning tier regardless of prompt brevity", () => {
+    const r = classifyPrompt("review");
+    assert.equal(r.kind, "review");
+    assert.equal(r.tier, "reasoning");
+  });
+
+  it("review takes priority over implementation keywords in same prompt", () => {
+    // A prompt that mentions both 'review' and 'implement' must still route as review.
+    const r = classifyPrompt("review and implement the proposed changes");
+    assert.equal(r.kind, "review");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// REGRESSION: Tool-heavy implementation routing
+// ---------------------------------------------------------------------------
+
+describe("isToolHeavy — regression coverage", () => {
+  const toolCases = [
+    ["api", "call the api endpoint"],
+    ["curl", "fetch data with curl"],
+    ["shell", "run a shell command to reset the db"],
+    ["invoke", "invoke the lambda function"],
+    ["http", "make an http request to the service"],
+    ["endpoint", "hit the endpoint and parse the response"],
+    ["request", "send a request to the backend"],
+    ["function + call", "call the function with these params"],
+    ["command", "execute the command to migrate the schema"],
+    ["agent", "spin up an agent to handle this"],
+    ["script", "write a script to automate the build"],
+  ];
+  for (const [label, prompt] of toolCases) {
+    it(`detects tool keyword: ${label}`, () => {
+      assert.ok(isToolHeavy(normalizePrompt(prompt)), `expected true for: "${prompt}"`);
+    });
+  }
+
+  it("does not trigger on a plain explanation request", () => {
+    assert.ok(!isToolHeavy("explain how the auth middleware works"));
+  });
+});
+
+describe("classifyPrompt — tool-heavy implementation routing regression", () => {
+  it("sets toolHeavy: true when implementation prompt contains tool keywords", () => {
+    const r = classifyPrompt("implement a function that calls the api endpoint");
+    assert.equal(r.kind, "implementation");
+    assert.equal(r.toolHeavy, true);
+  });
+
+  it("sets toolHeavy: false for a pure-logic implementation with no tool keywords", () => {
+    const r = classifyPrompt("implement a sorting algorithm");
+    assert.equal(r.kind, "implementation");
+    assert.equal(r.toolHeavy, false);
+  });
+
+  it("tool-heavy implementation defaults to builder tier, not economy", () => {
+    const r = classifyPrompt("implement a script to run the bash command");
+    assert.equal(r.kind, "implementation");
+    assert.equal(r.tier, "builder");
+  });
+
+  it("tool-heavy general prompt with complexity >= 1 elevates to builder tier", () => {
+    // No implement/debug/plan keywords → general path.
+    // Tool keywords (http, request, endpoint) fire isToolHeavy → score += 1 → complexity = 1.
+    // General rule: isToolHeavy && complexity >= 1 → builder.
+    const r = classifyPrompt("send an http request to the endpoint and check the response");
+    assert.equal(r.tier, "builder");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// REGRESSION: Orchestration escalation
+// ---------------------------------------------------------------------------
+
+describe("isComplexOrchestration — regression coverage", () => {
+  const orchestrationCases = [
+    ["parallel agents", "coordinate parallel agents to complete this task"],
+    ["multiple agents", "use multiple agents to crawl the data"],
+    ["multi-agent", "build a multi-agent pipeline"],
+    ["parallel tools", "execute parallel tools for this pipeline"],
+    ["tool chain", "design a tool chain for the workflow"],
+    ["chained tools", "implement chained tools to process data"],
+  ];
+  for (const [label, prompt] of orchestrationCases) {
+    it(`detects orchestration phrase: ${label}`, () => {
+      assert.ok(
+        isComplexOrchestration(normalizePrompt(prompt)),
+        `expected true for: "${prompt}"`,
+      );
+    });
+  }
+
+  // Bare concept words must NOT trigger — see comment in policy.mjs explaining
+  // why only multi-word action phrases are included.
+  it("bare 'orchestrate' does not trigger (false-positive guard)", () => {
+    assert.ok(!isComplexOrchestration("orchestrate the deployment pipeline"));
+  });
+
+  it("bare 'orchestration' does not trigger (false-positive guard)", () => {
+    assert.ok(!isComplexOrchestration("explain how orchestration works in kubernetes"));
+  });
+});
+
+describe("classifyPrompt — orchestration escalation regression", () => {
+  it("escalates implementation to reasoning when multi-agent phrase and complexity >= 2", () => {
+    // 'refactor' → implementation; 'multiple agents' → orchestration;
+    // 'entire codebase' → complexity += 2; 'agent' tool keyword → complexity += 1 → total >= 2.
+    const r = classifyPrompt("use multiple agents to refactor the entire codebase");
+    assert.equal(r.kind, "implementation");
+    assert.equal(r.tier, "reasoning");
+  });
+
+  it("does NOT escalate to reasoning when orchestration phrase appears but complexity < 2", () => {
+    // Short prompt: 'implement parallel agents' → complexity = 1 (only tool keyword 'agent').
+    // isComplexOrchestration = true but condition is complexity >= 2 → stays builder.
+    const r = classifyPrompt("implement parallel agents");
+    assert.equal(r.kind, "implementation");
+    assert.equal(r.tier, "builder");
+  });
+
+  it("escalates general route to reasoning with orchestration phrase + complexity >= 2", () => {
+    // No implement/plan/debug keywords → general path.
+    // 'multiple agents' → orchestration; 'multiple files' + 'carefully' → complexity += 4.
+    const r = classifyPrompt(
+      "coordinate multiple agents across multiple files to carefully handle the pipeline",
+    );
+    assert.equal(r.tier, "reasoning");
+  });
+
+  it("tool chain phrase escalates implementation to reasoning when complexity >= 2", () => {
+    // 'implement' → implementation; 'tool chain' → orchestration;
+    // 'multiple files' + 'carefully' → complexity += 4 → >= 2.
+    const r = classifyPrompt(
+      "implement a tool chain with multiple files for carefully orchestrated processing",
+    );
+    assert.equal(r.kind, "implementation");
+    assert.equal(r.tier, "reasoning");
+  });
+});
