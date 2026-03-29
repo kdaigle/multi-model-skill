@@ -35,7 +35,6 @@ const parsedLines = parseJsonLines(rawJsonl);
 
 const textSnippets = [];
 const usageCandidates = [];
-const modelMentions = [];
 let parseableLineCount = 0;
 let unparseableLineCount = 0;
 
@@ -48,14 +47,11 @@ for (const line of parsedLines) {
   const leaves = extractTextLeaves(line.value);
   textSnippets.push(...leaves.map((leaf) => ({ line: line.index, ...leaf })));
   usageCandidates.push(...extractUsageCandidates(line.value).map((candidate) => ({ line: line.index, ...candidate })));
-  for (const leaf of leaves) {
-    for (const modelId of modelIds) {
-      if (leaf.value.includes(modelId)) {
-        modelMentions.push(modelId);
-      }
-    }
-  }
 }
+
+// Track only the actual model that ran, not all mentions in output.
+// This prevents inflating route penalties from model ID mentions in code/docs.
+const modelMentions = runSummary.startModel ? [runSummary.startModel] : [];
 
 const finalResponseSnippet = textSnippets
   .filter((entry) => /message|content|text|output/i.test(entry.path))
