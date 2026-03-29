@@ -94,6 +94,7 @@ eval/runs/20260329T010203Z/
         changed-files.txt
         git-status.txt
         artifact-summary.json    # conservative parse: model mentions, usage candidates
+        routing-trace.json       # chained-tool trace: one entry per pipeline stage (see below)
         validation.json          # task-level checks (e.g. required files changed)
         judge-prompt.txt         # full prompt sent to the judge model
         judge-output.jsonl       # raw judge response
@@ -110,11 +111,11 @@ Raw artifacts are always retained. Parsed summaries intentionally avoid assuming
 | `run-suite.mjs` | Orchestrates a full suite. Calls all other scripts in sequence. |
 | `prepare-worktree.mjs` | Creates a fresh `git worktree` at a pinned ref; renames router-related files with `.eval-disabled` for the fixed baseline. |
 | `run-variant.mjs` | Executes one task×variant: calls `copilot -p <prompt>` in the worktree and captures output. |
-| `collect-artifacts.mjs` | Parses raw JSONL conservatively: extracts text leaves, model mentions, and usage-like fields. |
+| `collect-artifacts.mjs` | Parses raw JSONL conservatively: extracts text leaves, model mentions, and usage-like fields. Also writes a partial `routing-trace.json` covering the first three pipeline stages. |
 | `validate-run.mjs` | Applies task-level checks such as required changed files. |
 | `choose-judge-model.mjs` | Picks a strong judge model, preferring a different family from the implementation start model. Overridable via `EVAL_JUDGE_MODEL`. |
 | `score-run.mjs` | Calls `copilot -p <judge-prompt>` with the judge model and attaches a relative cost index. |
-| `summarize-suite.mjs` | Builds `suite-summary.json` and `suite-summary.txt` from all per-run `score.json` files. |
+| `summarize-suite.mjs` | Builds `suite-summary.json` and `suite-summary.txt` from all per-run `score.json` files. Also completes each run's `routing-trace.json` with validation and scoring stages and surfaces chain indicators in the text summary. |
 
 ## Configuration
 
@@ -211,8 +212,45 @@ When a subprocess exceeds its timeout, the harness keeps partial artifacts and r
 `suite-summary.txt` is a quick overview:
 
 ```text
-001-status-enhancement -> router: verdict=pass, correctness=4, cost=5.1 (observed_tokens_weighted) | fixed: verdict=partial, correctness=3, cost=7.8 (observed_tokens_weighted)
+001-status-enhancement -> router: verdict=pass, correctness=4, cost=5.1 (observed_tokens_weighted) [prep✓ run✓ collect✓ valid✓ judge✓] | fixed: ...
 ```
+
+The `[prep✓ run✓ collect✓ valid✓ judge✓]` chain at the end of each variant entry shows whether each pipeline stage succeeded (✓), failed (✗), or was not recorded (?). This makes it easy to spot exactly where a harder run went wrong without opening individual JSON files.
+
+### Routing Trace (`routing-trace.json`)
+
+Each run directory contains a `routing-trace.json` that chains the five pipeline stages into a single, self-contained evidence file. It is written in two passes:
+
+1. **`collect-artifacts.mjs`** writes an initial partial trace (`"complete": false`) covering `prepareWorktree`, `copilotRun`, and `collectArtifacts`.
+2. **`summarize-suite.mjs`** appends `validate` and `score` stages and rewrites the file with `"complete": true`.
+
+Top-level structure:
+
+```json
+{
+  "runDir": "eval/runs/.../results/task/variant",
+  "generatedAt": "2026-03-29T...",
+  "complete": true,
+  "stages": [
+    { "stage": "prepareWorktree", "ok": true, "baseSha": "abc123", "disabledPathCount": 2, ... },
+    { "stage": "copilotRun",      "ok": true, "exitCode": 0, "timedOut": false, "changedFileCount": 3, ... },
+    { "stage": "collectArtifacts","ok": true, "parseableLineCount": 42, "gitDiffBytes": 5678, ... },
+    { "stage": "validate",        "ok": true, "valid": true, "passedChecks": 5, "failedChecks": 0, ... },
+    { "stage": "score",           "ok": true, "verdict": "pass", "correctnessScore": 4, "relativeCostIndex": 1.2, ... }
+  ],
+  "chainSummary": {
+    "stagesRecorded": ["prepareWorktree", "copilotRun", "collectArtifacts", "validate", "score"],
+    "anyTimedOut": false,
+    "allOk": true,
+    "startModel": "claude-sonnet-4.6",
+    "changedFileCount": 3,
+    "verdict": "pass",
+    "correctnessScore": 4
+  }
+}
+```
+
+The `traceHighlight` field added to each variant in `suite-summary.json` mirrors `chainSummary` for quick machine-readable access without opening per-run files.
 
 ### Dry-run output
 

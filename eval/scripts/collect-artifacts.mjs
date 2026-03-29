@@ -80,4 +80,64 @@ const summary = {
 };
 
 await writeJson(path.join(runDir, 'artifact-summary.json'), summary);
+
+// Build and write a partial routing-trace.json covering the stages completed so far
+// (prepareWorktree, copilotRun, collectArtifacts).  summarize-suite.mjs will extend
+// this with the validate and score stages once all pipeline steps have run.
+const prepMetadata = await fs.readFile(path.join(runDir, 'prepare-worktree.json'), 'utf8')
+  .then((text) => JSON.parse(text))
+  .catch(() => null);
+
+const traceStages = [];
+
+if (prepMetadata) {
+  traceStages.push({
+    stage: 'prepareWorktree',
+    ok: true,
+    taskId: prepMetadata.taskId ?? null,
+    variantId: prepMetadata.variantId ?? null,
+    baseSha: prepMetadata.baseSha ?? null,
+    worktreeRelativePath: prepMetadata.worktreeRelativePath ?? null,
+    disabledPathCount: (prepMetadata.disabledPaths ?? []).length
+  });
+}
+
+const runOk = runSummary.dryRun === true
+  ? true
+  : (runSummary.exitCode === 0 && !runSummary.timedOut);
+
+traceStages.push({
+  stage: 'copilotRun',
+  ok: runOk,
+  dryRun: runSummary.dryRun ?? false,
+  exitCode: runSummary.exitCode ?? null,
+  timedOut: runSummary.timedOut ?? false,
+  runStatus: runSummary.runStatus ?? null,
+  startModel: runSummary.startModel ?? null,
+  reasoningEffort: runSummary.reasoningEffort ?? null,
+  timeoutMs: runSummary.timeoutMs ?? null,
+  stdoutBytes: runSummary.stdoutBytes ?? 0,
+  stderrBytes: runSummary.stderrBytes ?? 0,
+  changedFileCount: (runSummary.changedFiles ?? []).length,
+  changedFiles: runSummary.changedFiles ?? []
+});
+
+traceStages.push({
+  stage: 'collectArtifacts',
+  ok: true,
+  parseableLineCount: summary.parseableLineCount,
+  unparseableLineCount: summary.unparseableLineCount,
+  gitDiffBytes: summary.gitDiffBytes,
+  modelMentions: summary.modelMentions,
+  usageCandidateCount: (summary.usageCandidates ?? []).length
+});
+
+const routingTrace = {
+  runDir: values['run-dir'],
+  generatedAt: new Date().toISOString(),
+  complete: false,
+  stages: traceStages
+};
+
+await writeJson(path.join(runDir, 'routing-trace.json'), routingTrace);
 console.log(JSON.stringify(summary, null, 2));
