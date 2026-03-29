@@ -21,7 +21,9 @@ on:
   workflow_dispatch:
     inputs:
       suite:
-        description: "Test suite to run"
+        # Reserved for future task-filtering support (--task <id> flag).
+        # Not currently passed to run-suite.mjs; all tasks run every time.
+        description: "Test suite to run (informational; all tasks run)"
         required: false
         default: "all"
         type: choice
@@ -30,7 +32,10 @@ on:
           - routing
           - quality
       fixed_model:
-        description: "Model ID for fixed-model comparison run"
+        # The model for fixed-run is configured in eval/config/models.json.
+        # This input is kept for labeling the job name only; it is not currently
+        # wired through the CLI. Update models.json to change the fixed model.
+        description: "Model ID for fixed-model comparison run (label only)"
         required: false
         default: "claude-haiku-4.5"
       skip_fixed:
@@ -98,9 +103,8 @@ jobs:
         run: |
           mkdir -p eval/runs/router
           node eval/scripts/run-suite.mjs \
-            --mode router \
-            --suite "${{ inputs.suite || 'all' }}" \
-            --out eval/runs/router
+            --variant router \
+            --suite-dir eval/runs/router
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COPILOT_CLI_TOKEN: ${{ secrets.COPILOT_CLI_TOKEN }}
@@ -158,13 +162,14 @@ jobs:
           COPILOT_CLI_TOKEN: ${{ secrets.COPILOT_CLI_TOKEN }}
 
       - name: Run eval – fixed model
+        # Note: fixed_model input is not currently wired through the CLI; the
+        # model is configured via eval/config/models.json. The input is kept for
+        # reference and potential future use.
         run: |
           mkdir -p eval/runs/fixed
           node eval/scripts/run-suite.mjs \
-            --mode fixed \
-            --model "${{ inputs.fixed_model || 'claude-haiku-4.5' }}" \
-            --suite "${{ inputs.suite || 'all' }}" \
-            --out eval/runs/fixed
+            --variant fixed \
+            --suite-dir eval/runs/fixed
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COPILOT_CLI_TOKEN: ${{ secrets.COPILOT_CLI_TOKEN }}
@@ -237,7 +242,7 @@ jobs:
           push();
 
           function loadSummary(dir) {
-            const summaryPath = path.join(dir, 'summary.json');
+            const summaryPath = path.join(dir, 'suite-summary.json');
             if (!fs.existsSync(summaryPath)) return null;
             try { return JSON.parse(fs.readFileSync(summaryPath, 'utf8')); }
             catch { return null; }
@@ -247,7 +252,7 @@ jobs:
           const fixed  = loadSummary('eval/runs/fixed');
 
           if (!router && !fixed) {
-            push('> ⚠️  No summary.json found in either run directory.');
+            push('> ⚠️  No suite-summary.json found in either run directory.');
             push('> Check the individual job logs for errors.');
           } else {
             push('## Router vs Fixed-model Comparison');
@@ -285,7 +290,7 @@ jobs:
           push();
           push('## Caveats');
           push();
-          push('- Token counts in summary.json are estimates from the model API; they do not account for CLI overhead or retries.');
+          push('- Token counts in suite-summary.json are estimates from the model API; they do not account for CLI overhead or retries.');
           push('- Cost comparisons are not included here. Map token counts to pricing manually using the model\'s current rate card.');
           push('- Scheduled runs use default inputs (`suite: all`, `fixed_model: claude-haiku-4.5`).');
           push('- The fixed-model run can be skipped on manual dispatch via the `skip_fixed` input.');
@@ -294,7 +299,7 @@ jobs:
           console.log('Step summary written.');
           SUMMARY_EOF
         env:
-          GITHUB_STEP_SUMMARY: ${{ env.GITHUB_STEP_SUMMARY }}
+          # GITHUB_STEP_SUMMARY is set automatically by the runner; do not re-map it.
           GITHUB_RUN_ID: ${{ github.run_id }}
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_REPOSITORY: ${{ github.repository }}

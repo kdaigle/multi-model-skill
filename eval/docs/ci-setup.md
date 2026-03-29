@@ -17,9 +17,9 @@ The workflow lives at [`.github/workflows/eval.yml`](../../.github/workflows/eva
 
 | Input | Default | Description |
 |-------|---------|-------------|
-| `suite` | `all` | Which test suite to run (`all`, `routing`, `quality`) |
-| `fixed_model` | `claude-haiku-4.5` | Model pinned for the fixed-model baseline job |
-| `skip_fixed` | `false` | Set to `true` to skip the comparison run (faster smoke check) |
+| `suite` | `all` | Informational label stored in the run environment. The harness runs all tasks in `eval/tasks/`; per-suite task filtering is not yet wired to a CLI flag. |
+| `fixed_model` | `claude-haiku-4.5` | Documents the intended baseline model for traceability. The harness reads its start model from `eval/config/models.json`; this input does not override the config. |
+| `skip_fixed` | `false` | Set to `true` to skip the fixed-model comparison run (faster smoke check). |
 
 ## Jobs
 
@@ -29,9 +29,9 @@ router-run ──┐
 fixed-run ───┘
 ```
 
-- **router-run** – runs `eval/scripts/run-suite.mjs --mode router`; the model-router skill selects models per prompt.
-- **fixed-run** – runs `eval/scripts/run-suite.mjs --mode fixed --model <fixed_model>`; single model for every prompt.
-- **summarize** – downloads both artifact sets, diffs `summary.json`, writes a step summary. Runs even if a prior job fails.
+- **router-run** – runs `eval/scripts/run-suite.mjs --variant router --suite-dir eval/runs/router`; the model-router skill selects models per prompt.
+- **fixed-run** – runs `eval/scripts/run-suite.mjs --variant fixed --suite-dir eval/runs/fixed`; router plugin is disabled inside the disposable worktree.
+- **summarize** – downloads both artifact sets, diffs `suite-summary.json`, writes a step summary. Runs even if a prior job fails.
 
 ## Artifacts
 
@@ -47,11 +47,13 @@ The harness is expected to write at minimum:
 ```
 eval/runs/
   router/
-    summary.json      # aggregated metrics (passed to step summary)
-    <case-id>.json    # per-case raw output
+    suite-summary.json   # aggregated metrics (passed to step summary)
+    suite-summary.txt    # human-readable summary
+    results/             # per-case raw output
   fixed/
-    summary.json
-    <case-id>.json
+    suite-summary.json
+    suite-summary.txt
+    results/
 ```
 
 See `eval/scripts/run-suite.mjs` for the authoritative output schema.
@@ -63,8 +65,8 @@ Configure these in **Settings → Secrets and variables → Actions**:
 | Secret | Required | Description |
 |--------|----------|-------------|
 | `COPILOT_CLI_TOKEN` | **Yes** | GitHub PAT with the `copilot` OAuth scope. Used to authenticate the Copilot CLI so it can call the Copilot API non-interactively. |
-| `ANTHROPIC_API_KEY` | Conditional | Required if the harness invokes Claude models directly (not via Copilot API). |
-| `OPENAI_API_KEY` | Conditional | Required if the harness invokes OpenAI models directly. |
+| `ANTHROPIC_API_KEY` | No | Wired into the workflow environment for future use or custom extensions. The current harness routes all model calls through the `copilot` CLI and does not call Anthropic's API directly. |
+| `OPENAI_API_KEY` | No | Same as above — present for forward compatibility, not required by the current harness. |
 
 `GITHUB_TOKEN` is provided automatically by Actions; no extra configuration needed.
 
@@ -100,7 +102,7 @@ If this subcommand is unavailable in the CLI version you install, the token is s
 
 ## Caveats
 
-- **Cost accounting**: Token counts in `summary.json` are estimates from the model API. They do not include CLI overhead, retries, or tool-call scaffolding. Do not use them as authoritative billing figures.
+- **Cost accounting**: All model calls go through the Copilot CLI proxy. Token counts in `suite-summary.json` are estimates derived from JSONL artifacts and are not authoritative billing figures. See the "Exact Usage vs Relative Cost Index" section in `eval/README.md`.
 - **Model availability**: Model IDs in the router tier lists may change. The harness should handle `model_not_found` gracefully and log which model was actually used.
 - **Schedule skips fixed_model input**: Scheduled runs cannot receive dispatch inputs; they always run with the hardcoded defaults (`suite=all`, `fixed_model=claude-haiku-4.5`).
 - **Partial results**: The `summarize` job runs with `if: always()` to surface partial comparisons when one leg fails.
@@ -120,5 +122,5 @@ actionlint .github/workflows/eval.yml
 Run the harness locally first to confirm `eval/scripts/run-suite.mjs` produces valid output before triggering CI:
 
 ```bash
-node eval/scripts/run-suite.mjs --mode router --suite all --out eval/runs/router
+node eval/scripts/run-suite.mjs --variant router --suite-dir eval/runs/router
 ```
