@@ -1,6 +1,0 @@
-.github/extensions/model-router/extension.mjs
-.github/extensions/model-router/policy.mjs
-.github/lib/routing-policy.mjs
-.github/skills/model-router/references/routing-matrix.md
-README.md
-tests/routing-policy.test.mjs

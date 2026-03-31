@@ -1,3 +1,0 @@
-.github/extensions/model-router/classifier.mjs
-.github/extensions/model-router/classifier.test.mjs
-.github/extensions/model-router/extension.mjs

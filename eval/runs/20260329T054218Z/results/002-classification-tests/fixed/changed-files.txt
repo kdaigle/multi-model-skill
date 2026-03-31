@@ -1,3 +1,0 @@
-.github/extensions/model-router.eval-disabled/classify.mjs
-.github/extensions/model-router.eval-disabled/classify.test.mjs
-.github/extensions/model-router.eval-disabled/extension.mjs
