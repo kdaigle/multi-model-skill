@@ -1,5 +1,0 @@
-.github/extensions/model-router.eval-disabled/extension.mjs
-.github/extensions/model-router.eval-disabled/policy.mjs
-.github/skills/model-router.eval-disabled/SKILL.md
-.github/skills/model-router.eval-disabled/references/routing-matrix.md
-eval/routing-policy.test.mjs

@@ -1,8 +1,0 @@
- D .github/copilot-instructions.md
- M .github/extensions/model-router/extension.mjs
- D .github/plugin.json
- M .github/skills/model-router/SKILL.md
-?? .github/copilot-instructions.md.eval-disabled
-?? .github/extensions/model-router.eval-disabled/
-?? .github/plugin.json.eval-disabled
-?? .github/skills/model-router.eval-disabled/

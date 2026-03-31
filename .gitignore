@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+
+# Temporary files
+*-temp.jsonl
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Eval run artifacts (committed selectively)
+eval/runs/
