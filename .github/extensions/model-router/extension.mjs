@@ -2,6 +2,7 @@ import { joinSession } from "@github/copilot-sdk/extension";
 import {
   MODEL_CANDIDATES,
   getModelFamily,
+  getModelSubfamily,
   normalizePrompt,
   includesAny,
   classifyPrompt,
@@ -110,8 +111,7 @@ function detectLoopingBehavior() {
 }
 
 async function getAlternateModel(session, currentModelId) {
-  const currentFamily = getModelFamily(currentModelId);
-  const targetFamily = currentFamily === "claude" ? "gpt" : "claude";
+  const currentSubfamily = getModelSubfamily(currentModelId);
 
   let currentTier = null;
   for (const [tier, models] of Object.entries(MODEL_CANDIDATES)) {
@@ -123,17 +123,17 @@ async function getAlternateModel(session, currentModelId) {
   if (!currentTier) return null;
 
   const tierCandidates = MODEL_CANDIDATES[currentTier] || [];
-  const candidates = tierCandidates.filter((m) => getModelFamily(m.id) === targetFamily);
+  const candidates = tierCandidates.filter((m) => getModelSubfamily(m.id) !== currentSubfamily);
 
-  // If tier exhausted in alternate family, try next tier up
+  // If tier exhausted in alternate subfamily, try next tier up
   if (candidates.length === 0 && currentTier === "economy") {
     return (
-      (MODEL_CANDIDATES.builder || []).find((m) => getModelFamily(m.id) === targetFamily) || null
+      (MODEL_CANDIDATES.builder || []).find((m) => getModelSubfamily(m.id) !== currentSubfamily) || null
     );
   }
   if (candidates.length === 0 && currentTier === "builder") {
     return (
-      (MODEL_CANDIDATES.reasoning || []).find((m) => getModelFamily(m.id) === targetFamily) || null
+      (MODEL_CANDIDATES.reasoning || []).find((m) => getModelSubfamily(m.id) !== currentSubfamily) || null
     );
   }
 

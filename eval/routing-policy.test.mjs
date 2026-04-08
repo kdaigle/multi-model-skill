@@ -4,6 +4,7 @@ import {
   MODEL_CANDIDATES,
   MODEL_FAMILIES,
   getModelFamily,
+  getModelSubfamily,
   normalizePrompt,
   matchesPattern,
   includesAny,
@@ -109,6 +110,62 @@ describe("getModelFamily", () => {
 
   it("returns null for null input", () => {
     assert.equal(getModelFamily(null), null);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// getModelSubfamily
+// ---------------------------------------------------------------------------
+describe("getModelSubfamily", () => {
+  it("distinguishes claude sub-families", () => {
+    assert.equal(getModelSubfamily("claude-haiku-4.5"), "claude-haiku");
+    assert.equal(getModelSubfamily("claude-sonnet-4.6"), "claude-sonnet");
+    assert.equal(getModelSubfamily("claude-sonnet-4"), "claude-sonnet");
+    assert.equal(getModelSubfamily("claude-opus-4.5"), "claude-opus");
+    assert.equal(getModelSubfamily("claude-opus-4.6"), "claude-opus");
+    assert.equal(getModelSubfamily("claude-opus-4.6-1m"), "claude-opus");
+  });
+
+  it("distinguishes gpt sub-families", () => {
+    assert.equal(getModelSubfamily("gpt-5.1"), "gpt-5");
+    assert.equal(getModelSubfamily("gpt-5.4"), "gpt-5");
+    assert.equal(getModelSubfamily("gpt-5-mini"), "gpt-5");
+    assert.equal(getModelSubfamily("gpt-4.1"), "gpt-4.1");
+  });
+
+  it("classifies codex models into codex sub-family", () => {
+    assert.equal(getModelSubfamily("gpt-5.3-codex"), "codex");
+    assert.equal(getModelSubfamily("gpt-5.1-codex"), "codex");
+    assert.equal(getModelSubfamily("gpt-5.1-codex-max"), "codex");
+  });
+
+  it("returns null for null input", () => {
+    assert.equal(getModelSubfamily(null), null);
+  });
+
+  it("returns the model ID itself for unknown models", () => {
+    assert.equal(getModelSubfamily("unknown-model"), "unknown-model");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// getModelSubfamily / isSameModelFamily consistency
+// ---------------------------------------------------------------------------
+describe("getModelSubfamily and isSameModelFamily consistency", () => {
+  it("isSameModelFamily agrees with getModelSubfamily for same sub-family", () => {
+    assert.ok(isSameModelFamily("claude-sonnet-4", "claude-sonnet-4.5"));
+    assert.equal(getModelSubfamily("claude-sonnet-4"), getModelSubfamily("claude-sonnet-4.5"));
+  });
+
+  it("isSameModelFamily agrees with getModelSubfamily for different sub-families", () => {
+    assert.ok(!isSameModelFamily("claude-sonnet-4.6", "claude-opus-4.6"));
+    assert.notEqual(getModelSubfamily("claude-sonnet-4.6"), getModelSubfamily("claude-opus-4.6"));
+  });
+
+  it("cross-vendor models are different in both getModelFamily and getModelSubfamily", () => {
+    assert.notEqual(getModelFamily("claude-sonnet-4.6"), getModelFamily("gpt-5.1"));
+    assert.notEqual(getModelSubfamily("claude-sonnet-4.6"), getModelSubfamily("gpt-5.1"));
+    assert.ok(!isSameModelFamily("claude-sonnet-4.6", "gpt-5.1"));
   });
 });
 

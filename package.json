@@ -1,0 +1,20 @@
+{
+  "name": "multi-model-skill",
+  "version": "1.0.0",
+  "description": "A Copilot CLI skill for cost-aware model routing with optional automatic model switching",
+  "type": "module",
+  "license": "MIT",
+  "author": {
+    "name": "Kyle Daigle",
+    "email": "kydaigle@github.com"
+  },
+  "scripts": {
+    "test": "node --test eval/routing-policy.test.mjs"
+  },
+  "dependencies": {
+    "@github/copilot-sdk": "*"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
