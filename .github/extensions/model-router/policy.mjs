@@ -174,6 +174,26 @@ export function getModelFamily(modelId) {
   return null;
 }
 
+/**
+ * Fine-grained model subfamily used for diversity comparisons.
+ *
+ * getModelFamily() returns coarse "claude" / "gpt" — useful for broad
+ * family swaps (e.g. confusion recovery).  getModelSubfamily() returns a
+ * more specific grouping (e.g. "claude-sonnet", "claude-opus", "codex")
+ * so that review diversity can prefer a genuinely different reasoning
+ * style even within the same vendor.
+ */
+export function getModelSubfamily(modelId) {
+  if (!modelId) return null;
+  if (modelId.startsWith("claude-haiku")) return "claude-haiku";
+  if (modelId.startsWith("claude-sonnet")) return "claude-sonnet";
+  if (modelId.startsWith("claude-opus")) return "claude-opus";
+  if (modelId.includes("codex")) return "codex";
+  if (modelId.startsWith("gpt-5")) return "gpt-5";
+  if (modelId.startsWith("gpt-4.1")) return "gpt-4.1";
+  return modelId;
+}
+
 export function normalizePrompt(prompt) {
   return String(prompt || "").toLowerCase();
 }
@@ -339,16 +359,7 @@ export function dedupeCandidates(candidates) {
 
 export function isSameModelFamily(first, second) {
   if (!first || !second) return false;
-  const family = (model) => {
-    if (model.startsWith("claude-haiku")) return "claude-haiku";
-    if (model.startsWith("claude-sonnet")) return "claude-sonnet";
-    if (model.startsWith("claude-opus")) return "claude-opus";
-    if (model.includes("codex")) return "codex";
-    if (model.startsWith("gpt-5")) return "gpt-5";
-    if (model.startsWith("gpt-4.1")) return "gpt-4.1";
-    return model;
-  };
-  return family(first) === family(second);
+  return getModelSubfamily(first) === getModelSubfamily(second);
 }
 
 /**
